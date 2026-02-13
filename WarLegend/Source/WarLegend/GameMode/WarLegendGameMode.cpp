@@ -4,5 +4,10 @@
 
 AWarLegendGameMode::AWarLegendGameMode()
 {
-	// stub
+	UE_LOG(LogTemp, Warning, TEXT("Start"));
+}
+
+void AWarLegendGameMode::BeginPlay()
+{
+	Super::BeginPlay();
 }

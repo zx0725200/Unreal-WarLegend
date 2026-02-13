@@ -1,5 +1,8 @@
 #include "WLUserWidgetBase.h"
 
+#include "UMyButton.h"
+#include "Blueprint/WidgetTree.h"
+
 void UWLUserWidgetBase::Awake()
 {
 }
@@ -67,6 +70,11 @@ void UWLUserWidgetBase::NativePreConstruct()
 void UWLUserWidgetBase::NativeConstruct()
 {
 	Super::NativeConstruct();
+	
+	TArray<UWidget*> Children;
+	WidgetTree->GetAllWidgets(Children);
+	
+	InitChildWidget(Children);
 }
 
 void UWLUserWidgetBase::NativeDestruct()
@@ -75,4 +83,16 @@ void UWLUserWidgetBase::NativeDestruct()
 	OnDestroy();
 	
 	Super::NativeDestruct();
+}
+
+void UWLUserWidgetBase::InitChildWidget(TArray<UWidget*>& Children)
+{
+	for (const auto Widget : Children)
+	{
+		if (const auto MyButton = Cast<UUMyButton>(Widget))
+		{
+			MyButton->RegActionBase();
+			MyButton->OnClickWithNamed.AddDynamic(this, &UWLUserWidgetBase::OnClickEvent);
+		}
+	}
 }

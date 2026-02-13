@@ -70,6 +70,7 @@ protected:
 
 	/** Initialize input bindings */
 	virtual void SetupInputComponent() override;
+	virtual void BeginPlay() override;
 	
 	/** Input handlers */
 	void OnInputStarted();

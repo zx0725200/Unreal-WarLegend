@@ -35,5 +35,6 @@ protected:
 	virtual void NativeDestruct() override;
 	
 private:
+	void InitChildWidget(TArray<UWidget*>& Children);
 	
 };

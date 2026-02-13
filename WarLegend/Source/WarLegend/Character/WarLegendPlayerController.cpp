@@ -13,6 +13,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
 #include "WarLegend.h"
+#include "DataManager/UIManager.h"
+#include "DataManager/UIManagerImpl.h"
+#include "ETC/Define.h"
 
 AWarLegendPlayerController::AWarLegendPlayerController()
 {
@@ -62,6 +65,16 @@ void AWarLegendPlayerController::SetupInputComponent()
 		{
 			UE_LOG(LogWarLegend, Error, TEXT("'%s' Failed to find an Enhanced Input Component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
 		}
+	}
+}
+
+void AWarLegendPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	if (UUIManagerImpl* UIMgr = GTGetMgrImpl(UIManager))
+	{
+		UIMgr->ShowUI(TEXT("PopupCharacterSelect"));
 	}
 }
 
