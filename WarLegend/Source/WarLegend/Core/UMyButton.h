@@ -24,34 +24,9 @@ public:
 	FOnButtonActionWithNameEvent OnReleaseWithNamed;
 	FOnButtonActionWithNameEvent OnHoverWithNamed;
 	FOnButtonActionWithNameEvent OnUnhoverWithNamed;
-
-	// FOnButtonActionWithNameEvent OnDragEnterWithNamed;
-	// FOnButtonDragWithNameEvent OnDragWithNamed;
-	// FOnButtonActionWithNameEvent OnDragLeaveWithNamed;
 	
 	void RegActionBase();
 
 	UFUNCTION()
 	void OnClickBase();
-
-	// UFUNCTION()
-	// void OnPressedBase();
-	//
-	// UFUNCTION()
-	// void OnReleaseBase();
-	//
-	// UFUNCTION()
-	// void OnHoverBase();
-	//
-	// UFUNCTION()
-	// void OnUnhoverBase();
-
-	// UFUNCTION()
-	// void OnDragEnterBase(FGeometry& MyGeometry, FPointerEvent& MouseEvent);
-	//
-	// UFUNCTION()
-	// void OnDragBase(FGeometry& MyGeometry, FPointerEvent& MouseEvent);
-	//
-	// UFUNCTION()
-	// void OnDragLeaveBase(FPointerEvent& MouseEvent);
 };

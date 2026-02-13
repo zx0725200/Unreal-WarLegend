@@ -50,9 +50,9 @@ void UUIManagerImpl::HideUI(const FName& InName, ESlateVisibility InVisibility)
 {
 	if (const TObjectPtr<UWLUserWidgetBase>* FoundWidget = WidgetCache.Find(InName))
 	{
-		if (UWLUserWidgetBase* W = FoundWidget->Get())
+		if (UWLUserWidgetBase* FindWidget = FoundWidget->Get())
 		{
-			W->Hide(InVisibility);
+			FindWidget->Hide(InVisibility);
 		}
 	}
 }
