@@ -3,22 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core/PopupWidgetBase.h"
-#include "PopupCharacterSelect.generated.h"
+#include "Core/HudWidgetBase.h"
+#include "HudPlayerState.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class WARLEGEND_API UPopupCharacterSelect : public UPopupWidgetBase
+class WARLEGEND_API UHudPlayerState : public UHudWidgetBase
 {
 	GENERATED_BODY()
 	
 public:
+	virtual void Awake() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
-	virtual void OnClickEvent(const FName& InChildName) override;
-	
-private:
-	void OnClickedConfirm();
 };

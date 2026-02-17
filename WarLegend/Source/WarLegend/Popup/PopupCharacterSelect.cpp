@@ -1,7 +1,8 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿#include "PopupCharacterSelect.h"
 
-
-#include "PopupCharacterSelect.h"
+#include "DataManager/UIManager.h"
+#include "DataManager/UIManagerImpl.h"
+#include "ETC/Define.h"
 
 void UPopupCharacterSelect::OnEnable()
 {
@@ -19,6 +20,16 @@ void UPopupCharacterSelect::OnClickEvent(const FName& InChildName)
 	
 	if (InChildName == TEXT("Btn_Confirm"))
 	{
-		Hide();
+		OnClickedConfirm();
+	}
+}
+
+void UPopupCharacterSelect::OnClickedConfirm()
+{
+	Hide();
+	
+	if (const auto UIMgr = GTUIGetMgrImpl(UIManager))
+	{
+		UIMgr->ShowUI(TEXT("HudPlayerState"));
 	}
 }

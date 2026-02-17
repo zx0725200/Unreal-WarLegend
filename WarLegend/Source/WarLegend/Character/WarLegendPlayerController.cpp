@@ -87,7 +87,7 @@ void AWarLegendPlayerController::OnInputStarted()
 }
 
 void AWarLegendPlayerController::OnSetDestinationTriggered()
-{
+{	
 	// We flag that the input is being pressed
 	FollowTime += GetWorld()->GetDeltaSeconds();
 	
