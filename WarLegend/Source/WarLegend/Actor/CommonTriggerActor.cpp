@@ -2,9 +2,10 @@
 
 
 #include "CommonTriggerActor.h"
-
-#include "Blueprint/UserWidget.h"
+#include "Character/WarLegendPlayerController.h"
 #include "Components/BoxComponent.h"
+#include "DataManager/UIManager.h"
+#include "DataManager/UIManagerImpl.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -34,6 +35,12 @@ void ACommonTriggerActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (!Trigger)
+	{
+		return;
+	}
+	
+	
 	Trigger->OnComponentBeginOverlap.AddDynamic(this, &ACommonTriggerActor::OnTriggerBegin);
 }
 
@@ -41,8 +48,58 @@ void ACommonTriggerActor::OnTriggerBegin(UPrimitiveComponent* OverlappedComp, AA
 {
 	// 플레이어만 반응
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
-	if (OtherActor != PlayerPawn) return;
+	if (OtherActor != PlayerPawn)
+	{
+		return;
+	}
 	
+	SetTriggerAction();
+}
+
+void ACommonTriggerActor::SetTriggerAction()
+{
+	if (ActorHasTag(FName("Dungeon")))
+	{
+		OpenDungeonMenu();
+	}
+	else if (ActorHasTag(FName("Boss")))
+	{
+		MoveToBossPosition();
+	}
+}
+
+void ACommonTriggerActor::OpenDungeonMenu()
+{
+	AWarLegendPlayerController* PlayerController =  Cast<AWarLegendPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
+	if (!PlayerController)
+	{
+		// 대안.
+		PlayerController = Cast<AWarLegendPlayerController>(GetInstigatorController()); 
+	}
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[OpenDungeonMenu] PlayerController Null"));
+		return;
+	}
+	const auto LocalPlayer = PlayerController->GetLocalPlayer();
+	if (!LocalPlayer)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[OpenDungeonMenu] LocalPlayer Null"));
+		return;
+	}
+	
+	const auto UIMgr = LocalPlayer->GetSubsystem<UIManager>()->MgrImpl;
+	if (!UIMgr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[OpenDungeonMenu] UIMgr Null"));
+		return;
+	}
+	
+	UIMgr->ShowUI(TEXT("PopupDungeonMenu"));
+}
+
+void ACommonTriggerActor::MoveToBossPosition()
+{
 }
 
 // Called every frame

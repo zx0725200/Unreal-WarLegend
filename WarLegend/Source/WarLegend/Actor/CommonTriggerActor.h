@@ -28,6 +28,12 @@ protected:
 	void OnTriggerBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 private:
+	void SetTriggerAction();
+	
+	void OpenDungeonMenu();
+	void MoveToBossPosition();
+	
+private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> Mesh;
 
