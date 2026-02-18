@@ -104,10 +104,10 @@ bool AWarLegendPlayerController::IsUpdateCachedDestination()
 void AWarLegendPlayerController::Init()
 {
 	SetMouseState();
-	ShowPlayerHud();
+	ShowTitle();
 }
 
-void AWarLegendPlayerController::ShowPlayerHud() const
+void AWarLegendPlayerController::ShowTitle() const
 {
 	const auto UIMgr = GTGetMgrImpl(UIManager);
 	if (!UIMgr)
@@ -115,7 +115,7 @@ void AWarLegendPlayerController::ShowPlayerHud() const
 		return;
 	}
 	
-	UIMgr->ShowUI(TEXT("HudPlayerState"));
+	UIMgr->ShowUI(TEXT("PopupTitle"));
 }
 
 void AWarLegendPlayerController::SetMouseState()

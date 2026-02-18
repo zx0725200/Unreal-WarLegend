@@ -82,7 +82,7 @@ private:
 	/** Init */
 	void Init();
 	
-	void ShowPlayerHud() const;
+	void ShowTitle() const;
 	void SetMouseState();
 	
 	/** PlayerMove */
