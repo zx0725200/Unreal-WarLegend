@@ -22,5 +22,7 @@ public:
 	virtual void OnClickEvent(const FName& InChildName) override;
 	
 private:
+	void LockPlayerInput() const;
+	void UnlockPlayerInput() const;
 	
 };
