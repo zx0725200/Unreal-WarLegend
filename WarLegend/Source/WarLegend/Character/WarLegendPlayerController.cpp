@@ -1,16 +1,13 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #include "WarLegendPlayerController.h"
 #include "GameFramework/Pawn.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
-#include "NiagaraSystem.h"
 #include "NiagaraFunctionLibrary.h"
-#include "WarLegendCharacter.h"
 #include "Engine/World.h"
 #include "EnhancedInputComponent.h"
 #include "Navigation/PathFollowingComponent.h"
-#include "InputActionValue.h"
 #include "EnhancedInputSubsystems.h"
+#include "NavigationPath.h"
+#include "NavigationSystem.h"
 #include "Engine/LocalPlayer.h"
 #include "WarLegend.h"
 #include "DataManager/UIManager.h"
@@ -51,15 +48,9 @@ void AWarLegendPlayerController::SetupInputComponent()
 		{
 			// Setup mouse input events
 			EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnInputStarted);
-			EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Triggered, this, &AWarLegendPlayerController::OnSetDestinationTriggered);
-			EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Completed, this, &AWarLegendPlayerController::OnSetDestinationReleased);
-			EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Canceled, this, &AWarLegendPlayerController::OnSetDestinationReleased);
-
+			
 			// Setup touch input events
 			EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnInputStarted);
-			EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Triggered, this, &AWarLegendPlayerController::OnTouchTriggered);
-			EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Completed, this, &AWarLegendPlayerController::OnTouchReleased);
-			EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Canceled, this, &AWarLegendPlayerController::OnTouchReleased);
 		}
 		else
 		{
@@ -72,80 +63,106 @@ void AWarLegendPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (UUIManagerImpl* UIMgr = GTGetMgrImpl(UIManager))
-	{
-		UIMgr->ShowUI(TEXT("PopupCharacterSelect"));
-	}
+	Init();
 }
 
 void AWarLegendPlayerController::OnInputStarted()
 {
 	StopMovement();
 
-	// Update the move destination to wherever the cursor is pointing at
-	UpdateCachedDestination();
-}
-
-void AWarLegendPlayerController::OnSetDestinationTriggered()
-{	
-	// We flag that the input is being pressed
-	FollowTime += GetWorld()->GetDeltaSeconds();
-	
-	// Update the move destination to wherever the cursor is pointing at
-	UpdateCachedDestination();
-	
-	// Move towards mouse pointer or touch
-	APawn* ControlledPawn = GetPawn();
-	if (ControlledPawn != nullptr)
+	if (!IsUpdateCachedDestination())
 	{
-		FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
-		ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
+		return;
 	}
+	
+	MoveOnceToCachedDestination();
 }
 
-void AWarLegendPlayerController::OnSetDestinationReleased()
+void AWarLegendPlayerController::MoveOnceToCachedDestination()
 {
-	// If it was a short press
-	if (FollowTime <= ShortPressThreshold)
-	{
-		// We move there and spawn some particles
-		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
-	}
-
-	FollowTime = 0.f;
+	MoveToClickOrCloset(CachedDestination);
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
 }
 
-// Triggered every frame when the input is held down
-void AWarLegendPlayerController::OnTouchTriggered()
-{
-	bIsTouch = true;
-	OnSetDestinationTriggered();
-}
-
-void AWarLegendPlayerController::OnTouchReleased()
-{
-	bIsTouch = false;
-	OnSetDestinationReleased();
-}
-
-void AWarLegendPlayerController::UpdateCachedDestination()
+bool AWarLegendPlayerController::IsUpdateCachedDestination()
 {
 	// We look for the location in the world where the player has pressed the input
 	FHitResult Hit;
 	bool bHitSuccessful = false;
-	if (bIsTouch)
-	{
-		bHitSuccessful = GetHitResultUnderFinger(ETouchIndex::Touch1, ECollisionChannel::ECC_Visibility, true, Hit);
-	}
-	else
-	{
-		bHitSuccessful = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
-	}
-
+	bHitSuccessful = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
+	
 	// If we hit a surface, cache the location
-	if (bHitSuccessful)
+	if (bHitSuccessful && Hit.bBlockingHit)
 	{
 		CachedDestination = Hit.Location;
+		return true;
 	}
+	
+	return false;
+}
+
+void AWarLegendPlayerController::Init()
+{
+	SetMouseState();
+	ShowPlayerHud();
+}
+
+void AWarLegendPlayerController::ShowPlayerHud() const
+{
+	const auto UIMgr = GTGetMgrImpl(UIManager);
+	if (!UIMgr)
+	{
+		return;
+	}
+	
+	UIMgr->ShowUI(TEXT("HudPlayerState"));
+}
+
+void AWarLegendPlayerController::SetMouseState()
+{
+	bShowMouseCursor = true;
+	DefaultMouseCursor = EMouseCursor::Default;
+}
+
+void AWarLegendPlayerController::MoveToClickOrCloset(const FVector& InClickLocation)
+{
+	FVector Location;
+	if (IsReachableLocation(InClickLocation, Location))
+	{
+		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, Location);
+	}
+}
+
+bool AWarLegendPlayerController::IsReachableLocation(const FVector& InClickLocation, FVector& OutLocation) const
+{
+	APawn* MyPawn = GetPawn();
+	if (!MyPawn) return false;
+
+	UNavigationSystemV1* NavSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	if (!NavSystem) return false;
+
+	// 1) 클릭 지점을 네비메시 위로 투영 (오프 네비 클릭 방지)
+	FNavLocation OutNavLoc;
+	const FVector Extent(200.f, 200.f, 500.f); // 상황 따라 조절
+	if (!NavSystem->ProjectPointToNavigation(InClickLocation, OutNavLoc, Extent))
+	{
+		return false;
+	}
+
+	const FVector Start = MyPawn->GetActorLocation();
+	const FVector Goal  = OutNavLoc.Location;
+
+	// 2) 경로 생성 (부분 경로면 마지막 도달 점 사용)
+	UNavigationPath* Path = NavSystem->FindPathToLocationSynchronously(GetWorld(), Start, Goal, MyPawn);
+
+	if (!Path || Path->PathPoints.Num() == 0)
+	{
+		// 경로를 못 만들면(완전 단절 등) 그냥 투영점으로라도 시도
+		OutLocation = Goal;
+		return true;
+	}
+
+	// Partial이면 “갈 수 있는 데까지” = 마지막 PathPoint
+	OutLocation = Path->PathPoints.Last();
+	return true;
 }

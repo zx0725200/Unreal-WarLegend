@@ -74,13 +74,20 @@ protected:
 	
 	/** Input handlers */
 	void OnInputStarted();
-	void OnSetDestinationTriggered();
-	void OnSetDestinationReleased();
-	void OnTouchTriggered();
-	void OnTouchReleased();
-
-	/** Helper function to get the move destination */
-	void UpdateCachedDestination();
+	void MoveOnceToCachedDestination();
+	
+	bool IsUpdateCachedDestination();
+	
+private:
+	/** Init */
+	void Init();
+	
+	void ShowPlayerHud() const;
+	void SetMouseState();
+	
+	/** PlayerMove */
+	void MoveToClickOrCloset(const FVector& InClickLocation);
+	bool IsReachableLocation(const FVector& InClickLocation, FVector& OutLocation) const;
 };
 
 
