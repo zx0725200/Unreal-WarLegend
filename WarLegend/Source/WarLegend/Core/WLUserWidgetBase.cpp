@@ -89,6 +89,13 @@ void UWLUserWidgetBase::InitChildWidget(TArray<UWidget*>& Children)
 {
 	for (const auto Widget : Children)
 	{
+		if (!Widget)
+		{
+			continue;
+		}
+		
+		Widget->SetVisibility(ESlateVisibility::Collapsed);
+		
 		if (const auto MyButton = Cast<UUMyButton>(Widget))
 		{
 			MyButton->RegActionBase();
