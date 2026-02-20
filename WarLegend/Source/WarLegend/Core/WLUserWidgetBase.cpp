@@ -37,11 +37,6 @@ void UWLUserWidgetBase::Show(const ESlateVisibility InVisible)
 		return;
 	}
 	
-	if (InVisible == ESlateVisibility::Collapsed || InVisible == ESlateVisibility::Hidden)
-	{
-		return;
-	}
-	
 	SetVisibility(InVisible);
 	
 	OnEnable();
@@ -94,12 +89,12 @@ void UWLUserWidgetBase::InitChildWidget(TArray<UWidget*>& Children)
 			continue;
 		}
 		
-		Widget->SetVisibility(ESlateVisibility::Collapsed);
-		
 		if (const auto MyButton = Cast<UUMyButton>(Widget))
 		{
 			MyButton->RegActionBase();
 			MyButton->OnClickWithNamed.AddDynamic(this, &UWLUserWidgetBase::OnClickEvent);
 		}
 	}
+	
+	Awake();
 }

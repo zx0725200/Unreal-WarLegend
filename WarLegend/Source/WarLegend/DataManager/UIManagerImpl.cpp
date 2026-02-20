@@ -3,6 +3,8 @@
 
 #include "UIManagerImpl.h"
 
+#include "Components/CanvasPanel.h"
+#include "Core/SlotWidgetBase.h"
 #include "Core/WLUserWidgetBase.h"
 #include "DataAsset/UIManagerConfig.h"
 
@@ -30,7 +32,7 @@ void UUIManagerImpl::Deinitialize()
 	WidgetCache.Empty();
 }
 
-UWLUserWidgetBase* UUIManagerImpl::ShowUI(const FName& InName, ESlateVisibility InVisibility)
+UWLUserWidgetBase* UUIManagerImpl::ShowUIBase(const FName& InName, ESlateVisibility InVisibility)
 {
 	if (const auto MyWidget = CreateMyWidget(InName))
 	{
@@ -46,7 +48,7 @@ UWLUserWidgetBase* UUIManagerImpl::ShowUI(const FName& InName, ESlateVisibility 
 	return nullptr;
 }
 
-void UUIManagerImpl::HideUI(const FName& InName, ESlateVisibility InVisibility)
+void UUIManagerImpl::HideUIBase(const FName& InName, ESlateVisibility InVisibility)
 {
 	if (const TObjectPtr<UWLUserWidgetBase>* FoundWidget = WidgetCache.Find(InName))
 	{
@@ -57,16 +59,39 @@ void UUIManagerImpl::HideUI(const FName& InName, ESlateVisibility InVisibility)
 	}
 }
 
+UWLUserWidgetBase* UUIManagerImpl::CreateSlotBase(const FName& InName, UPanelWidget* InParent)
+{
+	if (UWLUserWidgetBase* MyWidget = CreateMyWidget(InName))
+	{
+		AttachWidget(MyWidget, InParent);
+		MyWidget->Show(ESlateVisibility::SelfHitTestInvisible);
+		return MyWidget;
+	}
+	
+	return nullptr;
+}
+
+void UUIManagerImpl::AttachWidget(UUserWidget* InWidget, UPanelWidget* InParent)
+{
+	if (!InWidget) return;
+	
+	if (!InParent)
+	{
+		if (!InWidget->IsInViewport())
+		{
+			InWidget->AddToViewport();
+		}
+		return;
+	}
+	
+	InParent->AddChild(InWidget);
+}
+
 UWLUserWidgetBase* UUIManagerImpl::CreateMyWidget(const FName& InName)
 {
 	if (!ConfigAsset)
 	{
 		return nullptr;
-	}
-	
-	if (TObjectPtr<UWLUserWidgetBase>* FoundWidget = WidgetCache.Find(InName))
-	{
-		return FoundWidget->Get();
 	}
 
 	TSubclassOf<UWLUserWidgetBase>* BaseClass = ConfigAsset->WidgetClasses.Find(InName);
@@ -74,13 +99,27 @@ UWLUserWidgetBase* UUIManagerImpl::CreateMyWidget(const FName& InName)
 	{
 		return nullptr;
 	}
-	
+
+	const bool bShouldCache = !(*BaseClass)->IsChildOf(USlotWidgetBase::StaticClass());
+
+	if (bShouldCache)
+	{
+		if (TObjectPtr<UWLUserWidgetBase>* Found = WidgetCache.Find(InName))
+		{
+			return Found->Get();
+		}
+	}
+
 	UWLUserWidgetBase* MyWidget = CreateWidget<UWLUserWidgetBase>(GetWorld(), *BaseClass);
 	if (!MyWidget)
 	{
 		return nullptr;
 	}
 
-	WidgetCache.Add(InName, MyWidget);
+	if (bShouldCache)
+	{
+		WidgetCache.Add(InName, MyWidget);
+	}
+
 	return MyWidget;
 }

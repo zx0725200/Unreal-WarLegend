@@ -10,9 +10,8 @@
 #include "NavigationSystem.h"
 #include "Engine/LocalPlayer.h"
 #include "WarLegend.h"
-#include "DataManager/UIManager.h"
-#include "DataManager/UIManagerImpl.h"
 #include "ETC/Define.h"
+#include "Presenter/UIFlowPresenter.h"
 
 AWarLegendPlayerController::AWarLegendPlayerController()
 {
@@ -109,13 +108,13 @@ void AWarLegendPlayerController::Init()
 
 void AWarLegendPlayerController::ShowTitle() const
 {
-	const auto UIMgr = GTGetMgrImpl(UIManager);
-	if (!UIMgr)
+	const auto UIPresenter = GTGetMgr(UUIFlowPresenter);
+	if (!UIPresenter)
 	{
 		return;
 	}
 	
-	UIMgr->ShowUI(TEXT("PopupTitle"));
+	UIPresenter->OpenScreenTitle();
 }
 
 void AWarLegendPlayerController::SetMouseState()

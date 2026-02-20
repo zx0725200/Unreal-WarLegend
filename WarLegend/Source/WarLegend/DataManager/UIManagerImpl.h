@@ -7,6 +7,7 @@
 #include "UObject/Object.h"
 #include "UIManagerImpl.generated.h"
 
+class UPanelWidget;
 class UUIManagerConfig;
 class UWLUserWidgetBase;
 /**
@@ -23,10 +24,19 @@ public:
 	virtual void Initialize();
 	virtual void Deinitialize();
 	
-	UWLUserWidgetBase* ShowUI(const FName& InName, ESlateVisibility InVisibility = ESlateVisibility::SelfHitTestInvisible);
-	void HideUI(const FName& InName, ESlateVisibility InVisibility = ESlateVisibility::Collapsed);
+public:
+	template <class TRetType>
+	TRetType* ShowUI(const FName& UIName, ESlateVisibility Visible);
 	
+	template <class TRetType>
+	TRetType* CreateSlot(const FName& InName, UPanelWidget* InParent);
+
 private:
+	void HideUIBase(const FName& InName, ESlateVisibility InVisibility = ESlateVisibility::Collapsed);
+	void AttachWidget(UUserWidget* InWidget, UPanelWidget* InParent);
+	
+	UWLUserWidgetBase* ShowUIBase(const FName& InName, ESlateVisibility InVisibility = ESlateVisibility::SelfHitTestInvisible);
+	UWLUserWidgetBase* CreateSlotBase(const FName& InName, UPanelWidget* InParent);
 	UWLUserWidgetBase* CreateMyWidget(const FName& InName);
 
 private:
@@ -36,3 +46,15 @@ private:
 	UPROPERTY()
 	TObjectPtr<UUIManagerConfig> ConfigAsset = nullptr;
 };
+
+template <typename TRetType>
+TRetType* UUIManagerImpl::ShowUI(const FName& UIName, ESlateVisibility Visible = ESlateVisibility::Visible)
+{
+	return Cast<TRetType>(ShowUIBase(UIName, Visible));
+}
+
+template <typename TRetType>
+TRetType* UUIManagerImpl::CreateSlot(const FName& InName, UPanelWidget* InParent)
+{
+	return Cast<TRetType>(CreateSlotBase(InName, InParent));
+}

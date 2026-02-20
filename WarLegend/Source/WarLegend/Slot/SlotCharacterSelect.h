@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core/WLUserWidgetBase.h"
+#include "Core/SlotWidgetBase.h"
 #include "SlotCharacterSelect.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class WARLEGEND_API USlotCharacterSelect : public UWLUserWidgetBase
+class WARLEGEND_API USlotCharacterSelect : public USlotWidgetBase
 {
 	GENERATED_BODY()
 };

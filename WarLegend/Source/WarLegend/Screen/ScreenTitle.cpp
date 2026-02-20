@@ -1,8 +1,5 @@
 ﻿#include "ScreenTitle.h"
-
-#include "DataManager/UIManager.h"
-#include "DataManager/UIManagerImpl.h"
-#include "ETC/Define.h"
+#include "ViewModel/TitleVM.h"
 
 void UScreenTitle::OnEnable()
 {
@@ -28,8 +25,10 @@ void UScreenTitle::OnClickedConfirm()
 {
 	Hide();
 	
-	if (const auto UIMgr = GTUIGetMgrImpl(UIManager))
+	if (!VM)
 	{
-		UIMgr->ShowUI(TEXT("HudPlayerState"));
+		return;
 	}
+	
+	VM->Confirm();
 }

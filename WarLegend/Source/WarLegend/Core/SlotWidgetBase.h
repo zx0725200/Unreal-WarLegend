@@ -3,29 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core/ScreenWidgetBase.h"
-#include "ScreenTitle.generated.h"
+#include "WLUserWidgetBase.h"
+#include "SlotWidgetBase.generated.h"
 
-class UTitleVM;
 /**
  * 
  */
 UCLASS()
-class WARLEGEND_API UScreenTitle : public UScreenWidgetBase
+class WARLEGEND_API USlotWidgetBase : public UWLUserWidgetBase
 {
 	GENERATED_BODY()
 	
 public:
+	virtual void Awake() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
-	
-	void SetViewModel(UTitleVM* InViewModel) { VM = InViewModel; }
-	
-private:
-	void OnClickedConfirm();
-	
-private:
-	UPROPERTY()
-	TObjectPtr<UTitleVM> VM;
 };

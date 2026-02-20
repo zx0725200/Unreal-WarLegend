@@ -7,6 +7,8 @@
 #include "DataManager/UIManager.h"
 #include "DataManager/UIManagerImpl.h"
 #include "Kismet/GameplayStatics.h"
+#include "Popup/PopupDungeonMenu.h"
+#include "Presenter/UIFlowPresenter.h"
 
 
 // Sets default values
@@ -88,14 +90,14 @@ void ACommonTriggerActor::OpenDungeonMenu()
 		return;
 	}
 	
-	const auto UIMgr = LocalPlayer->GetSubsystem<UIManager>()->MgrImpl;
-	if (!UIMgr)
+	const auto UIPresenter = LocalPlayer->GetSubsystem<UUIFlowPresenter>();
+	if (!UIPresenter)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("[OpenDungeonMenu] UIMgr Null"));
 		return;
 	}
 	
-	UIMgr->ShowUI(TEXT("PopupDungeonMenu"));
+	UIPresenter->OpenPopupDungeonMenu();
 }
 
 void ACommonTriggerActor::MoveToBossPosition()
