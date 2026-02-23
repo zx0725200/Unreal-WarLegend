@@ -1,1 +1,24 @@
 ﻿#pragma once
+
+UENUM(BlueprintType)
+enum class EItemType : uint8
+{
+	None,
+	Weapon		UMETA(DisplayName="Weapon"),
+	Armor		UMETA(DisplayName="Armor"),
+	Glove		UMETA(DisplayName="Glove"),
+	
+	BossWeapon	UMETA(DisplayName="BossWeapon"),
+	BossArmor	UMETA(DisplayName="BossArmor"),
+};
+
+UENUM(BlueprintType)
+enum class EItemGrade : uint8
+{
+	None,
+	Normal		UMETA(DisplayName="Normal"),
+	Rare		UMETA(DisplayName="Rare"),
+	Unique		UMETA(DisplayName="Unique"),
+	Legend		UMETA(DisplayName="Legend"),
+	Epic		UMETA(DisplayName="Epic"),
+};

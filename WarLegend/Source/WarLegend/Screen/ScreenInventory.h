@@ -22,13 +22,13 @@ public:
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
 	
-	void SetViewModel(const TArray<UScreenInventoryVM>& InData);
+	void SetViewModel(const TArray<UScreenInventoryVM*>& InData);
 	
 private:
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UTileView> TileView_Inventory;
 	
 	UPROPERTY()
-	TArray<UScreenInventoryVM> VM;
+	TArray<TObjectPtr<UScreenInventoryVM>> VM;
 	
 };

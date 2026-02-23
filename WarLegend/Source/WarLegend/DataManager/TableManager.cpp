@@ -4,13 +4,20 @@
 #include "TableManager.h"
 
 #include "DataTable/DungeonTableData.h"
+#include "DataTable/ItemTableData.h"
 
 UTableManager::UTableManager()
 {
-	static ConstructorHelpers::FObjectFinder<UDataTable> Finder(TEXT("/Script/Engine.DataTable'/Game/Table/DataDungeon.DataDungeon'"));
-	if (Finder.Succeeded())
+	static ConstructorHelpers::FObjectFinder<UDataTable> DungeonTableFinder(TEXT("/Script/Engine.DataTable'/Game/Table/DataDungeon.DataDungeon'"));
+	if (DungeonTableFinder.Succeeded())
 	{
-		DungeonTableAsset = Finder.Object;
+		DungeonTableAsset = DungeonTableFinder.Object;
+	}
+	
+	static ConstructorHelpers::FObjectFinder<UDataTable> ItemTableFinder(TEXT("/Script/Engine.DataTable'/Game/Table/DataItem.DataItem'"));
+	if (ItemTableFinder.Succeeded())
+	{
+		ItemTableAsset = ItemTableFinder.Object;
 	}
 }
 
@@ -18,13 +25,14 @@ void UTableManager::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 	
-	if (!DungeonTableAsset)
+	if (!DungeonTableAsset || !ItemTableAsset)
 	{
-		UE_LOG(LogTemp, Error, TEXT("[DungeonTierCache] DataTable is null"));
+		UE_LOG(LogTemp, Error, TEXT("DataTable is null"));
 		return;
 	}
 
 	LoadTable(DungeonTableAsset.Get());
+	LoadTable(ItemTableAsset.Get());
 }
 
 TArray<const FDungeonTableData*> UTableManager::GetDungeonTableData()
@@ -56,5 +64,11 @@ void UTableManager::LoadTable(UDataTable* Table)
 		Table,
 		DungeonTableData,
 		[](const FDungeonTableData& R) { return R.DungeonID; }
+	);
+	
+	DataTableCacheUtil::BuildByKey<FItemTableData, int32>(
+		Table,
+		ItemTableData,
+		[](const FItemTableData& R) { return R.ID; }
 	);
 }

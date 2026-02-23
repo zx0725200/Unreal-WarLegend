@@ -6,6 +6,8 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TableManager.generated.h"
 
+struct FItemTableData;
+
 namespace DataTableCacheUtil
 {
 	template<typename RowT, typename KeyT, typename KeyFunc>
@@ -48,6 +50,8 @@ private:
 	
 private:
 	TSoftObjectPtr<UDataTable> DungeonTableAsset;
+	TSoftObjectPtr<UDataTable> ItemTableAsset;
 	
 	TMap<int32, TArray<const FDungeonTableData*>> DungeonTableData;
+	TMap<int32, TArray<const FItemTableData*>> ItemTableData;
 };

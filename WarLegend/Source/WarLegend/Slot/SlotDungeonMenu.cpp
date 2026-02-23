@@ -2,10 +2,8 @@
 
 
 #include "SlotDungeonMenu.h"
-
 #include "Components/TextBlock.h"
-#include "DataTable/DungeonTableData.h"
-#include "ViewModel/PopupDungeonMenuVM.h"
+#include "ViewModel/Popup/PopupDungeonMenuVM.h"
 
 void USlotDungeonMenu::Awake()
 {

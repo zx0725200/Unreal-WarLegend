@@ -2,3 +2,8 @@
 
 
 #include "ItemTableData.h"
+#include "ETC/Enum.h"
+
+FItemTableData::FItemTableData() : ItemType(EItemType::None), ItemGrade(EItemGrade::None)
+{
+}

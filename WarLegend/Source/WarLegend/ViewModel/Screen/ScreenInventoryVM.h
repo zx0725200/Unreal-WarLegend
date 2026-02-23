@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "ScreenInventoryVM.generated.h"
 
+enum class EItemType : uint8;
 /**
  * 
  */
@@ -14,5 +15,10 @@ class WARLEGEND_API UScreenInventoryVM : public UObject
 {
 	GENERATED_BODY()
 	
-	TArray<>
+public:
+	UPROPERTY(EditDefaultsOnly)
+	TArray<EItemType> LeftItemTypes;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TArray<EItemType> RightItemTypes;
 };

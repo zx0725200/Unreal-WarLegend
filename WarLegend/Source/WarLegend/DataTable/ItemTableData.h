@@ -10,13 +10,24 @@
  * 
  */
 
+enum class EItemType : uint8;
+enum class EItemGrade : uint8;
+
 USTRUCT(BlueprintType)
 struct FItemTableData : public FTableRowBase
 {
 	GENERATED_BODY()
 	
+	FItemTableData();
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int32 ID = 0;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	EItemType ItemType;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	EItemGrade ItemGrade;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int32 HP = 0;

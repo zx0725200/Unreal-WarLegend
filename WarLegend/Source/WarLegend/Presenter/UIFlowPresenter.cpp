@@ -43,7 +43,7 @@ void UUIFlowPresenter::OpenScreenInventory()
 	
 	if (auto* ScreenInventory = UIMgr->ShowUI<UScreenInventory>(TEXT("ScreenInventory")))
 	{
-		ScreenInventory->SetViewModel();
+		//ScreenInventory->SetViewModel();
 	}
 }
 
