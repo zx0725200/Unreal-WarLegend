@@ -14,15 +14,11 @@ void UPopupWidgetBase::Awake()
 void UPopupWidgetBase::OnEnable()
 {
 	Super::OnEnable();
-	
-	LockPlayerInput();
 }
 
 void UPopupWidgetBase::OnDisable()
 {
 	Super::OnDisable();
-	
-	UnlockPlayerInput();
 }
 
 void UPopupWidgetBase::OnDestroy()
@@ -43,28 +39,4 @@ void UPopupWidgetBase::OnClickEvent(const FName& InChildName)
 	{
 		Hide();
 	}
-}
-
-void UPopupWidgetBase::LockPlayerInput() const
-{
-	AWarLegendPlayerController* PlayerController =  Cast<AWarLegendPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
-	if (!PlayerController)
-	{
-		return;
-	}
-	
-	FInputModeUIOnly UIOnlyMode;
-	PlayerController->SetInputMode(UIOnlyMode);
-}
-
-void UPopupWidgetBase::UnlockPlayerInput() const
-{
-	AWarLegendPlayerController* PlayerController =  Cast<AWarLegendPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
-	if (!PlayerController)
-	{
-		return;
-	}
-	
-	FInputModeGameAndUI InputGameMode;
-	PlayerController->SetInputMode(InputGameMode);
 }

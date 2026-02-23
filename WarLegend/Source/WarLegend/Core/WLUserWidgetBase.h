@@ -8,6 +8,16 @@
  * UI 코드의 기반이 되는 베이스 위젯입니다.
  */
 
+UENUM(Blueprintable)
+enum class EUserWidgetType : uint8
+{
+	None,
+	Slot,
+	Hud,
+	Popup,
+	Screen,
+};
+
 UCLASS()
 class WARLEGEND_API UWLUserWidgetBase : public UUserWidget
 {
@@ -19,6 +29,8 @@ public:
 	virtual void OnDisable();
 	virtual void OnDestroy();
 	virtual void Update(const float InDeltaTime);
+	
+	virtual EUserWidgetType GetUIType() const { return EUserWidgetType::Screen; }
 	
 	UFUNCTION()
 	virtual void OnClickEvent(const FName& InChildName);
@@ -36,5 +48,8 @@ protected:
 	
 private:
 	void InitChildWidget(TArray<UWidget*>& Children);
+	
+	void LockPlayerInput() const;
+	void UnlockPlayerInput() const;
 	
 };

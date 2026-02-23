@@ -2,6 +2,8 @@
 
 #include "UMyButton.h"
 #include "Blueprint/WidgetTree.h"
+#include "Character/WarLegendPlayerController.h"
+#include "Kismet/GameplayStatics.h"
 
 void UWLUserWidgetBase::Awake()
 {
@@ -9,10 +11,20 @@ void UWLUserWidgetBase::Awake()
 
 void UWLUserWidgetBase::OnEnable()
 {
+	const bool bLockInput = GetUIType() == EUserWidgetType::Popup || GetUIType() == EUserWidgetType::Screen;
+	if (bLockInput)
+	{
+		LockPlayerInput();
+	}
 }
 
 void UWLUserWidgetBase::OnDisable()
 {
+	const bool bUnLockInput = GetUIType() == EUserWidgetType::Popup || GetUIType() == EUserWidgetType::Screen;
+	if (bUnLockInput)
+	{
+		UnlockPlayerInput();
+	}
 }
 
 void UWLUserWidgetBase::OnDestroy()
@@ -97,4 +109,28 @@ void UWLUserWidgetBase::InitChildWidget(TArray<UWidget*>& Children)
 	}
 	
 	Awake();
+}
+
+void UWLUserWidgetBase::LockPlayerInput() const
+{
+	AWarLegendPlayerController* PlayerController =  Cast<AWarLegendPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
+	if (!PlayerController)
+	{
+		return;
+	}
+	
+	FInputModeUIOnly UIOnlyMode;
+	PlayerController->SetInputMode(UIOnlyMode);
+}
+
+void UWLUserWidgetBase::UnlockPlayerInput() const
+{
+	AWarLegendPlayerController* PlayerController =  Cast<AWarLegendPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
+	if (!PlayerController)
+	{
+		return;
+	}
+	
+	FInputModeGameAndUI InputGameMode;
+	PlayerController->SetInputMode(InputGameMode);
 }

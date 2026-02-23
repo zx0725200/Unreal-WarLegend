@@ -11,8 +11,8 @@
 #include "Popup/PopupDungeonMenu.h"
 #include "Screen/ScreenInventory.h"
 #include "Screen/ScreenTitle.h"
-#include "ViewModel/PopupDungeonMenuVM.h"
-#include "ViewModel/TitleVM.h"
+#include "ViewModel/Popup/PopupDungeonMenuVM.h"
+#include "ViewModel/Screen/ScreenTitleVM.h"
 
 void UUIFlowPresenter::OpenScreenTitle()
 {
@@ -21,7 +21,7 @@ void UUIFlowPresenter::OpenScreenTitle()
 	
 	if (const auto ScreenTitle = UIMgr->ShowUI<UScreenTitle>(TEXT("ScreenTitle")))
 	{
-		UTitleVM* TitleData = NewObject<UTitleVM>(ScreenTitle);
+		UScreenTitleVM* TitleData = NewObject<UScreenTitleVM>(ScreenTitle);
 		
 		TitleData->OnConfirmRequested.RemoveAll(this);
 		TitleData->OnConfirmRequested.AddUObject(this, &UUIFlowPresenter::HandleTitleConfirm);
@@ -32,12 +32,18 @@ void UUIFlowPresenter::OpenScreenTitle()
 
 void UUIFlowPresenter::OpenScreenInventory()
 {
+	const auto* GI = GetWorld()->GetGameInstance();
+	if (!GI) return;
+	
+	auto* TableMgr = GI->GetSubsystem<UTableManager>();
+	if (!TableMgr) return;
+	
 	auto* UIMgr = GTGetMgrImpl(UIManager);
 	if (!UIMgr) return;
 	
-	if (const auto* ScreenInventory = UIMgr->ShowUI<UScreenInventory>(TEXT("ScreenInventory")))
+	if (auto* ScreenInventory = UIMgr->ShowUI<UScreenInventory>(TEXT("ScreenInventory")))
 	{
-		
+		ScreenInventory->SetViewModel();
 	}
 }
 

@@ -1,5 +1,5 @@
 ﻿#include "ScreenTitle.h"
-#include "ViewModel/TitleVM.h"
+#include "ViewModel/ScreenTitleVM.h"
 
 void UScreenTitle::OnEnable()
 {

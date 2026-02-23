@@ -22,3 +22,8 @@ void UScreenInventory::OnClickEvent(const FName& InChildName)
 {
 	Super::OnClickEvent(InChildName);
 }
+
+void UScreenInventory::SetViewModel(const TArray<UScreenInventoryVM>& InData)
+{
+	VM = InData;
+}

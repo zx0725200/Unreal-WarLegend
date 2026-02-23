@@ -19,4 +19,6 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 	
+	virtual EUserWidgetType GetUIType() const override { return EUserWidgetType::Screen; }
+	
 };

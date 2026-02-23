@@ -21,8 +21,6 @@ public:
 	virtual void Update(const float InDeltaTime) override;
 	virtual void OnClickEvent(const FName& InChildName) override;
 	
-private:
-	void LockPlayerInput() const;
-	void UnlockPlayerInput() const;
+	virtual EUserWidgetType GetUIType() const override { return EUserWidgetType::Popup; }
 	
 };

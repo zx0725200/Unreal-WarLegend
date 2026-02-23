@@ -6,7 +6,7 @@
 #include "Core/ScreenWidgetBase.h"
 #include "ScreenTitle.generated.h"
 
-class UTitleVM;
+class UScreenTitleVM;
 /**
  * 
  */
@@ -20,12 +20,12 @@ public:
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
 	
-	void SetViewModel(UTitleVM* InViewModel) { VM = InViewModel; }
+	void SetViewModel(UScreenTitleVM* InViewModel) { VM = InViewModel; }
 	
 private:
 	void OnClickedConfirm();
 	
 private:
 	UPROPERTY()
-	TObjectPtr<UTitleVM> VM;
+	TObjectPtr<UScreenTitleVM> VM;
 };

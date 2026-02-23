@@ -19,4 +19,6 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
+	
+	virtual EUserWidgetType GetUIType() const override { return EUserWidgetType::Slot; }
 };

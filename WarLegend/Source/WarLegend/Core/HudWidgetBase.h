@@ -22,4 +22,6 @@ public:
 	virtual void Update(const float InDeltaTime) override;
 	virtual void OnClickEvent(const FName& InChildName) override;
 	
+	virtual EUserWidgetType GetUIType() const override { return EUserWidgetType::Hud; }
+	
 };

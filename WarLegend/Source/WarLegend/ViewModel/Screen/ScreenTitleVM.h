@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TitleVM.generated.h"
+#include "ScreenTitleVM.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class WARLEGEND_API UTitleVM : public UObject
+class WARLEGEND_API UScreenTitleVM : public UObject
 {
 	GENERATED_BODY()
 	
