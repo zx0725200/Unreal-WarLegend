@@ -16,5 +16,5 @@ class WARLEGEND_API USlotInventory : public USlotWidgetBase, public IUserObjectL
 	GENERATED_BODY()
 	
 public:
-	
+	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 };

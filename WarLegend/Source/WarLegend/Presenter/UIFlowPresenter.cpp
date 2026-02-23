@@ -9,6 +9,7 @@
 #include "DataTable/DungeonTableData.h"
 #include "ETC/Define.h"
 #include "Popup/PopupDungeonMenu.h"
+#include "Screen/ScreenInventory.h"
 #include "Screen/ScreenTitle.h"
 #include "ViewModel/PopupDungeonMenuVM.h"
 #include "ViewModel/TitleVM.h"
@@ -31,6 +32,13 @@ void UUIFlowPresenter::OpenScreenTitle()
 
 void UUIFlowPresenter::OpenScreenInventory()
 {
+	auto* UIMgr = GTGetMgrImpl(UIManager);
+	if (!UIMgr) return;
+	
+	if (const auto* ScreenInventory = UIMgr->ShowUI<UScreenInventory>(TEXT("ScreenInventory")))
+	{
+		
+	}
 }
 
 void UUIFlowPresenter::OpenPopupDungeonMenu()
