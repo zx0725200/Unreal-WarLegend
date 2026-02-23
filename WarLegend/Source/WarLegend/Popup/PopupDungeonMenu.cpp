@@ -26,22 +26,20 @@ void UPopupDungeonMenu::OnClickEvent(const FName& InChildName)
 	Super::OnClickEvent(InChildName);
 }
 
-void UPopupDungeonMenu::Init(const TArray<UPopupDungeonMenuVM*>& InData)
+void UPopupDungeonMenu::Init()
 {
-	if (DungeonSlots.Num() >= InData.Num())
+	if (Vertical_DungeonMenu->GetChildrenCount() > 0)
 	{
-		// TODO: 리프레시 코드 추가
 		return;
 	}
 	
-	for (const auto& DungeonData : InData)
+	Vertical_DungeonMenu->ClearChildren();
+	for (const auto& DungeonData : VM)
 	{
 		USlotDungeonMenu* DungeonMenu = CreateWidget<USlotDungeonMenu>(GetWorld(), SlotClass);
 		VALID_RETURN(DungeonMenu);
 		
 		DungeonMenu->SetData(DungeonData);
-		
 		Vertical_DungeonMenu->AddChild(DungeonMenu);
-		DungeonSlots.Add(DungeonMenu);
 	}
 }

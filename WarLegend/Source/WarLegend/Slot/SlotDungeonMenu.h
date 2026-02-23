@@ -23,11 +23,15 @@ public:
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
 	
-	void SetData(const UPopupDungeonMenuVM* InData);
+	void SetData(UPopupDungeonMenuVM* InData);
 	
 private:
-	void SetDungeonName(const UPopupDungeonMenuVM* InData);
+	void SetDungeonName();
+	
 private:
+	UPROPERTY()
+	TObjectPtr<UPopupDungeonMenuVM> VM;
+	
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> Txt_Name;
 	

@@ -47,6 +47,8 @@ void AWarLegendPlayerController::SetupInputComponent()
 		{
 			// Setup mouse input events
 			EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnInputStarted);
+			EnhancedInputComponent->BindAction(SetInventoryAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnInventoryOpen);
+			
 			
 			// Setup touch input events
 			EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnInputStarted);
@@ -75,6 +77,17 @@ void AWarLegendPlayerController::OnInputStarted()
 	}
 	
 	MoveOnceToCachedDestination();
+}
+
+void AWarLegendPlayerController::OnInventoryOpen()
+{
+	const auto UIPresenter = GTGetMgr(UUIFlowPresenter);
+	if (!UIPresenter)
+	{
+		return;
+	}
+	
+	UIPresenter->OpenScreenInventory();
 }
 
 void AWarLegendPlayerController::MoveOnceToCachedDestination()

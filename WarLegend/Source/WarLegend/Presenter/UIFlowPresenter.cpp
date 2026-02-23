@@ -29,6 +29,10 @@ void UUIFlowPresenter::OpenScreenTitle()
 	}
 }
 
+void UUIFlowPresenter::OpenScreenInventory()
+{
+}
+
 void UUIFlowPresenter::OpenPopupDungeonMenu()
 {
 	const auto* GI = GetWorld()->GetGameInstance();
@@ -49,25 +53,22 @@ void UUIFlowPresenter::OpenPopupDungeonMenu()
 	for (const auto& DungeonData : DungeonTableDataList)
 	{
 		UPopupDungeonMenuVM* InDungeonData = NewObject<UPopupDungeonMenuVM>(this);
+		InDungeonData->ID = DungeonData->DungeonID;
 		InDungeonData->Name = DungeonData->DungeonName;
 		InDungeonData->MinLevel = DungeonData->MinLevel;
 		InDungeonData->MaxLevel = DungeonData->MaxLevel;
+		
+		InDungeonData->OnConfirmRequested.RemoveAll(this);
+		InDungeonData->OnConfirmRequested.AddUObject(this, &UUIFlowPresenter::HandleSlotDungeonMenuClick);
 		
 		DungeonDataList.Emplace(InDungeonData);
 	}
 	
 	if (auto* Popup = UIMgr->ShowUI<UPopupDungeonMenu>(TEXT("PopupDungeonMenu")))
 	{
-		Popup->Init(DungeonDataList);
+		Popup->SetViewModel(DungeonDataList);
+		Popup->Init();
 	}
-}
-
-void UUIFlowPresenter::OpenHudPlayerState()
-{
-	auto* UIMgr = GTGetMgrImpl(UIManager);
-	if (!UIMgr) return;
-	
-	UIMgr->ShowUI<UScreenTitle>(TEXT("HudPlayerState"));
 }
 
 void UUIFlowPresenter::HandleTitleConfirm()
@@ -77,3 +78,9 @@ void UUIFlowPresenter::HandleTitleConfirm()
 	
 	UIMgr->ShowUI<UScreenTitle>(TEXT("HudPlayerState"));
 }
+
+void UUIFlowPresenter::HandleSlotDungeonMenuClick(int32 InSlotIndex)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Start Pos Change %d"), InSlotIndex);
+}
+

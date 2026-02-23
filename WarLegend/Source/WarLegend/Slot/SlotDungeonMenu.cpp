@@ -25,19 +25,26 @@ void USlotDungeonMenu::OnDisable()
 void USlotDungeonMenu::OnClickEvent(const FName& InChildName)
 {
 	Super::OnClickEvent(InChildName);
+	
+	if (InChildName == TEXT("Btn_Dungeon"))
+	{
+		VM->Confirm();
+	}
 }
 
-void USlotDungeonMenu::SetData(const UPopupDungeonMenuVM* InData)
+void USlotDungeonMenu::SetData(UPopupDungeonMenuVM* InData)
 {
-	SetDungeonName(InData);
+	VM = InData;
+	
+	SetDungeonName();
 }
 
-void USlotDungeonMenu::SetDungeonName(const UPopupDungeonMenuVM* InData)
+void USlotDungeonMenu::SetDungeonName()
 {
-	const FText DungeonNameText = FText::FromString(InData->Name);
+	const FText DungeonNameText = FText::FromString(VM->Name);
 	
 	FString LevelString = TEXT("레벨");
-	LevelString += FString::Printf(TEXT("%d~%d"),InData->MinLevel, InData->MaxLevel);
+	LevelString += FString::Printf(TEXT("%d~%d"),VM->MinLevel, VM->MaxLevel);
 	
 	const FText DungeonLevelText = FText::FromString(LevelString);
 	

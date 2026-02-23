@@ -15,6 +15,9 @@ class WARLEGEND_API UPopupDungeonMenuVM : public UObject
 	
 public:
 	UPROPERTY(EditDefaultsOnly)
+	int32 ID = 0;
+	
+	UPROPERTY(EditDefaultsOnly)
 	FString Name;
 	
 	UPROPERTY(EditDefaultsOnly)
@@ -23,12 +26,12 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	int32 MaxLevel;
 	
-	DECLARE_MULTICAST_DELEGATE(FOnConfirmRequested);
+	DECLARE_MULTICAST_DELEGATE_OneParam(FOnConfirmRequested, int32);
 	FOnConfirmRequested OnConfirmRequested;
 
 	UFUNCTION()
 	void Confirm() const
 	{
-		OnConfirmRequested.Broadcast();
+		OnConfirmRequested.Broadcast(ID);
 	}
 };

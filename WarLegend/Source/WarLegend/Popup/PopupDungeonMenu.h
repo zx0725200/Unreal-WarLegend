@@ -23,7 +23,9 @@ public:
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
 	
-	void Init(const TArray<UPopupDungeonMenuVM*>& InData);
+	void SetViewModel(const TArray<UPopupDungeonMenuVM*>& InData) { VM = InData; }
+	
+	void Init();
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category="DungeonMenu")
@@ -33,5 +35,5 @@ private:
 	TObjectPtr<UVerticalBox> Vertical_DungeonMenu;
 	
 	UPROPERTY()
-	TArray<TObjectPtr<USlotDungeonMenu>> DungeonSlots;
+	TArray<TObjectPtr<UPopupDungeonMenuVM>> VM;
 };

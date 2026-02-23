@@ -17,6 +17,7 @@ class WARLEGEND_API UUIFlowPresenter : public ULocalPlayerSubsystem
 public:
 #pragma region Screen
 	void OpenScreenTitle();
+	void OpenScreenInventory();
 #pragma endregion Screen
 	
 #pragma region Popup
@@ -24,11 +25,15 @@ public:
 #pragma endregion Popup
 	
 #pragma region Hud
-	void OpenHudPlayerState();
+	
 #pragma endregion Hud
 	
 #pragma region ScreenEvent
 	void HandleTitleConfirm();
 #pragma endregion ScreenEvent
+	
+#pragma region PopupEvent
+	void HandleSlotDungeonMenuClick(int32 InSlotIndex);
+#pragma endregion PopupEvent
 	
 };
