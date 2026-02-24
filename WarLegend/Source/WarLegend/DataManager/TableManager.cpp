@@ -8,7 +8,7 @@
 
 UTableManager::UTableManager()
 {
-	static ConstructorHelpers::FObjectFinder<UDataTable> DungeonTableFinder(TEXT("/Script/Engine.DataTable'/Game/Table/DataDungeon.DataDungeon'"));
+	static ConstructorHelpers::FObjectFinder<UDataTable> DungeonTableFinder(TEXT("/Script/Engine.DataTable'/Game/Table/DataDungeon_Dummy.DataDungeon_Dummy'"));
 	if (DungeonTableFinder.Succeeded())
 	{
 		DungeonTableAsset = DungeonTableFinder.Object;
@@ -60,15 +60,24 @@ TArray<const FDungeonTableData*> UTableManager::GetDungeonTableData()
 
 void UTableManager::LoadTable(UDataTable* Table)
 {
-	DataTableCacheUtil::BuildByKey<FDungeonTableData, int32>(
-		Table,
-		DungeonTableData,
-		[](const FDungeonTableData& R) { return R.DungeonID; }
-	);
-	
-	DataTableCacheUtil::BuildByKey<FItemTableData, int32>(
-		Table,
-		ItemTableData,
-		[](const FItemTableData& R) { return R.ID; }
-	);
+	if (Table == DungeonTableAsset)
+	{
+		DataTableCacheUtil::BuildByKey<FDungeonTableData, int32>(
+			Table,
+			DungeonTableData,
+			[](const FDungeonTableData& R) { return R.DungeonID; }
+		);
+	}
+	else if (Table == ItemTableAsset)
+	{
+		DataTableCacheUtil::BuildByKey<FItemTableData, int32>(
+			Table,
+			ItemTableData,
+			[](const FItemTableData& R) { return R.ID; }
+		);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[UTableManager::LoadTable] Unknown table: %s"), *GetNameSafe(Table));
+	}
 }

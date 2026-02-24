@@ -24,6 +24,15 @@ struct FItemTableData : public FTableRowBase
 	int32 ID = 0;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FString ItemName;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FString ItemTypeName;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FColor ItemGradeColor;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	EItemType ItemType;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
