@@ -1,10 +1,7 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "PopupDungeonMenu.h"
+﻿#include "PopupDungeonMenu.h"
+#include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
 #include "Slot/SlotDungeonMenu.h"
-#include "ETC/Define.h"
 
 void UPopupDungeonMenu::Awake()
 {
@@ -24,22 +21,120 @@ void UPopupDungeonMenu::OnDisable()
 void UPopupDungeonMenu::OnClickEvent(const FName& InChildName)
 {
 	Super::OnClickEvent(InChildName);
+	
+	if (InChildName == TEXT("Btn_Next"))
+	{
+		OnClickedNext();
+	}
+	else if (InChildName == TEXT("Btn_Prev"))
+	{
+		OnClickedPrev();
+	}
 }
 
 void UPopupDungeonMenu::Init()
 {
-	if (Vertical_DungeonMenu->GetChildrenCount() > 0)
+	CurrentPageIndex = 1;
+	
+	InitSlotPool();
+	RefreshPage();
+}
+
+void UPopupDungeonMenu::InitSlotPool()
+{
+	if (!SlotClass || PooledSlots.Num() > 0)
 	{
 		return;
 	}
 	
 	Vertical_DungeonMenu->ClearChildren();
-	for (const auto& DungeonData : VM)
+
+	constexpr int32 PageSize = 5;
+	PooledSlots.Empty();
+	PooledSlots.Reserve(PageSize);
+
+	for (int32 i = 0; i < PageSize; ++i)
 	{
-		USlotDungeonMenu* DungeonMenu = CreateWidget<USlotDungeonMenu>(GetWorld(), SlotClass);
-		VALID_RETURN(DungeonMenu);
+		USlotDungeonMenu* DungeonMenu = CreateWidget<USlotDungeonMenu>(GetOwningPlayer(), SlotClass);
+		if (!DungeonMenu)
+		{
+			continue;
+		}
+		DungeonMenu->Hide();
 		
-		DungeonMenu->SetData(DungeonData);
 		Vertical_DungeonMenu->AddChild(DungeonMenu);
+		PooledSlots.Add(DungeonMenu);
 	}
+}
+
+void UPopupDungeonMenu::RefreshPage()
+{
+	if (!Vertical_DungeonMenu || PooledSlots.Num() <= 0)
+	{
+		return;
+	}
+	
+	constexpr int32 PageSize = 5;
+	const int32 StartIndex = (CurrentPageIndex-1) * PageSize;
+
+	for (int32 LocalIndex = 0; LocalIndex < PooledSlots.Num(); ++LocalIndex)
+	{
+		USlotDungeonMenu* DungeonMenu = PooledSlots[LocalIndex];
+		if (!DungeonMenu)
+		{
+			continue;
+		}
+
+		const int32 DataIndex = StartIndex + LocalIndex;
+
+		if (VM.IsValidIndex(DataIndex) && VM[DataIndex])
+		{
+			DungeonMenu->SetData(VM[DataIndex]);
+			DungeonMenu->Show();
+		}
+	}
+	
+	RefreshPageText();
+}
+
+void UPopupDungeonMenu::RefreshPageText() const
+{
+	const int32 MaxPageIndex = GetMaxPageIndex();
+	const FString PageText = FString::Printf(TEXT("%d/%d"), CurrentPageIndex, MaxPageIndex);
+	
+	Txt_Page->SetText(FText::FromString(PageText));
+}
+
+int32 UPopupDungeonMenu::GetMaxPageIndex() const
+{
+	constexpr int32 PageSize = 5;
+	if (VM.Num() <= 0)
+	{
+		return 0;
+	}
+
+	return FMath::DivideAndRoundUp(VM.Num(), PageSize);
+}
+
+void UPopupDungeonMenu::OnClickedNext()
+{
+	const int32 MaxPageIndex = GetMaxPageIndex();
+	if (CurrentPageIndex >= MaxPageIndex)
+	{
+		return;
+	}
+
+	++CurrentPageIndex;
+	RefreshPage();
+}
+
+void UPopupDungeonMenu::OnClickedPrev()
+{
+	if (CurrentPageIndex <= 1)
+	{
+		return;
+	}
+
+	--CurrentPageIndex;
+	RefreshPage();
 }

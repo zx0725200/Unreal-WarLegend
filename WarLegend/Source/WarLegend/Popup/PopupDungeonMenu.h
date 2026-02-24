@@ -6,6 +6,7 @@
 #include "Core/PopupWidgetBase.h"
 #include "PopupDungeonMenu.generated.h"
 
+class UTextBlock;
 class UPopupDungeonMenuVM;
 class USlotDungeonMenu;
 class UVerticalBox;
@@ -26,14 +27,33 @@ public:
 	void SetViewModel(const TArray<UPopupDungeonMenuVM*>& InData) { VM = InData; }
 	
 	void Init();
+	void InitSlotPool();
+
+private:
+	void RefreshPage();
+	void RefreshPageText() const;
+	
+	void OnClickedNext();
+	void OnClickedPrev();
+	
+	int32 GetMaxPageIndex() const;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category="DungeonMenu")
 	TSubclassOf<USlotDungeonMenu> SlotClass;
 	
+	UPROPERTY()
+	TArray<TObjectPtr<UPopupDungeonMenuVM>> VM;
+	
+	UPROPERTY()
+	TArray<TObjectPtr<USlotDungeonMenu>> PooledSlots;
+	
+	UPROPERTY()
+	int32 CurrentPageIndex = 1;
+	
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UVerticalBox> Vertical_DungeonMenu;
 	
-	UPROPERTY()
-	TArray<TObjectPtr<UPopupDungeonMenuVM>> VM;
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UTextBlock> Txt_Page;
 };
