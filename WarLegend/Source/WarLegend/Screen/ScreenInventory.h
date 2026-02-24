@@ -6,6 +6,8 @@
 #include "Core/ScreenWidgetBase.h"
 #include "ScreenInventory.generated.h"
 
+class USlotEquipItem;
+class UVerticalBox;
 class UScreenInventoryVM;
 class UTileView;
 /**
@@ -22,13 +24,22 @@ public:
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
 	
-	void SetViewModel(const TArray<UScreenInventoryVM*>& InData);
+	void SetViewModel(UScreenInventoryVM* InData);
+	void Init();
 	
 private:
+	UPROPERTY(EditDefaultsOnly, Category="DungeonMenu")
+	TSubclassOf<USlotEquipItem> EquipSlotClass;
+	
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UTileView> TileView_Inventory;
 	
-	UPROPERTY()
-	TArray<TObjectPtr<UScreenInventoryVM>> VM;
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UVerticalBox> Vertical_Equip;
 	
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UVerticalBox> Vertical_Boss;
+	
+	UPROPERTY()
+	TObjectPtr<UScreenInventoryVM> VM;
 };
