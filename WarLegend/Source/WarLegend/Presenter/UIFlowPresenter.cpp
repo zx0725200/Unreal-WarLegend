@@ -1,4 +1,6 @@
 ﻿#include "UIFlowPresenter.h"
+
+#include "DataManager/InventoryManager.h"
 #include "DataManager/TableManager.h"
 #include "DataManager/UIManager.h"
 #include "DataManager/UIManagerImpl.h"
@@ -38,17 +40,29 @@ void UUIFlowPresenter::OpenScreenInventory()
 	auto* UIMgr = GTGetMgrImpl(UIManager);
 	if (!UIMgr) return;
 	
+	auto* InvenMgr = GTGetMgr(UInventoryManager);
+	if (!InvenMgr) return;
+	
+	
 	if (auto* ScreenInventory = UIMgr->ShowUI<UScreenInventory>(TEXT("ScreenInventory")))
 	{
 		UScreenInventoryVM* InventoryData = NewObject<UScreenInventoryVM>(ScreenInventory);
+		InventoryData->Init(InvenMgr);
+		
 		for (uint8 Value = static_cast<uint8>(EItemType::Weapon); Value <= static_cast<uint8>(EItemType::Glove); ++Value)
 		{
-			InventoryData->LeftItemTypes.Add(static_cast<EItemType>(Value));
+			const EItemType InItemType = static_cast<EItemType>(Value);
+			const FString ItemTypeName = TableMgr->GetItemTypeName(InItemType);
+			
+			InventoryData->LeftItemTypes.Emplace(InItemType, ItemTypeName);
 		}
 		
 		for (uint8 Value = static_cast<uint8>(EItemType::BossWeapon); Value <= static_cast<uint8>(EItemType::BossArmor); ++Value)
 		{
-			InventoryData->RightItemTypes.Add(static_cast<EItemType>(Value));
+			const EItemType InItemType = static_cast<EItemType>(Value);
+			const FString ItemTypeName = TableMgr->GetItemTypeName(InItemType);
+			
+			InventoryData->RightItemTypes.Emplace(InItemType, ItemTypeName);
 		}
 		
 		ScreenInventory->SetViewModel(InventoryData);

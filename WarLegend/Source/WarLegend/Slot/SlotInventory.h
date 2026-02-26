@@ -7,6 +7,12 @@
 #include "Core/SlotWidgetBase.h"
 #include "SlotInventory.generated.h"
 
+class UImage;
+struct FMyItem;
+
+class USlotInventoryVM;
+struct FGameplayTag;
+struct FTestStruct;
 /**
  * 
  */
@@ -17,4 +23,25 @@ class WARLEGEND_API USlotInventory : public USlotWidgetBase, public IUserObjectL
 	
 public:
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
+	virtual void NativeDestruct() override;
+	virtual void OnClickEvent(const FName& InChildName) override;
+	
+private:
+	void OnClickedSlot();
+	
+	void SetSelectedState();
+	void SetNormalState();
+	
+	UFUNCTION()
+	void HandleClickedSlot(FGameplayTag InTag, const FMyItem& InItem);
+	
+private:
+	UPROPERTY()
+	TObjectPtr<USlotInventoryVM> VM;
+	
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UImage> Img_NotSelect;
+	
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UImage> Img_Select;
 };

@@ -2,3 +2,9 @@
 
 
 #include "ScreenInventoryVM.h"
+
+const TArray<TObjectPtr<USlotInventoryVM>>& UScreenInventoryVM::GetItems() const
+{
+	check(InvenMgr); 
+	return InvenMgr->GetInventoryItemData(); 
+}

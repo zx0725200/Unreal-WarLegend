@@ -3,7 +3,65 @@
 
 #include "SlotInventory.h"
 
+#include "Components/Image.h"
+#include "ETC/Struct.h"
+#include "GameFramework/GameplayMessageSubsystem.h"
+#include "ViewModel/Slot/SlotInventoryVM.h"
+
 void USlotInventory::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
 	IUserObjectListEntry::NativeOnListItemObjectSet(ListItemObject);
+	VM = Cast<USlotInventoryVM>(ListItemObject);
+	
+	SetNormalState();
+	
+	EVENT_LISTEN(TEXT("SelectItem"), FMyItem, this, &ThisClass::HandleClickedSlot);
+}
+
+void USlotInventory::NativeDestruct()
+{
+	Super::NativeDestruct();
+}
+
+void USlotInventory::OnClickEvent(const FName& InChildName)
+{
+	Super::OnClickEvent(InChildName);
+	
+	if (InChildName == TEXT("Btn_Slot"))
+	{
+		OnClickedSlot();
+	}
+}
+
+void USlotInventory::OnClickedSlot()
+{
+	FMyItem MyItem;
+	MyItem.Name = TEXT("SelectItem");
+	MyItem.ID = VM->ID;
+		
+	EVENT_BROADCAST(MyItem.Name, FMyItem, this, MyItem);
+}
+
+void USlotInventory::SetSelectedState()
+{
+	Img_Select->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	Img_NotSelect->SetVisibility(ESlateVisibility::Collapsed);
+}
+
+void USlotInventory::SetNormalState()
+{
+	Img_Select->SetVisibility(ESlateVisibility::Collapsed);
+	Img_NotSelect->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+}
+
+void USlotInventory::HandleClickedSlot(FGameplayTag InTag, const FMyItem& InItem)
+{
+	if (InItem.ID == VM->ID)
+	{
+		SetSelectedState();
+	}
+	else
+	{
+		SetNormalState();
+	}
 }

@@ -4,6 +4,6 @@
 #include "ItemTableData.h"
 #include "ETC/Enum.h"
 
-FItemTableData::FItemTableData() : ItemType(EItemType::None), ItemGrade(EItemGrade::None)
+FItemTableData::FItemTableData() : ItemGradeColor(), ItemType(EItemType::None), ItemGrade(EItemGrade::None)
 {
 }

@@ -3,9 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DataManager/InventoryManager.h"
 #include "UObject/Object.h"
 #include "ScreenInventoryVM.generated.h"
 
+class UInventoryManager;
+class USlotInventoryVM;
 enum class EItemType : uint8;
 /**
  * 
@@ -16,9 +19,19 @@ class WARLEGEND_API UScreenInventoryVM : public UObject
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditDefaultsOnly)
-	TArray<EItemType> LeftItemTypes;
+	void Init(UInventoryManager* InMgr)
+	{
+		InvenMgr = InMgr;
+	}
+	
+	const TArray<TObjectPtr<USlotInventoryVM>>& GetItems() const;
 	
 	UPROPERTY(EditDefaultsOnly)
-	TArray<EItemType> RightItemTypes;
+	TMap<EItemType, FString> LeftItemTypes;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TMap<EItemType, FString> RightItemTypes;
+	
+	UPROPERTY()
+	TObjectPtr<UInventoryManager> InvenMgr;
 };

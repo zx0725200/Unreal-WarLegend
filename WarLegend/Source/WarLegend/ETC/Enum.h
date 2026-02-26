@@ -22,3 +22,11 @@ enum class EItemGrade : uint8
 	Legend		UMETA(DisplayName="Legend"),
 	Epic		UMETA(DisplayName="Epic"),
 };
+
+UENUM(BlueprintType)
+enum class EItemEquipType : uint8
+{
+	None,
+	EquipItem	UMETA(DisplayName="EquipItem"),
+	BossItem	UMETA(DisplayName="BossItem"),
+};

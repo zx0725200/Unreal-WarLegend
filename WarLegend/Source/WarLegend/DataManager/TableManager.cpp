@@ -58,6 +58,23 @@ TArray<const FDungeonTableData*> UTableManager::GetDungeonTableData()
 	return OutTableData;
 }
 
+FString UTableManager::GetItemTypeName(const EItemType ItemType)
+{
+	for (const auto& Pair : ItemTableData)
+	{
+		for (const FItemTableData* Ptr : Pair.Value)
+		{
+			if (!Ptr) continue;
+			if (Ptr->ItemType == ItemType)
+			{
+				return Ptr->ItemTypeName;
+			}
+		}
+	}
+	
+	return TEXT("");
+}
+
 void UTableManager::LoadTable(UDataTable* Table)
 {
 	if (Table == DungeonTableAsset)

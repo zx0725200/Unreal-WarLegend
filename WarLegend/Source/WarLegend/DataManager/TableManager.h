@@ -6,6 +6,7 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TableManager.generated.h"
 
+enum class EItemType : uint8;
 struct FItemTableData;
 
 namespace DataTableCacheUtil
@@ -43,8 +44,8 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	
 	TArray<const FDungeonTableData*> GetDungeonTableData();
-	
-	
+	FString GetItemTypeName(const EItemType ItemType);
+
 private:
 	void LoadTable(UDataTable* Table);
 	

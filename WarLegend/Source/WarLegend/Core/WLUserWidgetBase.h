@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "ETC/Define.h"
 #include "WLUserWidgetBase.generated.h"
 
 /**
@@ -51,5 +52,8 @@ private:
 	
 	void LockPlayerInput() const;
 	void UnlockPlayerInput() const;
+	
+public:
+	FWLUIEventHandle UIEventHandle;
 	
 };

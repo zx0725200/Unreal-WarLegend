@@ -6,6 +6,8 @@
 #include "Core/ScreenWidgetBase.h"
 #include "ScreenInventory.generated.h"
 
+enum class EItemEquipType : uint8;
+enum class EItemType : uint8;
 class USlotEquipItem;
 class UVerticalBox;
 class UScreenInventoryVM;
@@ -26,6 +28,12 @@ public:
 	
 	void SetViewModel(UScreenInventoryVM* InData);
 	void Init();
+	
+private:
+	void InitEquipSlots();
+	void InitInventorySlots();
+	
+	void CreateEquipSlots(UVerticalBox* InParent, const TMap<EItemType, FString>& InItemData) const;
 	
 private:
 	UPROPERTY(EditDefaultsOnly, Category="DungeonMenu")
