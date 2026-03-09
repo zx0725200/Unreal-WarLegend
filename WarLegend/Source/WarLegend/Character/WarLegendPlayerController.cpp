@@ -147,6 +147,14 @@ void AWarLegendPlayerController::SetMouseState()
 {
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
+	GetWorld()->GetFirstPlayerController()->bEnableClickEvents = true;
+
+	// 캡처 설정
+	ULocalPlayer* LocalPlayer = Cast<ULocalPlayer>(Player);
+	if (LocalPlayer && LocalPlayer->ViewportClient)
+	{
+		LocalPlayer->ViewportClient->SetMouseCaptureMode(EMouseCaptureMode::NoCapture);
+	}
 }
 
 void AWarLegendPlayerController::MoveToClickOrCloset(const FVector& InClickLocation)

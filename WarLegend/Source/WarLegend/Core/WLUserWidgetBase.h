@@ -46,11 +46,12 @@ protected:
 	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
+	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
 	
 private:
 	void InitChildWidget(TArray<UWidget*>& Children);
 	
-	void LockPlayerInput() const;
+	void LockPlayerInput();
 	void UnlockPlayerInput() const;
 
 public:

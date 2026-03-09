@@ -50,12 +50,10 @@ void UScreenInventory::InitEquipSlots()
 
 void UScreenInventory::InitInventorySlots()
 {
+	TileView_Inventory->ClearListItems();
 	for (const auto& HavingItem : VM->GetItems())
 	{
-		for (int32 i=0; i <50; i++)
-		{
-			TileView_Inventory->AddItem(HavingItem);
-		}
+		TileView_Inventory->AddItem(HavingItem);
 	}
 }
 

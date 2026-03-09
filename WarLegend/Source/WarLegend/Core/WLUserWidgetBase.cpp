@@ -13,6 +13,8 @@ void UWLUserWidgetBase::Awake()
 
 void UWLUserWidgetBase::OnEnable()
 {
+	SetIsFocusable(true);
+	
 	const bool bLockInput = GetUIType() == EUserWidgetType::Popup || GetUIType() == EUserWidgetType::Screen;
 	if (bLockInput)
 	{
@@ -94,6 +96,22 @@ void UWLUserWidgetBase::NativeDestruct()
 	Super::NativeDestruct();
 }
 
+FReply UWLUserWidgetBase::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
+{
+	if (InKeyEvent.GetKey() == EKeys::Escape)
+	{
+		// UIManagerImpl 가져와서 HandleEscClick 호출
+		auto* UIMgr = GTUIGetMgrImpl(UIManager);
+		if (UIMgr)
+		{
+			UIMgr->HandleEscClick();
+		}
+		return FReply::Handled();
+	}
+
+	return Super::NativeOnKeyDown(InGeometry, InKeyEvent);
+}
+
 void UWLUserWidgetBase::InitChildWidget(TArray<UWidget*>& Children)
 {
 	for (const auto Widget : Children)
@@ -113,26 +131,27 @@ void UWLUserWidgetBase::InitChildWidget(TArray<UWidget*>& Children)
 	Awake();
 }
 
-void UWLUserWidgetBase::LockPlayerInput() const
+void UWLUserWidgetBase::LockPlayerInput()
 {
-	// AWarLegendPlayerController* PlayerController =  Cast<AWarLegendPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
-	// if (!PlayerController)
-	// {
-	// 	return;
-	// }
-	//
-	// FInputModeGameAndUI InputGameMode;
-	// PlayerController->SetInputMode(InputGameMode);
+	AWarLegendPlayerController* PlayerController =  Cast<AWarLegendPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
+	if (!PlayerController)
+	{
+		return;
+	}
+	
+	FInputModeUIOnly UIOnlyGameMode;
+	UIOnlyGameMode.SetWidgetToFocus(GetCachedWidget()); // 포커스 잡아서 ESC 받기
+	PlayerController->SetInputMode(UIOnlyGameMode);
 }
 
 void UWLUserWidgetBase::UnlockPlayerInput() const
 {
-	// AWarLegendPlayerController* PlayerController =  Cast<AWarLegendPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
-	// if (!PlayerController)
-	// {
-	// 	return;
-	// }
-	//
-	// FInputModeGameAndUI InputGameMode;
-	// PlayerController->SetInputMode(InputGameMode);
+	AWarLegendPlayerController* PlayerController =  Cast<AWarLegendPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
+	if (!PlayerController)
+	{
+		return;
+	}
+	
+	FInputModeGameAndUI InputGameMode;
+	PlayerController->SetInputMode(InputGameMode);
 }

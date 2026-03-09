@@ -37,7 +37,7 @@ private:
 	void HideUIBase(const FName& InName, ESlateVisibility InVisibility = ESlateVisibility::Collapsed);
 	void AttachWidget(UUserWidget* InWidget, UPanelWidget* InParent);
 	
-	UWLUserWidgetBase* ShowUIBase(const FName& InName, ESlateVisibility InVisibility = ESlateVisibility::SelfHitTestInvisible);
+	UWLUserWidgetBase* ShowUIBase(const FName& InName, ESlateVisibility InVisibility = ESlateVisibility::Visible);
 	UWLUserWidgetBase* CreateSlotBase(const FName& InName, UPanelWidget* InParent);
 	UWLUserWidgetBase* CreateMyWidget(const FName& InName);
 
