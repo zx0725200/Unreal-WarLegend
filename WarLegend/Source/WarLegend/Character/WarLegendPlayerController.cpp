@@ -10,6 +10,8 @@
 #include "NavigationSystem.h"
 #include "Engine/LocalPlayer.h"
 #include "WarLegend.h"
+#include "DataManager/UIManager.h"
+#include "DataManager/UIManagerImpl.h"
 #include "ETC/Define.h"
 #include "Presenter/UIFlowPresenter.h"
 
@@ -48,7 +50,7 @@ void AWarLegendPlayerController::SetupInputComponent()
 			// Setup mouse input events
 			EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnInputStarted);
 			EnhancedInputComponent->BindAction(SetInventoryAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnInventoryOpen);
-			
+			EnhancedInputComponent->BindAction(SetEscClickAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnEscClicked);
 			
 			// Setup touch input events
 			EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnInputStarted);
@@ -88,6 +90,17 @@ void AWarLegendPlayerController::OnInventoryOpen()
 	}
 	
 	UIPresenter->OpenScreenInventory();
+}
+
+void AWarLegendPlayerController::OnEscClicked()
+{
+	const auto UIPresenter = GTGetMgr(UUIFlowPresenter);
+	if (!UIPresenter)
+	{
+		return;
+	}
+	
+	UIPresenter->HandleEscClick();
 }
 
 void AWarLegendPlayerController::MoveOnceToCachedDestination()

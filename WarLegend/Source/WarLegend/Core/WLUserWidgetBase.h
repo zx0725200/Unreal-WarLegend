@@ -52,7 +52,7 @@ private:
 	
 	void LockPlayerInput() const;
 	void UnlockPlayerInput() const;
-	
+
 public:
 	FWLUIEventHandle UIEventHandle;
 	

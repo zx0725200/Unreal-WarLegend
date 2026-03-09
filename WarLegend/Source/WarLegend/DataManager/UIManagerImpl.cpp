@@ -41,11 +41,29 @@ UWLUserWidgetBase* UUIManagerImpl::ShowUIBase(const FName& InName, ESlateVisibil
 			MyWidget->AddToViewport();
 		}
 		
+		const bool bPlusStack = MyWidget->GetUIType() == EUserWidgetType::Popup || MyWidget->GetUIType() == EUserWidgetType::Screen;
+		if (bPlusStack)
+		{
+			UIStack.Remove(MyWidget);
+			UIStack.Add(MyWidget);
+		}
+		
 		MyWidget->Show(InVisibility);
 		return MyWidget;
 	}
 	
 	return nullptr;
+}
+
+void UUIManagerImpl::HandleEscClick()
+{
+	if (UIStack.IsEmpty()) return;
+
+	UWLUserWidgetBase* TopWidget = UIStack.Last();
+	if (!TopWidget) return;
+
+	UIStack.Pop();
+	TopWidget->Hide();
 }
 
 void UUIManagerImpl::HideUIBase(const FName& InName, ESlateVisibility InVisibility)
@@ -54,6 +72,8 @@ void UUIManagerImpl::HideUIBase(const FName& InName, ESlateVisibility InVisibili
 	{
 		if (UWLUserWidgetBase* FindWidget = FoundWidget->Get())
 		{
+			UIStack.Remove(FindWidget);
+			
 			FindWidget->Hide(InVisibility);
 		}
 	}

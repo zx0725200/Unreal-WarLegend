@@ -21,6 +21,7 @@ public class WarLegend : ModuleRules
 			"Niagara",
 			"UMG",
 			"Slate",
+			"SlateCore",
 			"GameplayMessageRuntime",
 			"GameplayTags"
 		});

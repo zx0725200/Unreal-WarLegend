@@ -26,7 +26,11 @@ public:
 	void SetData(UPopupDungeonMenuVM* InData);
 	
 private:
-	void SetDungeonName();
+	void RefreshName(const FString& InName) const;
+	void RefreshLevel(const int32 InMin, const int32 InMax) const;
+	
+	void AddVmEvent();
+	void ClearVmEvent();
 	
 private:
 	UPROPERTY()

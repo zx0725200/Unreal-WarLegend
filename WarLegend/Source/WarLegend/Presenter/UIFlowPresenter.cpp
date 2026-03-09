@@ -1,19 +1,45 @@
 ﻿#include "UIFlowPresenter.h"
 
+#include "DungeonPresenter.h"
+#include "InventoryPresenter.h"
 #include "DataManager/InventoryManager.h"
 #include "DataManager/TableManager.h"
 #include "DataManager/UIManager.h"
 #include "DataManager/UIManagerImpl.h"
-#include "DataTable/DungeonTableData.h"
 #include "ETC/Define.h"
 #include "ETC/Enum.h"
 #include "Hud/HudPlayerState.h"
-#include "Popup/PopupDungeonMenu.h"
 #include "Screen/ScreenInventory.h"
 #include "Screen/ScreenTitle.h"
-#include "ViewModel/Popup/PopupDungeonMenuVM.h"
 #include "ViewModel/Screen/ScreenInventoryVM.h"
 #include "ViewModel/Screen/ScreenTitleVM.h"
+
+void UUIFlowPresenter::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+	
+	DungeonPresenter = NewObject<UDungeonPresenter>(this);
+	InventoryPresenter = NewObject<UInventoryPresenter>(this);
+}
+
+void UUIFlowPresenter::PlayerControllerChanged(APlayerController* NewPlayerController)
+{
+	Super::PlayerControllerChanged(NewPlayerController);
+
+	const auto* GI      = GetLocalPlayer()->GetGameInstance();
+	auto* UIMgr   = GTGetMgrImpl(UIManager);
+	auto* TableMgr = GI->GetSubsystem<UTableManager>();
+	
+	DungeonPresenter->Init(UIMgr, TableMgr);
+}
+
+void UUIFlowPresenter::HandleEscClick()
+{
+	auto* UIMgr = GTGetMgrImpl(UIManager);
+	if (!UIMgr) return;
+	
+	UIMgr->HandleEscClick();
+}
 
 void UUIFlowPresenter::OpenScreenTitle()
 {
@@ -70,42 +96,11 @@ void UUIFlowPresenter::OpenScreenInventory()
 	}
 }
 
-void UUIFlowPresenter::OpenPopupDungeonMenu()
+void UUIFlowPresenter::OpenPopupDungeonMenu() const
 {
-	const auto* GI = GetWorld()->GetGameInstance();
-	if (!GI) return;
-
-	auto* TableMgr = GI->GetSubsystem<UTableManager>();
-	if (!TableMgr) return;
-
-	auto* UIMgr = GTGetMgrImpl(UIManager);
-	if (!UIMgr) return;
-
-	const auto DungeonTableDataList = TableMgr->GetDungeonTableData();
-	if (DungeonTableDataList.IsEmpty()) return;
+	if (!DungeonPresenter) return;
 	
-	if (auto* DungeonPopup = UIMgr->ShowUI<UPopupDungeonMenu>(TEXT("PopupDungeonMenu")))
-	{
-		TArray<UPopupDungeonMenuVM*> DungeonDataList;
-		DungeonDataList.Reserve(DungeonTableDataList.Num());
-		
-		for (const auto& DungeonData : DungeonTableDataList)
-		{
-			UPopupDungeonMenuVM* InDungeonData = NewObject<UPopupDungeonMenuVM>(DungeonPopup);
-			InDungeonData->ID = DungeonData->DungeonID;
-			InDungeonData->Name = DungeonData->DungeonName;
-			InDungeonData->MinLevel = DungeonData->MinLevel;
-			InDungeonData->MaxLevel = DungeonData->MaxLevel;
-		
-			InDungeonData->OnConfirmRequested.RemoveAll(this);
-			InDungeonData->OnConfirmRequested.AddUObject(this, &UUIFlowPresenter::HandleSlotDungeonMenuClick);
-		
-			DungeonDataList.Emplace(InDungeonData);
-		}
-		
-		DungeonPopup->SetViewModel(DungeonDataList);
-		DungeonPopup->Init();
-	}
+	DungeonPresenter->OpenPopupDungeonMenu();
 }
 
 void UUIFlowPresenter::HandleTitleConfirm()

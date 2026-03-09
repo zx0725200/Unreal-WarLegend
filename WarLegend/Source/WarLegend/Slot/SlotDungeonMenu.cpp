@@ -32,20 +32,41 @@ void USlotDungeonMenu::OnClickEvent(const FName& InChildName)
 
 void USlotDungeonMenu::SetData(UPopupDungeonMenuVM* InData)
 {
+	if (!InData) return;
+	
 	VM = InData;
 	
-	SetDungeonName();
+	// 이벤트 등록
+	AddVmEvent();
+	
+	// 초기 값 설정
+	RefreshName(VM->GetDungeonName());
+	RefreshLevel(VM->GetMinLevel(), VM->GetMaxLevel());
 }
 
-void USlotDungeonMenu::SetDungeonName()
+void USlotDungeonMenu::RefreshName(const FString& InName) const
 {
-	const FText DungeonNameText = FText::FromString(VM->Name);
+	Txt_Name->SetText(FText::FromString(InName));
+}
+
+void USlotDungeonMenu::RefreshLevel(const int32 InMin, const int32 InMax) const
+{
+	const FString LevelText = FString::Printf(TEXT("Lv.%d ~ %d"), InMin, InMax);
+	Txt_Level->SetText(FText::FromString(LevelText));
+}
+
+void USlotDungeonMenu::AddVmEvent()
+{
+	ClearVmEvent();
 	
-	FString LevelString = TEXT("레벨");
-	LevelString += FString::Printf(TEXT("%d~%d"),VM->MinLevel, VM->MaxLevel);
+	VM->OnNameChanged.AddUObject(this, &USlotDungeonMenu::RefreshName);
+	VM->OnLevelChanged.AddUObject(this, &USlotDungeonMenu::RefreshLevel);
+}
+
+void USlotDungeonMenu::ClearVmEvent()
+{
+	if (!VM) return;
 	
-	const FText DungeonLevelText = FText::FromString(LevelString);
-	
-	Txt_Name->SetText(DungeonNameText);
-	Txt_Level->SetText(DungeonLevelText);
+	VM->OnNameChanged.RemoveAll(this);
+	VM->OnLevelChanged.RemoveAll(this);
 }

@@ -30,6 +30,8 @@ public:
 	
 	template <class TRetType>
 	TRetType* CreateSlot(const FName& InName, UPanelWidget* InParent);
+	
+	void HandleEscClick();
 
 private:
 	void HideUIBase(const FName& InName, ESlateVisibility InVisibility = ESlateVisibility::Collapsed);
@@ -45,6 +47,9 @@ private:
 	
 	UPROPERTY()
 	TObjectPtr<UUIManagerConfig> ConfigAsset = nullptr;
+	
+	UPROPERTY()
+	TArray<TObjectPtr<UWLUserWidgetBase>> UIStack;
 };
 
 template <typename TRetType>

@@ -6,6 +6,8 @@
 #include "Subsystems/LocalPlayerSubsystem.h"
 #include "UIFlowPresenter.generated.h"
 
+class UInventoryPresenter;
+class UDungeonPresenter;
 /**
  * 
  */
@@ -15,13 +17,18 @@ class WARLEGEND_API UUIFlowPresenter : public ULocalPlayerSubsystem
 	GENERATED_BODY()
 	
 public:
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void PlayerControllerChanged(APlayerController* NewPlayerController) override;
+	
+	void HandleEscClick();
+	
 #pragma region Screen
 	void OpenScreenTitle();
 	void OpenScreenInventory();
 #pragma endregion Screen
 	
 #pragma region Popup
-	void OpenPopupDungeonMenu();
+	void OpenPopupDungeonMenu() const;
 #pragma endregion Popup
 	
 #pragma region Hud
@@ -36,4 +43,10 @@ public:
 	void HandleSlotDungeonMenuClick(int32 InSlotIndex);
 #pragma endregion PopupEvent
 	
+private:
+	UPROPERTY()
+	TObjectPtr<UDungeonPresenter> DungeonPresenter;
+	
+	UPROPERTY()
+	TObjectPtr<UInventoryPresenter> InventoryPresenter;
 };

@@ -47,6 +47,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> SetInventoryAction;
+	
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> SetEscClickAction;
 
 	/** Jump Input Action */
 	UPROPERTY(EditAnywhere, Category="Input")
@@ -78,6 +81,8 @@ protected:
 	/** Input handlers */
 	void OnInputStarted();
 	void OnInventoryOpen();
+	void OnEscClicked();
+	
 	void MoveOnceToCachedDestination();
 	
 	bool IsUpdateCachedDestination();
