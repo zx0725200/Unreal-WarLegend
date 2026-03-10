@@ -12,7 +12,7 @@ struct FItemTableData;
 namespace DataTableCacheUtil
 {
 	template<typename RowT, typename KeyT, typename KeyFunc>
-	void BuildByKey(UDataTable* Table, TMap<KeyT, TArray<const RowT*>>& OutCache, KeyFunc GetKey)
+	void BuildByKey(UDataTable* Table, TMap<KeyT, TArray<RowT*>>& OutCache, KeyFunc GetKey)
 	{
 		OutCache.Empty();
 		if (!Table) return;
@@ -43,7 +43,8 @@ public:
 	
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	
-	TArray<const FDungeonTableData*> GetDungeonTableData();
+	TArray<FDungeonTableData*> GetDungeonTableData();
+	TArray<FItemTableData*> GetAllItemTableData() const;
 	FString GetItemTypeName(const EItemType ItemType);
 
 private:
@@ -53,6 +54,6 @@ private:
 	TSoftObjectPtr<UDataTable> DungeonTableAsset;
 	TSoftObjectPtr<UDataTable> ItemTableAsset;
 	
-	TMap<int32, TArray<const FDungeonTableData*>> DungeonTableData;
-	TMap<int32, TArray<const FItemTableData*>> ItemTableData;
+	TMap<int32, TArray<FDungeonTableData*>> DungeonTableData;
+	TMap<int32, TArray<FItemTableData*>> ItemTableData;
 };

@@ -6,6 +6,7 @@
 #include "Subsystems/LocalPlayerSubsystem.h"
 #include "UIFlowPresenter.generated.h"
 
+class UGachaPresenter;
 class UInventoryPresenter;
 class UDungeonPresenter;
 /**
@@ -29,6 +30,7 @@ public:
 	
 #pragma region Popup
 	void OpenPopupDungeonMenu() const;
+	void OpenPopupGacha() const;
 #pragma endregion Popup
 	
 #pragma region Hud
@@ -49,4 +51,7 @@ private:
 	
 	UPROPERTY()
 	TObjectPtr<UInventoryPresenter> InventoryPresenter;
+	
+	UPROPERTY()
+	TObjectPtr<UGachaPresenter> GachaPresenter;
 };

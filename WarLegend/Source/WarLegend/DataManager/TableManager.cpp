@@ -35,9 +35,9 @@ void UTableManager::Initialize(FSubsystemCollectionBase& Collection)
 	LoadTable(ItemTableAsset.Get());
 }
 
-TArray<const FDungeonTableData*> UTableManager::GetDungeonTableData()
+TArray<FDungeonTableData*> UTableManager::GetDungeonTableData()
 {
-	TArray<const FDungeonTableData*> OutTableData;
+	TArray<FDungeonTableData*> OutTableData;
 	
 	int32 TotalNum = 0;
 	for (const auto& Pair : DungeonTableData)
@@ -48,7 +48,7 @@ TArray<const FDungeonTableData*> UTableManager::GetDungeonTableData()
 	
 	for (const auto& Pair : DungeonTableData)
 	{
-		for (const FDungeonTableData* Ptr : Pair.Value)
+		for (FDungeonTableData* Ptr : Pair.Value)
 		{
 			if (!Ptr) continue;
 			OutTableData.Add(Ptr);
@@ -56,6 +56,29 @@ TArray<const FDungeonTableData*> UTableManager::GetDungeonTableData()
 	}
 	
 	return OutTableData;
+}
+
+TArray<FItemTableData*> UTableManager::GetAllItemTableData() const
+{
+	TArray<FItemTableData*> OutItems;
+
+	int32 TotalNum = 0;
+	for (const auto& Pair : ItemTableData)
+	{
+		TotalNum += Pair.Value.Num();
+	}
+	OutItems.Reserve(TotalNum);
+
+	for (const auto& Pair : ItemTableData)
+	{
+		for (FItemTableData* Ptr : Pair.Value)
+		{
+			if (!Ptr) continue;
+			OutItems.Add(Ptr);
+		}
+	}
+
+	return OutItems;
 }
 
 FString UTableManager::GetItemTypeName(const EItemType ItemType)
