@@ -31,6 +31,43 @@ void UGachaPresenter::OpenPopupGacha()
 	GachaPopup->SetViewModel(VM);
 }
 
+void UGachaPresenter::OpenPopupGachaFilter()
+{
+	if (!UIMgr || !SaveGameMgr) return;
+
+	auto* FilterPopup = UIMgr->ShowUI<UPopupGachaFilter>(TEXT("PopupGachaFilter"));
+	if (!FilterPopup) return;
+
+	UWLSaveGame* Save = SaveGameMgr->GetSaveGame();
+	if (!Save) return;
+
+	UPopupGachaFilterVM* VM = NewObject<UPopupGachaFilterVM>(FilterPopup);
+
+	// Epic 제외한 등급 순서대로 슬롯 VM 생성
+	const TArray<TPair<EItemGrade, FString>> GradeList =
+	{
+		{ EItemGrade::Normal, TEXT("Normal") },
+		{ EItemGrade::Rare,   TEXT("Rare")   },
+		{ EItemGrade::Unique, TEXT("Unique") },
+		{ EItemGrade::Legend, TEXT("Legend") },
+	};
+
+	for (const auto& [Grade, Name] : GradeList)
+	{
+		USlotFilterVM* SlotVM = NewObject<USlotFilterVM>(VM);
+		SlotVM->Grade     = Grade;
+		SlotVM->GradeName = Name;
+		SlotVM->bChecked  = Save->GachaFilter.FindRef(Grade); // 저장된 값 복원
+		SlotVM->OnFilterChanged.AddUObject(this, &UGachaPresenter::HandleFilterChanged);
+
+		VM->SlotVMList.Emplace(SlotVM);
+	}
+
+	VM->OnConfirm.AddUObject(this, &UGachaPresenter::HandleFilterConfirm);
+
+	FilterPopup->SetViewModel(VM);
+}
+
 void UGachaPresenter::HandleClickOne()
 {
 	if (!GachaMgr || !InvenMgr) return;
@@ -56,4 +93,14 @@ void UGachaPresenter::HandleClickAll()
 	constexpr int32 MaxItems = 30;
 	const TArray<int32> ItemIDs = GachaMgr->GetGachaItemMultiple(MaxItems);
 	InvenMgr->AddItems(ItemIDs);
+}
+
+void UGachaPresenter::HandleFilterChanged(EItemGrade Grade, bool bChecked)
+{
+	if (!UIMgr) return;
+	UIMgr->hid(TEXT("PopupGachaFilter"));
+}
+
+void UGachaPresenter::HandleFilterConfirm()
+{
 }

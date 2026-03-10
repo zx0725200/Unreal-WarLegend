@@ -1,6 +1,8 @@
 ﻿#include "PopupDungeonMenu.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
+#include "DataManager/UIManager.h"
+#include "DataManager/UIManagerImpl.h"
 #include "Slot/SlotDungeonMenu.h"
 
 void UPopupDungeonMenu::Awake()
@@ -53,16 +55,18 @@ void UPopupDungeonMenu::InitSlotPool()
 	PooledSlots.Empty();
 	PooledSlots.Reserve(PageSize);
 
+	const auto UIMgr = GTUIGetMgrImpl(UIManager);
+	if (!UIMgr) return;
+	
 	for (int32 i = 0; i < PageSize; ++i)
 	{
-		USlotDungeonMenu* DungeonMenu = CreateWidget<USlotDungeonMenu>(GetOwningPlayer(), SlotClass);
+		USlotDungeonMenu* DungeonMenu = UIMgr->CreateSlot<USlotDungeonMenu>(TEXT("SlotDungeonMenu"),Vertical_DungeonMenu);
 		if (!DungeonMenu)
 		{
 			continue;
 		}
-		DungeonMenu->Hide();
 		
-		Vertical_DungeonMenu->AddChild(DungeonMenu);
+		DungeonMenu->Hide();
 		PooledSlots.Add(DungeonMenu);
 	}
 }

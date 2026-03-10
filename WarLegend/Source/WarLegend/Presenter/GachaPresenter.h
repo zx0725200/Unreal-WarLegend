@@ -6,6 +6,8 @@
 #include "UObject/Object.h"
 #include "GachaPresenter.generated.h"
 
+enum class EItemGrade : uint8;
+class USaveGameDataManager;
 class UInventoryManager;
 class UGachaManager;
 class UUIManagerImpl;
@@ -21,11 +23,15 @@ public:
 	void Init(UUIManagerImpl* InUIMgr, UGachaManager* InGachaMgr, UInventoryManager* InInvenMgr);
 
 	void OpenPopupGacha();
+	void OpenPopupGachaFilter();
 
 private:
 	void HandleClickOne();
 	void HandleClickTen();
 	void HandleClickAll();
+	
+	void HandleFilterChanged(EItemGrade Grade, bool bChecked);
+	void HandleFilterConfirm();
 
 private:
 	UPROPERTY()
@@ -36,4 +42,7 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UInventoryManager> InvenMgr;
+	
+	UPROPERTY()
+	TObjectPtr<USaveGameDataManager> SaveGameMgr;
 };

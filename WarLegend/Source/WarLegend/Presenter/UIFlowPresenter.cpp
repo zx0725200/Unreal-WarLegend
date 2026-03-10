@@ -116,6 +116,13 @@ void UUIFlowPresenter::OpenPopupGacha() const
 	GachaPresenter->OpenPopupGacha();
 }
 
+void UUIFlowPresenter::OpenPopupGachaFilter() const
+{
+	if (!GachaPresenter) return;
+	
+	GachaPresenter->OpenPopupGachaFilter();
+}
+
 void UUIFlowPresenter::HandleTitleConfirm()
 {
 	auto* UIMgr = GTGetMgrImpl(UIManager);

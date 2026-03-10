@@ -29,6 +29,9 @@ public:
 	TRetType* ShowUI(const FName& UIName, ESlateVisibility Visible);
 	
 	template <class TRetType>
+	TRetType* HideUI(const FName& UIName, ESlateVisibility Visible);
+	
+	template <class TRetType>
 	TRetType* CreateSlot(const FName& InName, UPanelWidget* InParent);
 	
 	void HandleEscClick();
@@ -56,6 +59,12 @@ template <typename TRetType>
 TRetType* UUIManagerImpl::ShowUI(const FName& UIName, ESlateVisibility Visible = ESlateVisibility::Visible)
 {
 	return Cast<TRetType>(ShowUIBase(UIName, Visible));
+}
+
+template <class TRetType>
+TRetType* UUIManagerImpl::HideUI(const FName& UIName, ESlateVisibility Visible = ESlateVisibility::Collapsed)
+{
+	return Cast<TRetType>(HideUIBase(UIName, Visible));
 }
 
 template <typename TRetType>
