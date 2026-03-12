@@ -10,36 +10,9 @@ void UGachaManager::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 	
-	// 등급별 가중치 설정
-	GradeWeightTable = {
-		{ EItemGrade::Normal, 50.f },
-		{ EItemGrade::Rare,   30.f },
-		{ EItemGrade::Unique, 12.f },
-		{ EItemGrade::Legend,  5.f },
-		{ EItemGrade::Epic,    3.f },
-	};
-
-	TotalWeight = 0.f;
-	for (const FGachaGradeWeight& Entry : GradeWeightTable)
-	{
-		TotalWeight += Entry.Weight;
-	}
-	
 	Collection.InitializeDependency<UTableManager>(); // TableManager 먼저 보장
 	
-	UTableManager* TableMgr = GetGameInstance()->GetSubsystem<UTableManager>();
-	if (!TableMgr)
-	{
-		UE_LOG(LogTemp, Error, TEXT("[GachaManager] TableManager를 찾을 수 없습니다."));
-		return;
-	}
-
-	TArray<FItemTableData*> AllItems = TableMgr->GetAllItemTableData();
-	for (const FItemTableData* Item : AllItems)
-	{
-		if (!Item || Item->ItemGrade == EItemGrade::None) continue;
-		GradeToItemIDs.FindOrAdd(Item->ItemGrade).Add(Item->ID);
-	}
+	BuildCache();
 }
 
 int32 UGachaManager::GetGachaItem() const
@@ -65,20 +38,63 @@ TArray<int32> UGachaManager::GetGachaItemMultiple(const int32 InCount) const
 	return GachaItemIdList;
 }
 
+void UGachaManager::SetFilter(const TArray<EItemGrade>& InAllowedGrades)
+{
+	FilterGrades = InAllowedGrades;
+	FilterGrades.AddUnique(EItemGrade::Epic); // 최고등급 항상 포함
+}
+
+void UGachaManager::BuildCache()
+{
+	// 등급별 가중치 설정
+	GradeWeightTable = {
+		{ EItemGrade::Normal, 50.f },
+		{ EItemGrade::Rare,   30.f },
+		{ EItemGrade::Unique, 12.f },
+		{ EItemGrade::Legend,  5.f },
+		{ EItemGrade::Epic,    3.f },
+	};
+	
+	UTableManager* TableMgr = GetGameInstance()->GetSubsystem<UTableManager>();
+	if (!TableMgr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("[GachaManager] TableManager를 찾을 수 없습니다."));
+		return;
+	}
+
+	TArray<FItemTableData*> AllItems = TableMgr->GetAllItemTableData();
+	for (const FItemTableData* Item : AllItems)
+	{
+		if (!Item || Item->ItemGrade == EItemGrade::None) continue;
+		GradeToItemIDs.FindOrAdd(Item->ItemGrade).Add(Item->ID);
+	}
+}
+
 EItemGrade UGachaManager::GetSelectedGrade() const
 {
-	const float Weight = FMath::FRandRange(0.f, TotalWeight);
-	float Accumulated = 0.f;
+	float TotalFilter = 0.f;
+	for (const FGachaGradeWeight& Item : GradeWeightTable)
+	{
+		if (FilterGrades.Contains(Item.Grade))
+		{
+			TotalFilter += Item.Weight;
+		}
+	}
+
+	const float ItemWeight = FMath::FRandRange(0.f, TotalFilter);
+	float ItemAccumulation = 0.f;
 
 	for (const FGachaGradeWeight& Item : GradeWeightTable)
 	{
-		Accumulated += Item.Weight;
-		if (Weight <= Accumulated)
+		if (!FilterGrades.Contains(Item.Grade)) continue;
+
+		ItemAccumulation += Item.Weight;
+		if (ItemWeight <= ItemAccumulation)
 		{
 			return Item.Grade;
 		}
 	}
-	
+
 	return GradeWeightTable.Last().Grade;
 }
 

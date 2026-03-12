@@ -50,6 +50,13 @@ void UHudLeftMenu::OnClickedGacha()
 
 void UHudLeftMenu::OnClickedFilter()
 {
+	const auto UIPresenter = GTUIGetMgr(UUIFlowPresenter);
+	if (!UIPresenter)
+	{
+		return;
+	}
+	
+	UIPresenter->OpenPopupGachaFilter();
 }
 
 void UHudLeftMenu::OnClickedRollBack()

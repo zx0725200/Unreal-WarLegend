@@ -20,18 +20,19 @@ class WARLEGEND_API UGachaPresenter : public UObject
 	GENERATED_BODY()
 	
 public:
-	void Init(UUIManagerImpl* InUIMgr, UGachaManager* InGachaMgr, UInventoryManager* InInvenMgr);
+	void Init(UUIManagerImpl* InUIMgr, UGachaManager* InGachaMgr, UInventoryManager* InInvenMgr, USaveGameDataManager* InSaveGameMgr);
 
 	void OpenPopupGacha();
 	void OpenPopupGachaFilter();
 
 private:
+	void ApplyFilter();
+	
 	void HandleClickOne();
 	void HandleClickTen();
 	void HandleClickAll();
 	
 	void HandleFilterChanged(EItemGrade Grade, bool bChecked);
-	void HandleFilterConfirm();
 
 private:
 	UPROPERTY()

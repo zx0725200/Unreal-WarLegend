@@ -35,15 +35,18 @@ public:
 public:	
 	int32 GetGachaItem() const;
 	TArray<int32> GetGachaItemMultiple(const int32 InCount) const;
+	
+	void SetFilter(const TArray<EItemGrade>& InAllowedGrades);
 
 private:
+	void BuildCache();
+	
 	EItemGrade GetSelectedGrade() const;
 	int32 GetSelectedItemByGrade(EItemGrade InGrade) const;
 
 private:
 	UPROPERTY()
-	TArray<FGachaGradeWeight> GradeWeightTable; // 등급별 가중치 테이블
-	TMap<EItemGrade, TArray<int32>> GradeToItemIDs; // 등급별 아이템 ID 캐시 (TableManager에서 구축)
-
-	float TotalWeight = 0.f;
+	TArray<FGachaGradeWeight> GradeWeightTable;		// 등급별 가중치 테이블
+	TArray<EItemGrade> FilterGrades;				// 필터 처리된 등급
+	TMap<EItemGrade, TArray<int32>> GradeToItemIDs; // 등급별 아이템 ID 캐시
 };

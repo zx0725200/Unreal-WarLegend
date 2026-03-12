@@ -4,11 +4,14 @@
 #include "SaveGameDataManager.h"
 
 #include "DataAsset/WLSaveGame.h"
+#include "ETC/Constant.h"
 #include "Kismet/GameplayStatics.h"
 
 void USaveGameDataManager::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
+	
+	LoadData(Constant::SaveData);
 }
 
 void USaveGameDataManager::SaveGame(const FString& InSaveName)

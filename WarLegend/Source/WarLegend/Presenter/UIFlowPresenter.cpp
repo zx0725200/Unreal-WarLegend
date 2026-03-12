@@ -8,6 +8,7 @@
 #include "DataManager/UIManager.h"
 #include "DataManager/UIManagerImpl.h"
 #include "DataManager/GachaManager.h"
+#include "DataManager/SaveGameDataManager.h"
 #include "ETC/Define.h"
 #include "ETC/Enum.h"
 #include "Hud/HudPlayerState.h"
@@ -33,10 +34,11 @@ void UUIFlowPresenter::PlayerControllerChanged(APlayerController* NewPlayerContr
 	auto* UIMgr= GTGetMgrImpl(UIManager);
 	auto* TableMgr = GI->GetSubsystem<UTableManager>();
 	auto* GachaMgr = GI->GetSubsystem<UGachaManager>();
-	auto* InvenMgr      = GTGetMgr(UInventoryManager);
+	auto* SaveGameMgr = GI->GetSubsystem<USaveGameDataManager>();
+	auto* InvenMgr = GTGetMgr(UInventoryManager);
 	
 	DungeonPresenter->Init(UIMgr, TableMgr);
-	GachaPresenter->Init(UIMgr, GachaMgr, InvenMgr);
+	GachaPresenter->Init(UIMgr, GachaMgr, InvenMgr, SaveGameMgr);
 }
 
 void UUIFlowPresenter::HandleEscClick()

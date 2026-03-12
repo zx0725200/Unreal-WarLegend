@@ -32,6 +32,11 @@ void UUIManagerImpl::Deinitialize()
 	WidgetCache.Empty();
 }
 
+void UUIManagerImpl::HideUI(const FName& UIName, ESlateVisibility Visible)
+{
+	HideUIBase(UIName, Visible);
+}
+
 UWLUserWidgetBase* UUIManagerImpl::ShowUIBase(const FName& InName, ESlateVisibility InVisibility)
 {
 	if (const auto MyWidget = CreateMyWidget(InName))

@@ -3,17 +3,26 @@
 
 #include "GachaPresenter.h"
 
+#include "DataAsset/WLSaveGame.h"
 #include "DataManager/GachaManager.h"
 #include "DataManager/InventoryManager.h"
+#include "DataManager/SaveGameDataManager.h"
 #include "DataManager/UIManagerImpl.h"
 #include "Popup/PopupGacha.h"
+#include "Popup/PopupGachaFilter.h"
+#include "ViewModel/Popup/PopupGachaFilterVM.h"
 #include "ViewModel/Popup/PopupGachaVM.h"
+#include "ViewModel/Slot/SlotFilterVM.h"
+#include "ETC/Constant.h" 
 
-void UGachaPresenter::Init(UUIManagerImpl* InUIMgr, UGachaManager* InGachaMgr, UInventoryManager* InInvenMgr)
+void UGachaPresenter::Init(UUIManagerImpl* InUIMgr, UGachaManager* InGachaMgr, UInventoryManager* InInvenMgr, USaveGameDataManager* InSaveGameMgr)
 {
 	UIMgr    = InUIMgr;
 	GachaMgr = InGachaMgr;
 	InvenMgr = InInvenMgr;
+	SaveGameMgr = InSaveGameMgr;
+	
+	ApplyFilter();
 }
 
 void UGachaPresenter::OpenPopupGacha()
@@ -62,10 +71,25 @@ void UGachaPresenter::OpenPopupGachaFilter()
 
 		VM->SlotVMList.Emplace(SlotVM);
 	}
-
-	VM->OnConfirm.AddUObject(this, &UGachaPresenter::HandleFilterConfirm);
-
+	
 	FilterPopup->SetViewModel(VM);
+}
+
+void UGachaPresenter::ApplyFilter()
+{
+	if (!GachaMgr || !SaveGameMgr) return;
+
+	UWLSaveGame* Save = SaveGameMgr->GetSaveGame();
+	if (!Save) return;
+
+	TArray<EItemGrade> AllowedGrades;
+	for (const auto& [Grade, bChecked] : Save->GachaFilter)
+	{
+		if (!bChecked) continue;
+		AllowedGrades.Emplace(Grade);
+	}
+
+	GachaMgr->SetFilter(AllowedGrades);
 }
 
 void UGachaPresenter::HandleClickOne()
@@ -97,10 +121,13 @@ void UGachaPresenter::HandleClickAll()
 
 void UGachaPresenter::HandleFilterChanged(EItemGrade Grade, bool bChecked)
 {
-	if (!UIMgr) return;
-	UIMgr->hid(TEXT("PopupGachaFilter"));
-}
-
-void UGachaPresenter::HandleFilterConfirm()
-{
+	if (!SaveGameMgr) return;
+ 
+	UWLSaveGame* Save = SaveGameMgr->GetSaveGame();
+	if (!Save) return;
+ 
+	Save->GachaFilter.Add(Grade, bChecked);
+	SaveGameMgr->SaveGame(Constant::SaveData);
+	
+	ApplyFilter();
 }

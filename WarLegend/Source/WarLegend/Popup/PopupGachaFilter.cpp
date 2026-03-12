@@ -39,9 +39,9 @@ void UPopupGachaFilter::SetViewModel(UPopupGachaFilterVM* InVM)
 
 void UPopupGachaFilter::RefreshSlots()
 {
-	if (!VM || !VerticalBox_Slots) return;
+	if (!VM) return;
 
-	VerticalBox_Slots->ClearChildren();
+	VBox_Filter->ClearChildren();
 
 	const auto UIMgr = GTUIGetMgrImpl(UIManager);
 	if (!UIMgr) return;
@@ -50,9 +50,7 @@ void UPopupGachaFilter::RefreshSlots()
 	{
 		if (!SlotVM) continue;
 
-		USlotFilter* SlotWidget = UIMgr->CreateSlot<USlotFilter>(TEXT("SlotFilter"), VerticalBox_Slots);
-		if (!SlotWidget) continue;
-		
+		USlotFilter* SlotWidget = UIMgr->CreateSlot<USlotFilter>(TEXT("SlotFilter"), VBox_Filter);
 		SlotWidget->SetViewModel(SlotVM);
 	}
 }

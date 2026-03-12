@@ -29,7 +29,7 @@ private:
 
 private:
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UVerticalBox> VerticalBox_Slots;
+	TObjectPtr<UVerticalBox> VBox_Filter;
 
 	UPROPERTY()
 	TObjectPtr<UPopupGachaFilterVM> VM;

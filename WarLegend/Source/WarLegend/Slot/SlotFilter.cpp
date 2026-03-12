@@ -10,6 +10,8 @@
 void USlotFilter::Awake()
 {
 	Super::Awake();
+	
+	ChBox_Filter->OnCheckStateChanged.AddDynamic(this, &USlotFilter::OnCheckBoxChanged);
 }
 
 void USlotFilter::OnEnable()
@@ -30,22 +32,16 @@ void USlotFilter::OnClickEvent(const FName& InChildName)
 void USlotFilter::SetViewModel(USlotFilterVM* InVM)
 {
 	VM = InVM;
-	if (!VM) return;
-
+	
 	SetData();
 }
 
 void USlotFilter::SetData()
 {
-	if (Txt_Filter)
-	{
-		Txt_Filter->SetText(FText::FromString(VM->GradeName));
-	}
-
-	if (ChBox_Filter)
-	{
-		ChBox_Filter->SetIsChecked(VM->bChecked);
-	}
+	if (!VM) return;
+	
+	Txt_Filter->SetText(FText::FromString(VM->GradeName));
+	ChBox_Filter->SetIsChecked(VM->bChecked);
 }
 
 void USlotFilter::OnCheckBoxChanged(const bool bIsChecked)
