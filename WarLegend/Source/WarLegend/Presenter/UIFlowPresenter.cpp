@@ -10,11 +10,8 @@
 #include "DataManager/GachaManager.h"
 #include "DataManager/SaveGameDataManager.h"
 #include "ETC/Define.h"
-#include "ETC/Enum.h"
 #include "Hud/HudPlayerState.h"
-#include "Screen/ScreenInventory.h"
 #include "Screen/ScreenTitle.h"
-#include "ViewModel/Screen/ScreenInventoryVM.h"
 #include "ViewModel/Screen/ScreenTitleVM.h"
 
 void UUIFlowPresenter::Initialize(FSubsystemCollectionBase& Collection)
@@ -39,6 +36,7 @@ void UUIFlowPresenter::PlayerControllerChanged(APlayerController* NewPlayerContr
 	
 	DungeonPresenter->Init(UIMgr, TableMgr);
 	GachaPresenter->Init(UIMgr, GachaMgr, InvenMgr, SaveGameMgr);
+	InventoryPresenter->Init(UIMgr, InvenMgr, TableMgr);
 }
 
 void UUIFlowPresenter::HandleEscClick()
@@ -65,43 +63,9 @@ void UUIFlowPresenter::OpenScreenTitle()
 
 void UUIFlowPresenter::OpenScreenInventory()
 {
-	const auto* GI = GetWorld()->GetGameInstance();
-	if (!GI) return;
+	if (!InventoryPresenter) return;
 	
-	auto* TableMgr = GI->GetSubsystem<UTableManager>();
-	if (!TableMgr) return;
-	
-	auto* UIMgr = GTGetMgrImpl(UIManager);
-	if (!UIMgr) return;
-	
-	auto* InvenMgr = GTGetMgr(UInventoryManager);
-	if (!InvenMgr) return;
-	
-	
-	if (auto* ScreenInventory = UIMgr->ShowUI<UScreenInventory>(TEXT("ScreenInventory")))
-	{
-		UScreenInventoryVM* InventoryData = NewObject<UScreenInventoryVM>(ScreenInventory);
-		InventoryData->Init(InvenMgr);
-		
-		for (uint8 Value = static_cast<uint8>(EItemType::Weapon); Value <= static_cast<uint8>(EItemType::Glove); ++Value)
-		{
-			const EItemType InItemType = static_cast<EItemType>(Value);
-			const FString ItemTypeName = TableMgr->GetItemTypeName(InItemType);
-			
-			InventoryData->LeftItemTypes.Emplace(InItemType, ItemTypeName);
-		}
-		
-		for (uint8 Value = static_cast<uint8>(EItemType::BossWeapon); Value <= static_cast<uint8>(EItemType::BossArmor); ++Value)
-		{
-			const EItemType InItemType = static_cast<EItemType>(Value);
-			const FString ItemTypeName = TableMgr->GetItemTypeName(InItemType);
-			
-			InventoryData->RightItemTypes.Emplace(InItemType, ItemTypeName);
-		}
-		
-		ScreenInventory->SetViewModel(InventoryData);
-		ScreenInventory->Init();
-	}
+	InventoryPresenter->OpenScreenInventory();
 }
 
 void UUIFlowPresenter::OpenPopupDungeonMenu() const

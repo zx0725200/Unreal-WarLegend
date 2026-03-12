@@ -6,6 +6,9 @@
 #include "UObject/Object.h"
 #include "InventoryPresenter.generated.h"
 
+class UTableManager;
+class UInventoryManager;
+class UUIManagerImpl;
 /**
  * 
  */
@@ -15,4 +18,17 @@ class WARLEGEND_API UInventoryPresenter : public UObject
 	GENERATED_BODY()
 	
 public:
+	void Init(UUIManagerImpl* InUIMgr, UInventoryManager* InInvenMgr, UTableManager* InTableMgr);
+	
+	void OpenScreenInventory();
+	
+private:
+	UPROPERTY()
+	TObjectPtr<UUIManagerImpl> UIMgr;
+	
+	UPROPERTY()
+	TObjectPtr<UInventoryManager> InvenMgr;
+	
+	UPROPERTY()
+	TObjectPtr<UTableManager> TableMgr;
 };
