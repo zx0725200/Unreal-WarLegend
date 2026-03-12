@@ -4,6 +4,7 @@
 #include "SlotInventory.h"
 
 #include "Components/Image.h"
+#include "Components/TextBlock.h"
 #include "ETC/Struct.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
 #include "ViewModel/Slot/SlotInventoryVM.h"
@@ -14,6 +15,7 @@ void USlotInventory::NativeOnListItemObjectSet(UObject* ListItemObject)
 	VM = Cast<USlotInventoryVM>(ListItemObject);
 	
 	SetNormalState();
+	SetData();
 	
 	EVENT_LISTEN(TEXT("SelectItem"), FMyItem, this, &ThisClass::HandleClickedSlot);
 }
@@ -31,6 +33,19 @@ void USlotInventory::OnClickEvent(const FName& InChildName)
 	{
 		OnClickedSlot();
 	}
+}
+
+void USlotInventory::SetData() const
+{
+	const auto ItemColor = VM->ItemGradeColor;
+	const FText ItemName = FText::FromString(VM->ItemName);
+	const FText ItemTypeName = FText::FromString(VM->ItemTypeName);
+	
+	Txt_Grade->SetText(ItemTypeName);
+	Txt_Grade->SetColorAndOpacity(ItemColor);
+	
+	Txt_Name->SetText(ItemName);
+	Txt_Name->SetColorAndOpacity(ItemColor);
 }
 
 void USlotInventory::OnClickedSlot()

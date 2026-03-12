@@ -6,6 +6,7 @@
 #include "Engine/DataAsset.h"
 #include "UIManagerConfig.generated.h"
 
+enum class EItemGrade : uint8;
 class UWLUserWidgetBase;
 /**
  * 
@@ -18,4 +19,7 @@ class WARLEGEND_API UUIManagerConfig : public UDataAsset
 public:
 	UPROPERTY(EditAnywhere, Category="UI")
 	TMap<FName, TSubclassOf<UWLUserWidgetBase>> WidgetClasses;
+	
+	UPROPERTY(EditAnywhere, Category="ItemColor")
+	TMap<EItemGrade, FLinearColor> ItemColor;
 };

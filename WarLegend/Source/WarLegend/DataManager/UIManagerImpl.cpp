@@ -71,6 +71,11 @@ void UUIManagerImpl::HandleEscClick()
 	TopWidget->Hide();
 }
 
+FLinearColor UUIManagerImpl::GetItemColor(const EItemGrade InItemGrade) const
+{
+	return *ConfigAsset->ItemColor.Find(InItemGrade);
+}
+
 void UUIManagerImpl::HideUIBase(const FName& InName, ESlateVisibility InVisibility)
 {
 	if (const TObjectPtr<UWLUserWidgetBase>* FoundWidget = WidgetCache.Find(InName))

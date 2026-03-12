@@ -35,6 +35,14 @@ void UTableManager::Initialize(FSubsystemCollectionBase& Collection)
 	LoadTable(ItemTableAsset.Get());
 }
 
+FItemTableData* UTableManager::GetItemTableData(const int32 InItemId)
+{
+	const TArray<FItemTableData*>* ItemTableList = ItemTableData.Find(InItemId);
+	if (!ItemTableList || ItemTableList->IsEmpty()) return nullptr;
+
+	return (*ItemTableList)[0];
+}
+
 TArray<FDungeonTableData*> UTableManager::GetDungeonTableData()
 {
 	TArray<FDungeonTableData*> OutTableData;
@@ -81,14 +89,14 @@ TArray<FItemTableData*> UTableManager::GetAllItemTableData() const
 	return OutItems;
 }
 
-FString UTableManager::GetItemTypeName(const EItemType ItemType)
+FString UTableManager::GetItemTypeName(const EItemType InItemType)
 {
 	for (const auto& Pair : ItemTableData)
 	{
 		for (const FItemTableData* Ptr : Pair.Value)
 		{
 			if (!Ptr) continue;
-			if (Ptr->ItemType == ItemType)
+			if (Ptr->ItemType == InItemType)
 			{
 				return Ptr->ItemTypeName;
 			}

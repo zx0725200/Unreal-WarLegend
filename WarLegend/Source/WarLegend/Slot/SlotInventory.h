@@ -7,6 +7,7 @@
 #include "Core/SlotWidgetBase.h"
 #include "SlotInventory.generated.h"
 
+class UTextBlock;
 class UImage;
 struct FMyItem;
 
@@ -27,6 +28,8 @@ public:
 	virtual void OnClickEvent(const FName& InChildName) override;
 	
 private:
+	void SetData() const;
+	
 	void OnClickedSlot();
 	
 	void SetSelectedState();
@@ -44,4 +47,10 @@ private:
 	
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UImage> Img_Select;
+	
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UTextBlock> Txt_Name;
+	
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UTextBlock> Txt_Grade;
 };

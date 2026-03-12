@@ -27,7 +27,7 @@ public:
 	FString ItemTypeName;
 	
 	UPROPERTY()
-	FColor ItemGradeColor;
+	FLinearColor ItemGradeColor;
 	
 	UPROPERTY()
 	EItemType ItemType;

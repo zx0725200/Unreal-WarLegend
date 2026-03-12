@@ -41,6 +41,7 @@ void USlotFilter::SetData()
 	if (!VM) return;
 	
 	Txt_Filter->SetText(FText::FromString(VM->GradeName));
+	Txt_Filter->SetColorAndOpacity(VM->GradeColor);
 	ChBox_Filter->SetIsChecked(VM->bChecked);
 }
 

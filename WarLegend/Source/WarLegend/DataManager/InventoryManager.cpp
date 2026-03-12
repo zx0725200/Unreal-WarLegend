@@ -3,19 +3,16 @@
 
 #include "InventoryManager.h"
 
+#include "TableManager.h"
+#include "UIManager.h"
+#include "UIManagerImpl.h"
+#include "DataTable/ItemTableData.h"
+#include "ETC/Define.h"
 #include "ViewModel/Slot/SlotInventoryVM.h"
 
 void UInventoryManager::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	
-	for (int32 i=0; i<10; i++)
-	{
-		USlotInventoryVM* SlotInventoryVM = NewObject<USlotInventoryVM>(this);
-		SlotInventoryVM->ID = i;
-	
-		InventoryItemData.Emplace(SlotInventoryVM);
-	}
 }
 
 void UInventoryManager::AddItem(const int32 InItemID)
@@ -26,8 +23,21 @@ void UInventoryManager::AddItem(const int32 InItemID)
 		return;
 	}
 
+	UTableManager* TableMgr = GetLocalPlayer()->GetGameInstance()->GetSubsystem<UTableManager>();
+	if (!TableMgr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("[GachaManager] TableManager를 찾을 수 없습니다."));
+		return;
+	}
+	
+	const auto ItemTableData = TableMgr->GetItemTableData(InItemID);
+	if (!ItemTableData) return;
+	
 	USlotInventoryVM* ItemData = NewObject<USlotInventoryVM>(this);
 	ItemData->ID = InItemID;
+	ItemData->ItemName = ItemTableData->ItemName;
+	ItemData->ItemTypeName = ItemTableData->ItemTypeName;
+	ItemData->ItemGradeColor = GTGetMgrImpl(UIManager)->GetItemColor(ItemTableData->ItemGrade);
 	InventoryItemData.Emplace(ItemData);
 
 	UE_LOG(LogTemp, Log, TEXT("[InventoryManager] 아이템 추가됨 ID: %d | 총 보유: %d"), InItemID, InventoryItemData.Num());

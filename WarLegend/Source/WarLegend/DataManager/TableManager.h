@@ -42,10 +42,11 @@ public:
 	UTableManager();
 	
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-	
+
+	FItemTableData* GetItemTableData(const int32 InItemId);
 	TArray<FDungeonTableData*> GetDungeonTableData();
 	TArray<FItemTableData*> GetAllItemTableData() const;
-	FString GetItemTypeName(const EItemType ItemType);
+	FString GetItemTypeName(const EItemType InItemType);
 
 private:
 	void LoadTable(UDataTable* Table);

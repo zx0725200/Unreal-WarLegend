@@ -26,7 +26,7 @@ public:
 	void OpenPopupGachaFilter();
 
 private:
-	void ApplyFilter();
+	void ApplyFilter() const;
 	
 	void HandleClickOne();
 	void HandleClickTen();

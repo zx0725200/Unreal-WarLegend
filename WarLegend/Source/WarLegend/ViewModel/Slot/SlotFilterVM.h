@@ -21,6 +21,7 @@ class WARLEGEND_API USlotFilterVM : public UObject
 public:
 	EItemGrade Grade;
 	FString GradeName = TEXT("");
+	FLinearColor GradeColor;
 	bool bChecked = true;
 	
 	FOnFilterChanged OnFilterChanged;

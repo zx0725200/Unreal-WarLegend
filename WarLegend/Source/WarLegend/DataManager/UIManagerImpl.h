@@ -7,6 +7,7 @@
 #include "UObject/Object.h"
 #include "UIManagerImpl.generated.h"
 
+enum class EItemGrade : uint8;
 class UPanelWidget;
 class UUIManagerConfig;
 class UWLUserWidgetBase;
@@ -23,7 +24,7 @@ public:
 	
 	virtual void Initialize();
 	virtual void Deinitialize();
-	
+
 public:
 	template <class TRetType>
 	TRetType* ShowUI(const FName& UIName, ESlateVisibility Visible);
@@ -33,8 +34,11 @@ public:
 	template <class TRetType>
 	TRetType* CreateSlot(const FName& InName, UPanelWidget* InParent);
 	
+public:
 	void HandleEscClick();
 
+	FLinearColor GetItemColor(const EItemGrade InItemGrade) const;
+	
 private:
 	void HideUIBase(const FName& InName, ESlateVisibility InVisibility = ESlateVisibility::Collapsed);
 	void AttachWidget(UUserWidget* InWidget, UPanelWidget* InParent);
