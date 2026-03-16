@@ -41,3 +41,14 @@ public:
 	UPROPERTY()
 	int32 DEF = 0;
 };
+
+USTRUCT(Blueprintable)
+struct FGachaLogData
+{
+	GENERATED_BODY()
+
+public:
+	FString ItemName;
+	FLinearColor GradeColor;
+	FString Time;
+};

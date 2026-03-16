@@ -44,7 +44,7 @@ void UPopupDungeonMenu::Init()
 
 void UPopupDungeonMenu::InitSlotPool()
 {
-	if (!SlotClass || PooledSlots.Num() > 0)
+	if (PooledSlots.Num() > 0)
 	{
 		return;
 	}

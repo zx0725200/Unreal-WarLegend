@@ -39,9 +39,6 @@ private:
 	int32 GetMaxPageIndex() const;
 
 private:
-	UPROPERTY(EditDefaultsOnly, Category="DungeonMenu")
-	TSubclassOf<USlotDungeonMenu> SlotClass;
-	
 	UPROPERTY()
 	TArray<TObjectPtr<UPopupDungeonMenuVM>> VM;
 	
@@ -50,6 +47,7 @@ private:
 	
 	UPROPERTY()
 	int32 CurrentPageIndex = 1;
+	
 	
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UVerticalBox> Vertical_DungeonMenu;

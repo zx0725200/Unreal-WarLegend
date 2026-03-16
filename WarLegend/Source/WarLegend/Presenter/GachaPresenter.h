@@ -6,6 +6,8 @@
 #include "UObject/Object.h"
 #include "GachaPresenter.generated.h"
 
+class UPopupGachaLogVM;
+class UTableManager;
 enum class EItemGrade : uint8;
 class USaveGameDataManager;
 class UInventoryManager;
@@ -20,13 +22,16 @@ class WARLEGEND_API UGachaPresenter : public UObject
 	GENERATED_BODY()
 	
 public:
-	void Init(UUIManagerImpl* InUIMgr, UGachaManager* InGachaMgr, UInventoryManager* InInvenMgr, USaveGameDataManager* InSaveGameMgr);
+	void Init(UUIManagerImpl* InUIMgr, UGachaManager* InGachaMgr, UInventoryManager* InInvenMgr, USaveGameDataManager* InSaveGameMgr, UTableManager* InTableMgr);
 
 	void OpenPopupGacha();
 	void OpenPopupGachaFilter();
+	void OpenPopupGachaLog();
 
 private:
 	void ApplyFilter() const;
+	void ShowToast_Gacha(const int32 InItemID);
+	void ShowToast_MultiGacha(const TArray<int32>& InItemList);
 	
 	void HandleClickOne();
 	void HandleClickTen();
@@ -46,4 +51,10 @@ private:
 	
 	UPROPERTY()
 	TObjectPtr<USaveGameDataManager> SaveGameMgr;
+	
+	UPROPERTY()
+	TObjectPtr<UTableManager> TableMgr;
+	
+	UPROPERTY()
+	TObjectPtr<UPopupGachaLogVM> GachaLogVM;
 };

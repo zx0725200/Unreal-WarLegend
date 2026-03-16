@@ -35,7 +35,7 @@ void UUIFlowPresenter::PlayerControllerChanged(APlayerController* NewPlayerContr
 	auto* InvenMgr = GTGetMgr(UInventoryManager);
 	
 	DungeonPresenter->Init(UIMgr, TableMgr);
-	GachaPresenter->Init(UIMgr, GachaMgr, InvenMgr, SaveGameMgr);
+	GachaPresenter->Init(UIMgr, GachaMgr, InvenMgr, SaveGameMgr, TableMgr);
 	InventoryPresenter->Init(UIMgr, InvenMgr, TableMgr);
 }
 
@@ -87,6 +87,13 @@ void UUIFlowPresenter::OpenPopupGachaFilter() const
 	if (!GachaPresenter) return;
 	
 	GachaPresenter->OpenPopupGachaFilter();
+}
+
+void UUIFlowPresenter::OpenPopupGachaLog() const
+{
+	if (!GachaPresenter) return;
+	
+	GachaPresenter->OpenPopupGachaLog();
 }
 
 void UUIFlowPresenter::HandleTitleConfirm()

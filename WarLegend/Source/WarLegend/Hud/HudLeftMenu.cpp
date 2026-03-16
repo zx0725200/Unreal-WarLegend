@@ -2,6 +2,8 @@
 
 
 #include "HudLeftMenu.h"
+
+#include "Presenter/GachaPresenter.h"
 #include "Presenter/UIFlowPresenter.h"
 
 void UHudLeftMenu::OnClickEvent(const FName& InChildName)
@@ -23,6 +25,10 @@ void UHudLeftMenu::OnClickEvent(const FName& InChildName)
 	else if (InChildName == TEXT("Btn_Filter"))
 	{
 		OnClickedFilter();
+	}
+	else if (InChildName == TEXT("Btn_GachaLog"))
+	{
+		OnClickedGachaLog();
 	}
 }
 
@@ -57,6 +63,17 @@ void UHudLeftMenu::OnClickedFilter()
 	}
 	
 	UIPresenter->OpenPopupGachaFilter();
+}
+
+void UHudLeftMenu::OnClickedGachaLog()
+{
+	const auto UIPresenter = GTUIGetMgr(UUIFlowPresenter);
+	if (!UIPresenter)
+	{
+		return;
+	}
+	
+	UIPresenter->OpenPopupGachaLog();
 }
 
 void UHudLeftMenu::OnClickedRollBack()

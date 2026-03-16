@@ -39,6 +39,7 @@ void UInventoryManager::AddItem(const int32 InItemID)
 	ItemData->ItemTypeName = ItemTableData->ItemTypeName;
 	ItemData->ItemGradeColor = GTGetMgrImpl(UIManager)->GetItemColor(ItemTableData->ItemGrade);
 	InventoryItemData.Emplace(ItemData);
+	
 
 	UE_LOG(LogTemp, Log, TEXT("[InventoryManager] 아이템 추가됨 ID: %d | 총 보유: %d"), InItemID, InventoryItemData.Num());
 }

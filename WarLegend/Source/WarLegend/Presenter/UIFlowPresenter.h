@@ -32,6 +32,7 @@ public:
 	void OpenPopupDungeonMenu() const;
 	void OpenPopupGacha() const;
 	void OpenPopupGachaFilter() const;
+	void OpenPopupGachaLog() const;
 #pragma endregion Popup
 	
 #pragma region Hud
