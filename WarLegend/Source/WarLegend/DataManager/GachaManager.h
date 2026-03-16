@@ -43,6 +43,7 @@ private:
 	
 	EItemGrade GetSelectedGrade() const;
 	int32 GetSelectedItemByGrade(EItemGrade InGrade) const;
+	float GetTotalWeight() const;
 
 private:
 	UPROPERTY()

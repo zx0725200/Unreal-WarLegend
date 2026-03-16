@@ -14,6 +14,22 @@ void USaveGameDataManager::Initialize(FSubsystemCollectionBase& Collection)
 	LoadData(Constant::SaveData);
 }
 
+void USaveGameDataManager::SetGachaFilter(const EItemGrade Grade, const bool bChecked)
+{
+	if (!SaveGameData) return;
+    
+	SaveGameData->GachaFilter.Add(Grade, bChecked);
+	SaveGame(Constant::SaveData);
+}
+
+void USaveGameDataManager::SetInvenData(const int32 InItemID, const FMyItem& InData)
+{
+	if (!SaveGameData) return;
+	
+	SaveGameData->InvenItemData.Add(InItemID, InData);
+	SaveGame(Constant::SaveData);
+}
+
 void USaveGameDataManager::SaveGame(const FString& InSaveName)
 {
 	if (!SaveGameData) return;

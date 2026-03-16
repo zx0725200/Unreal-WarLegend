@@ -6,6 +6,7 @@
 #include "GameFramework/SaveGame.h"
 #include "WLSaveGame.generated.h"
 
+struct FMyItem;
 enum class EItemGrade : uint8;
 /**
  * 
@@ -18,4 +19,7 @@ class WARLEGEND_API UWLSaveGame : public USaveGame
 public:
 	UPROPERTY()
 	TMap<EItemGrade, bool> GachaFilter;
+	
+	UPROPERTY()
+	TMap<int32, FMyItem> InvenItemData;
 };

@@ -6,6 +6,8 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "SaveGameDataManager.generated.h"
 
+struct FMyItem;
+enum class EItemGrade : uint8;
 class UWLSaveGame;
 /**
  * 
@@ -17,6 +19,9 @@ class WARLEGEND_API USaveGameDataManager : public UGameInstanceSubsystem
 	
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	
+	void SetGachaFilter(const EItemGrade InGrade, const bool bChecked);
+	void SetInvenData(const int32 InItemID, const FMyItem& InData);
 	
 	void SaveGame(const FString& InSaveName);
 	UWLSaveGame* GetSaveGame() const { return SaveGameData; }

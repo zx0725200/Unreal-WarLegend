@@ -48,11 +48,11 @@ void UGachaManager::BuildCache()
 {
 	// 등급별 가중치 설정
 	GradeWeightTable = {
-		{ EItemGrade::Normal, 50.f },
+		{ EItemGrade::Normal, 55.f },
 		{ EItemGrade::Rare,   30.f },
-		{ EItemGrade::Unique, 12.f },
-		{ EItemGrade::Legend,  5.f },
-		{ EItemGrade::Epic,    3.f },
+		{ EItemGrade::Unique, 11.f },
+		{ EItemGrade::Legend,  3.f },
+		{ EItemGrade::Epic,    1.f },
 	};
 	
 	UTableManager* TableMgr = GetGameInstance()->GetSubsystem<UTableManager>();
@@ -72,30 +72,28 @@ void UGachaManager::BuildCache()
 
 EItemGrade UGachaManager::GetSelectedGrade() const
 {
-	float TotalFilter = 0.f;
-	for (const FGachaGradeWeight& Item : GradeWeightTable)
-	{
-		if (FilterGrades.Contains(Item.Grade))
-		{
-			TotalFilter += Item.Weight;
-		}
-	}
-
-	const float ItemWeight = FMath::FRandRange(0.f, TotalFilter);
+	const float TotalWeight = GetTotalWeight();
+	const float ItemWeight = FMath::FRandRange(0.f, TotalWeight);
 	float ItemAccumulation = 0.f;
-
+	
+	EItemGrade ResultGrade = EItemGrade::None;
 	for (const FGachaGradeWeight& Item : GradeWeightTable)
 	{
-		if (!FilterGrades.Contains(Item.Grade)) continue;
-
 		ItemAccumulation += Item.Weight;
 		if (ItemWeight <= ItemAccumulation)
 		{
-			return Item.Grade;
+			ResultGrade = Item.Grade;
+			break;
 		}
 	}
-
-	return GradeWeightTable.Last().Grade;
+	
+	// 필터에 포함된건 꽝 처리
+	if (FilterGrades.Contains(ResultGrade))
+	{
+		return EItemGrade::None;
+	}
+	
+	return ResultGrade;
 }
 
 int32 UGachaManager::GetSelectedItemByGrade(const EItemGrade InGrade) const
@@ -109,5 +107,16 @@ int32 UGachaManager::GetSelectedItemByGrade(const EItemGrade InGrade) const
 
 	const int32 RandomIndex = FMath::RandRange(0, Items->Num() - 1);
 	return (*Items)[RandomIndex];
+}
+
+float UGachaManager::GetTotalWeight() const
+{
+	float TotalWeight = 0.f;
+	for (const FGachaGradeWeight& Item : GradeWeightTable)
+	{
+		TotalWeight += Item.Weight;
+	}
+	
+	return TotalWeight;
 }
 	

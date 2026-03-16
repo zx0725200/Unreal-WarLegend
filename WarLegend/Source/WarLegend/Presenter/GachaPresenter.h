@@ -32,7 +32,7 @@ private:
 	void HandleClickTen();
 	void HandleClickAll();
 	
-	void HandleFilterChanged(EItemGrade Grade, bool bChecked);
+	void HandleFilterChanged(const EItemGrade InGrade, const bool bChecked);
 
 private:
 	UPROPERTY()

@@ -25,20 +25,14 @@ void UInventoryPresenter::OpenScreenInventory()
 		UScreenInventoryVM* InventoryData = NewObject<UScreenInventoryVM>(ScreenInventory);
 		InventoryData->Init(InvenMgr);
 		
-		for (uint8 Value = static_cast<uint8>(EItemType::Weapon); Value <= static_cast<uint8>(EItemType::Glove); ++Value)
+		for (const EItemType ItemType : TableMgr->GetLeftEquipTypes())
 		{
-			const EItemType InItemType = static_cast<EItemType>(Value);
-			const FString ItemTypeName = TableMgr->GetItemTypeName(InItemType);
-			
-			InventoryData->LeftItemTypes.Emplace(InItemType, ItemTypeName);
+			InventoryData->LeftItemTypes.Emplace(ItemType, TableMgr->GetItemTypeName(ItemType));
 		}
 		
-		for (uint8 Value = static_cast<uint8>(EItemType::BossWeapon); Value <= static_cast<uint8>(EItemType::BossArmor); ++Value)
+		for (const EItemType ItemType : TableMgr->GetRightEquipTypes())
 		{
-			const EItemType InItemType = static_cast<EItemType>(Value);
-			const FString ItemTypeName = TableMgr->GetItemTypeName(InItemType);
-			
-			InventoryData->RightItemTypes.Emplace(InItemType, ItemTypeName);
+			InventoryData->RightItemTypes.Emplace(ItemType, TableMgr->GetItemTypeName(ItemType));
 		}
 		
 		ScreenInventory->SetViewModel(InventoryData);

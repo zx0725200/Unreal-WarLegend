@@ -47,8 +47,8 @@ void UGachaPresenter::OpenPopupGachaFilter()
 	auto* FilterPopup = UIMgr->ShowUI<UPopupGachaFilter>(TEXT("PopupGachaFilter"));
 	if (!FilterPopup) return;
 
-	UWLSaveGame* Save = SaveGameMgr->GetSaveGame();
-	if (!Save) return;
+	UWLSaveGame* SaveData = SaveGameMgr->GetSaveGame();
+	if (!SaveData) return;
 
 	UPopupGachaFilterVM* VM = NewObject<UPopupGachaFilterVM>(FilterPopup);
 
@@ -67,7 +67,7 @@ void UGachaPresenter::OpenPopupGachaFilter()
 		SlotVM->Grade     = Grade;
 		SlotVM->GradeName = Name;
 		SlotVM->GradeColor= UIMgr->GetItemColor(Grade);
-		SlotVM->bChecked  = Save->GachaFilter.FindRef(Grade); // 저장된 값 복원
+		SlotVM->bChecked  = SaveData->GachaFilter.FindRef(Grade); // 저장된 값 복원
 		SlotVM->OnFilterChanged.AddUObject(this, &UGachaPresenter::HandleFilterChanged);
 
 		VM->SlotVMList.Emplace(SlotVM);
@@ -120,15 +120,10 @@ void UGachaPresenter::HandleClickAll()
 	InvenMgr->AddItems(ItemIDs);
 }
 
-void UGachaPresenter::HandleFilterChanged(EItemGrade Grade, bool bChecked)
+void UGachaPresenter::HandleFilterChanged(const EItemGrade InGrade, const bool bChecked)
 {
 	if (!SaveGameMgr) return;
- 
-	UWLSaveGame* SaveData = SaveGameMgr->GetSaveGame();
-	if (!SaveData) return;
- 
-	SaveData->GachaFilter.Add(Grade, bChecked);
-	SaveGameMgr->SaveGame(Constant::SaveData);
+	SaveGameMgr->SetGachaFilter(InGrade, bChecked);
 	
 	ApplyFilter();
 }

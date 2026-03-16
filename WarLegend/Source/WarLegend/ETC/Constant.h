@@ -3,6 +3,6 @@
 
 namespace Constant
 {
-	inline const TCHAR* SaveData = TEXT("SaveGameData");
+	inline const TCHAR* SaveData = TEXT("SaveData");
 	
 }

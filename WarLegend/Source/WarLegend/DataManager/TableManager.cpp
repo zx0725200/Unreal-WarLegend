@@ -2,9 +2,9 @@
 
 
 #include "TableManager.h"
-
 #include "DataTable/DungeonTableData.h"
 #include "DataTable/ItemTableData.h"
+#include "ETC/Enum.h"
 
 UTableManager::UTableManager()
 {
@@ -87,6 +87,16 @@ TArray<FItemTableData*> UTableManager::GetAllItemTableData() const
 	}
 
 	return OutItems;
+}
+
+TArray<EItemType> UTableManager::GetLeftEquipTypes() const
+{
+	return { EItemType::Weapon, EItemType::Armor, EItemType::Glove }; // 명시적 나열
+}
+
+TArray<EItemType> UTableManager::GetRightEquipTypes() const
+{
+	return { EItemType::BossWeapon, EItemType::BossArmor };
 }
 
 FString UTableManager::GetItemTypeName(const EItemType InItemType)
