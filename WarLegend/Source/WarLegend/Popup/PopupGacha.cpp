@@ -47,15 +47,18 @@ void UPopupGacha::SetViewModel(UPopupGachaVM* InVM)
 
 void UPopupGacha::OnClickedOne() const
 {
-	VM->OnClickOne.Broadcast();
+	if (!VM) return;
+	VM->BroadCastOne();
 }
 
 void UPopupGacha::OnClickedTen() const
 {
-	VM->OnClickTen.Broadcast();
+	if (!VM) return;
+	VM->BroadCastTen();
 }
 
 void UPopupGacha::OnClickedAll() const
 {
-	VM->OnClickAll.Broadcast();
+	if (!VM) return;
+	VM->BroadCastAll();
 }

@@ -30,5 +30,5 @@ void UScreenTitle::OnClickedConfirm()
 		return;
 	}
 	
-	VM->Confirm();
+	VM->BroadCastConfirm();
 }

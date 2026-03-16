@@ -8,44 +8,36 @@
 /**
  * 
  */
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnConfirmRequested, int32);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnNameChanged,     const FString&);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnLevelChanged,   int32, int32); // Min, Max
+
 UCLASS()
 class WARLEGEND_API UPopupDungeonMenuVM : public UObject
 {
 	GENERATED_BODY()
 	
 public:
-	DECLARE_MULTICAST_DELEGATE_OneParam(FOnConfirmRequested, int32);
-	DECLARE_MULTICAST_DELEGATE_OneParam(FOnNameChanged,     const FString&);
-	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnLevelChanged,   int32, int32); // Min, Max
-
-	FOnConfirmRequested OnConfirmRequested;
-	FOnNameChanged      OnNameChanged;
-	FOnLevelChanged     OnLevelChanged;
+	void SetName(const FString& InName);
+	void SetLevel(const int32 InMin, const int32 InMax);
+	void SetID(const int32 InID);
+	
+	void BroadCastConfirm();
 	
 	int32          GetID()				const { return ID; }
 	const FString& GetDungeonName()     const { return Name; }
 	int32          GetMinLevel()		const { return MinLevel; }
 	int32          GetMaxLevel()		const { return MaxLevel; }
 	
-	void SetName(const FString& InName)
-	{
-		Name = InName;
-		OnNameChanged.Broadcast(Name);
-	}
-
-	void SetLevel(const int32 InMin, const int32 InMax)
-	{
-		MinLevel = InMin;
-		MaxLevel = InMax;
-		OnLevelChanged.Broadcast(MinLevel, MaxLevel);
-	}
-
-	void SetID(const int32 InID) { ID = InID; }
-
-	UFUNCTION()
-	void Confirm() const { OnConfirmRequested.Broadcast(ID); }
+	FOnConfirmRequested&	GetOnConfirmRequested() { return OnConfirmRequested; }
+	FOnNameChanged&			GetOnNameChanged() { return OnNameChanged; }
+	FOnLevelChanged&		GetOnLevelChanged() { return OnLevelChanged; }
 
 private:
+	FOnConfirmRequested OnConfirmRequested;
+	FOnNameChanged      OnNameChanged;
+	FOnLevelChanged     OnLevelChanged;
+	
 	UPROPERTY()
 	int32 ID = 0;
 

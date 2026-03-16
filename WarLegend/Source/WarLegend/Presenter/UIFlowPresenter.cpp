@@ -55,7 +55,7 @@ void UUIFlowPresenter::OpenScreenTitle()
 	if (const auto ScreenTitle = UIMgr->ShowUI<UScreenTitle>(TEXT("ScreenTitle")))
 	{
 		UScreenTitleVM* TitleData = NewObject<UScreenTitleVM>(ScreenTitle);
-		TitleData->OnConfirmRequested.AddUObject(this, &UUIFlowPresenter::HandleTitleConfirm);
+		TitleData->GetConfirm().AddUObject(this, &UUIFlowPresenter::HandleTitleConfirm);
 		
 		ScreenTitle->SetViewModel(TitleData);
 	}

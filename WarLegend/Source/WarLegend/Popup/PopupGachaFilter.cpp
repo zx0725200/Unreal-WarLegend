@@ -46,7 +46,10 @@ void UPopupGachaFilter::RefreshSlots()
 	const auto UIMgr = GTUIGetMgrImpl(UIManager);
 	if (!UIMgr) return;
 	
-	for (USlotFilterVM* SlotVM : VM->SlotVMList)
+	const auto SlotList = VM->GetSlotVMList();
+	if (SlotList.IsEmpty()) return;
+	
+	for (USlotFilterVM* SlotVM : SlotList)
 	{
 		if (!SlotVM) continue;
 

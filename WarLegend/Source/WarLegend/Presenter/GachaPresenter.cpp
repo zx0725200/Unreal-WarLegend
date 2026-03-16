@@ -13,7 +13,7 @@
 #include "ViewModel/Popup/PopupGachaFilterVM.h"
 #include "ViewModel/Popup/PopupGachaVM.h"
 #include "ViewModel/Slot/SlotFilterVM.h"
-#include "ETC/Constant.h" 
+#include "ETC/Struct.h"
 
 void UGachaPresenter::Init(UUIManagerImpl* InUIMgr, UGachaManager* InGachaMgr, UInventoryManager* InInvenMgr, USaveGameDataManager* InSaveGameMgr)
 {
@@ -33,9 +33,9 @@ void UGachaPresenter::OpenPopupGacha()
 	if (!GachaPopup) return;
 
 	UPopupGachaVM* VM = NewObject<UPopupGachaVM>(GachaPopup);
-	VM->OnClickOne.AddUObject(this, &UGachaPresenter::HandleClickOne);
-	VM->OnClickTen.AddUObject(this, &UGachaPresenter::HandleClickTen);
-	VM->OnClickAll.AddUObject(this, &UGachaPresenter::HandleClickAll);
+	VM->GetOnClickOne().AddUObject(this, &UGachaPresenter::HandleClickOne);
+	VM->GetOnClickTen().AddUObject(this, &UGachaPresenter::HandleClickTen);
+	VM->GetOnClickAll().AddUObject(this, &UGachaPresenter::HandleClickAll);
 
 	GachaPopup->SetViewModel(VM);
 }
@@ -51,26 +51,11 @@ void UGachaPresenter::OpenPopupGachaFilter()
 	if (!SaveData) return;
 
 	UPopupGachaFilterVM* VM = NewObject<UPopupGachaFilterVM>(FilterPopup);
+	VM->Init(UIMgr, SaveData);
 
-	// Epic 제외한 등급 순서대로 슬롯 VM 생성
-	const TArray<TPair<EItemGrade, FString>> GradeList =
+	for (const auto& SlotVM : VM->GetSlotVMList())
 	{
-		{ EItemGrade::Normal, TEXT("Normal") },
-		{ EItemGrade::Rare,   TEXT("Rare")   },
-		{ EItemGrade::Unique, TEXT("Unique") },
-		{ EItemGrade::Legend, TEXT("Legend") },
-	};
-
-	for (const auto& [Grade, Name] : GradeList)
-	{
-		USlotFilterVM* SlotVM = NewObject<USlotFilterVM>(VM);
-		SlotVM->Grade     = Grade;
-		SlotVM->GradeName = Name;
-		SlotVM->GradeColor= UIMgr->GetItemColor(Grade);
-		SlotVM->bChecked  = SaveData->GachaFilter.FindRef(Grade); // 저장된 값 복원
-		SlotVM->OnFilterChanged.AddUObject(this, &UGachaPresenter::HandleFilterChanged);
-
-		VM->SlotVMList.Emplace(SlotVM);
+		SlotVM->GetOnFilterChanged().AddUObject(this, &UGachaPresenter::HandleFilterChanged);
 	}
 	
 	FilterPopup->SetViewModel(VM);

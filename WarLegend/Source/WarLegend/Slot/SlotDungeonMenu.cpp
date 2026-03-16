@@ -26,7 +26,8 @@ void USlotDungeonMenu::OnClickEvent(const FName& InChildName)
 	
 	if (InChildName == TEXT("Btn_Dungeon"))
 	{
-		VM->Confirm();
+		if (!VM) return;
+		VM->BroadCastConfirm();
 	}
 }
 
@@ -59,14 +60,14 @@ void USlotDungeonMenu::AddVmEvent()
 {
 	ClearVmEvent();
 	
-	VM->OnNameChanged.AddUObject(this, &USlotDungeonMenu::RefreshName);
-	VM->OnLevelChanged.AddUObject(this, &USlotDungeonMenu::RefreshLevel);
+	VM->GetOnNameChanged().AddUObject(this, &USlotDungeonMenu::RefreshName);
+	VM->GetOnLevelChanged().AddUObject(this, &USlotDungeonMenu::RefreshLevel);
 }
 
 void USlotDungeonMenu::ClearVmEvent()
 {
 	if (!VM) return;
 	
-	VM->OnNameChanged.RemoveAll(this);
-	VM->OnLevelChanged.RemoveAll(this);
+	VM->GetOnNameChanged().RemoveAll(this);
+	VM->GetOnLevelChanged().RemoveAll(this);
 }

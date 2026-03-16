@@ -5,6 +5,7 @@
 
 #include "DataAsset/WLSaveGame.h"
 #include "ETC/Constant.h"
+#include "ETC/Struct.h"
 #include "Kismet/GameplayStatics.h"
 
 void USaveGameDataManager::Initialize(FSubsystemCollectionBase& Collection)

@@ -8,18 +8,18 @@
 /**
  * 
  */
+DECLARE_MULTICAST_DELEGATE(FOnTitleConfirm);
+
 UCLASS()
 class WARLEGEND_API UScreenTitleVM : public UObject
 {
 	GENERATED_BODY()
-	
-public:
-	DECLARE_MULTICAST_DELEGATE(FOnConfirmRequested);
-	FOnConfirmRequested OnConfirmRequested;
 
-	UFUNCTION()
-	void Confirm() const
-	{
-		OnConfirmRequested.Broadcast();
-	}
+public:
+	void BroadCastConfirm();
+	
+	FOnTitleConfirm& GetConfirm() {return OnConfirmRequested;}
+	
+private:
+	FOnTitleConfirm OnConfirmRequested;
 };

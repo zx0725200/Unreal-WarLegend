@@ -3,10 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ETC/Struct.h"
 #include "GameFramework/SaveGame.h"
 #include "WLSaveGame.generated.h"
 
-struct FMyItem;
+
 enum class EItemGrade : uint8;
 /**
  * 

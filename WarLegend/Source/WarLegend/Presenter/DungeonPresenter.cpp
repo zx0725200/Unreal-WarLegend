@@ -35,7 +35,7 @@ void UDungeonPresenter::OpenPopupDungeonMenu()
 		VM->SetID(Data->DungeonID);
 		VM->SetName(Data->DungeonName);
 		VM->SetLevel(Data->MinLevel, Data->MaxLevel);
-		VM->OnConfirmRequested.AddUObject(this, &UDungeonPresenter::HandleSlotDungeonMenuClick);
+		VM->GetOnConfirmRequested().AddUObject(this, &UDungeonPresenter::HandleSlotDungeonMenuClick);
 
 		VMList.Emplace(VM);
 	}

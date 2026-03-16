@@ -2,3 +2,8 @@
 
 
 #include "ScreenTitleVM.h"
+
+void UScreenTitleVM::BroadCastConfirm()
+{
+	OnConfirmRequested.Broadcast();
+}

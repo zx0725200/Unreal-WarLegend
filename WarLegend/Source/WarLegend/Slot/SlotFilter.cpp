@@ -40,15 +40,18 @@ void USlotFilter::SetData()
 {
 	if (!VM) return;
 	
-	Txt_Filter->SetText(FText::FromString(VM->GradeName));
-	Txt_Filter->SetColorAndOpacity(VM->GradeColor);
-	ChBox_Filter->SetIsChecked(VM->bChecked);
+	const FText GradeName = FText::FromString(VM->GetGradeName());
+	const auto GradeColor = VM->GetGradeColor();
+	const auto FilterCheck = VM->IsChecked();
+	
+	Txt_Filter->SetText(GradeName);
+	Txt_Filter->SetColorAndOpacity(GradeColor);
+	ChBox_Filter->SetIsChecked(FilterCheck);
 }
 
 void USlotFilter::OnCheckBoxChanged(const bool bIsChecked)
 {
 	if (!VM) return;
-
-	VM->bChecked = bIsChecked;
-	VM->OnFilterChanged.Broadcast(VM->Grade, bIsChecked);
+	
+	VM->SetChecked(bIsChecked);
 }
