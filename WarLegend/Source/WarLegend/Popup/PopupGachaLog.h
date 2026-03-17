@@ -6,7 +6,7 @@
 #include "Core/PopupWidgetBase.h"
 #include "PopupGachaLog.generated.h"
 
-class UPopupGachaLogVM;
+class UHudGachaLogVM;
 class UScrollBox;
 /**
  * 
@@ -25,7 +25,7 @@ public:
 	UFUNCTION()
 	void StartHide();
 	
-	void SetViewModel(UPopupGachaLogVM* InVM);
+	void SetViewModel(UHudGachaLogVM* InVM);
 	void RefreshAll();
 
 private:
@@ -38,7 +38,7 @@ private:
 	
 private:
 	UPROPERTY()
-	TObjectPtr<UPopupGachaLogVM> VM;
+	TObjectPtr<UHudGachaLogVM> VM;
 	
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UScrollBox> SB_Log;

@@ -31,7 +31,8 @@ public:
 	virtual void OnDestroy();
 	virtual void Update(const float InDeltaTime);
 	
-	virtual EUserWidgetType GetUIType() const { return EUserWidgetType::Screen; }
+	virtual void SetUIType(EUserWidgetType InType);
+	virtual EUserWidgetType GetUIType() const { return WidgetType; }
 	
 	UFUNCTION()
 	virtual void OnClickEvent(const FName& InChildName);
@@ -57,4 +58,6 @@ private:
 public:
 	FWLUIEventHandle UIEventHandle;
 	
+private:
+	EUserWidgetType WidgetType;
 };

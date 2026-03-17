@@ -13,11 +13,10 @@ void UWLUserWidgetBase::Awake()
 
 void UWLUserWidgetBase::OnEnable()
 {
-	SetIsFocusable(true);
-	
 	const bool bLockInput = GetUIType() == EUserWidgetType::Popup || GetUIType() == EUserWidgetType::Screen;
 	if (bLockInput)
 	{
+		SetIsFocusable(true);  
 		LockPlayerInput();
 	}
 }
@@ -37,6 +36,11 @@ void UWLUserWidgetBase::OnDestroy()
 
 void UWLUserWidgetBase::Update(const float InDeltaTime)
 {
+}
+
+void UWLUserWidgetBase::SetUIType(EUserWidgetType InType)
+{
+	WidgetType = InType;
 }
 
 void UWLUserWidgetBase::OnClickEvent(const FName& InChildName)
@@ -140,8 +144,10 @@ void UWLUserWidgetBase::LockPlayerInput()
 	}
 	
 	FInputModeUIOnly UIOnlyGameMode;
-	UIOnlyGameMode.SetWidgetToFocus(GetCachedWidget()); // 포커스 잡아서 ESC 받기
+	//UIOnlyGameMode.SetWidgetToFocus(GetCachedWidget()); // 포커스 잡아서 ESC 받기
 	PlayerController->SetInputMode(UIOnlyGameMode);
+	
+	SetFocus(); 
 }
 
 void UWLUserWidgetBase::UnlockPlayerInput() const

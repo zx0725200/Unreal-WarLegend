@@ -1,15 +1,15 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "PopupGachaLogVM.h"
+#include "HudGachaLogVM.h"
 
-void UPopupGachaLogVM::AddLog(const FGachaLogData& InData)
+void UHudGachaLogVM::AddLog(const FGachaLogData& InData)
 {
 	LogList.Add(InData);
 	OnLogUpdated.Broadcast();
 }
 
-void UPopupGachaLogVM::ClearAll()
+void UHudGachaLogVM::ClearAll()
 {
 	LogList.Empty();
 	OnLogCleared.Broadcast();

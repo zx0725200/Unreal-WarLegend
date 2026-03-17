@@ -7,7 +7,7 @@
 #include "DataManager/UIManager.h"
 #include "DataManager/UIManagerImpl.h"
 #include "Slot/SlotGachaLog.h"
-#include "ViewModel/Popup/PopupGachaLogVM.h"
+#include "ViewModel/Popup/HudGachaLogVM.h"
 
 void UPopupGachaLog::Awake()
 {
@@ -38,7 +38,7 @@ void UPopupGachaLog::StartHide()
 	Super::Hide();
 }
 
-void UPopupGachaLog::SetViewModel(UPopupGachaLogVM* InVM)
+void UPopupGachaLog::SetViewModel(UHudGachaLogVM* InVM)
 {
 	if (VM == InVM) return;
 

@@ -17,7 +17,7 @@
 #include "ViewModel/Slot/SlotFilterVM.h"
 #include "ETC/Struct.h"
 #include "Popup/PopupGachaLog.h"
-#include "ViewModel/Popup/PopupGachaLogVM.h"
+#include "ViewModel/Popup/HudGachaLogVM.h"
 
 void UGachaPresenter::Init(UUIManagerImpl* InUIMgr, UGachaManager* InGachaMgr, UInventoryManager* InInvenMgr, USaveGameDataManager* InSaveGameMgr, UTableManager* InTableMgr)
 {
@@ -27,7 +27,7 @@ void UGachaPresenter::Init(UUIManagerImpl* InUIMgr, UGachaManager* InGachaMgr, U
 	SaveGameMgr = InSaveGameMgr;
 	TableMgr = InTableMgr;
 	
-	GachaLogVM = NewObject<UPopupGachaLogVM>(this);
+	GachaLogVM = NewObject<UHudGachaLogVM>(this);
 	
 	ApplyFilter();
 }
@@ -72,7 +72,7 @@ void UGachaPresenter::OpenPopupGachaLog()
 {
 	if (!UIMgr) return;
 	
-	const auto PopupGachaLog = UIMgr->ShowUI<UPopupGachaLog>(TEXT("PopupGachaLog"));
+	const auto PopupGachaLog = UIMgr->ShowUI<UPopupGachaLog>(TEXT("PopupGachaLog"), ESlateVisibility::SelfHitTestInvisible);
 	if (!PopupGachaLog) return;
 	
 	PopupGachaLog->SetViewModel(GachaLogVM);
@@ -103,10 +103,10 @@ void UGachaPresenter::ShowToast_Gacha(const int32 InItemID)
 	const auto* TableData = TableMgr->GetItemTableData(InItemID);
 	if (!TableData) return;
 	
-	const auto PopupGachaLog = UIMgr->ShowUI<UPopupGachaLog>(TEXT("PopupGachaLog"));
-	if (!PopupGachaLog) return;
+	const auto HudGachaLog = UIMgr->ShowUI<UPopupGachaLog>(TEXT("PopupGachaLog"),ESlateVisibility::SelfHitTestInvisible);
+	if (!HudGachaLog) return;
 	
-	PopupGachaLog->SetViewModel(GachaLogVM);
+	HudGachaLog->SetViewModel(GachaLogVM);
 	
 	FGachaLogData GachaLogData;
 	GachaLogData.ItemName   = TableData->ItemName;
