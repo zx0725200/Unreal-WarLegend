@@ -6,7 +6,7 @@
 #include "UObject/Object.h"
 #include "GachaPresenter.generated.h"
 
-class UHudGachaLogVM;
+class UPopupGachaLogVM;
 class UTableManager;
 enum class EItemGrade : uint8;
 class USaveGameDataManager;
@@ -56,5 +56,5 @@ private:
 	TObjectPtr<UTableManager> TableMgr;
 	
 	UPROPERTY()
-	TObjectPtr<UHudGachaLogVM> GachaLogVM;
+	TObjectPtr<UPopupGachaLogVM> GachaLogVM;
 };

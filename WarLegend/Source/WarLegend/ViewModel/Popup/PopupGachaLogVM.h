@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "ETC/Struct.h"
 #include "UObject/Object.h"
-#include "HudGachaLogVM.generated.h"
+#include "PopupGachaLogVM.generated.h"
 
 /**
  * 
@@ -15,7 +15,7 @@ DECLARE_MULTICAST_DELEGATE(FOnLogUpdated);
 DECLARE_MULTICAST_DELEGATE(FOnLogCleared);
 
 UCLASS()
-class WARLEGEND_API UHudGachaLogVM : public UObject
+class WARLEGEND_API UPopupGachaLogVM : public UObject
 {
 	GENERATED_BODY()
 	

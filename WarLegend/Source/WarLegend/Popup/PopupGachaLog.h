@@ -6,7 +6,10 @@
 #include "Core/PopupWidgetBase.h"
 #include "PopupGachaLog.generated.h"
 
-class UHudGachaLogVM;
+class UUMyButton;
+class USlotGachaLog;
+struct FGachaLogData;
+class UPopupGachaLogVM;
 class UScrollBox;
 /**
  * 
@@ -22,26 +25,30 @@ public:
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
 	
+	void SetViewModel(UPopupGachaLogVM* InVM);
+
+private:
 	UFUNCTION()
 	void StartHide();
 	
-	void SetViewModel(UHudGachaLogVM* InVM);
-	void RefreshAll();
-
-private:
+	void AddEvent();
+	void StartHideTimer();
+	void CreateLogSlot(const FGachaLogData& InLogData) const;
+	
 	void OnClickedClear();
 	
 	void HandleLogUpdated();
 	void HandleLogCleared();
-	
-	void StartAutoHide();
-	
+
 private:
 	UPROPERTY()
-	TObjectPtr<UHudGachaLogVM> VM;
+	TObjectPtr<UPopupGachaLogVM> VM;
 	
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UScrollBox> SB_Log;
+	
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UUMyButton> Btn_Exit;
 	
 	FTimerHandle HideTimerHandle;
 };

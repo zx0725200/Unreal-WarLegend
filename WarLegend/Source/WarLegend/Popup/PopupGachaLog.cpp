@@ -4,10 +4,11 @@
 #include "PopupGachaLog.h"
 
 #include "Components/ScrollBox.h"
+#include "Core/UMyButton.h"
 #include "DataManager/UIManager.h"
 #include "DataManager/UIManagerImpl.h"
 #include "Slot/SlotGachaLog.h"
-#include "ViewModel/Popup/HudGachaLogVM.h"
+#include "ViewModel/Popup/PopupGachaLogVM.h"
 
 void UPopupGachaLog::Awake()
 {
@@ -27,6 +28,7 @@ void UPopupGachaLog::OnDisable()
 void UPopupGachaLog::OnClickEvent(const FName& InChildName)
 {
 	Super::OnClickEvent(InChildName);
+	
 	if (InChildName == TEXT("Btn_Clear"))
 	{
 		OnClickedClear();
@@ -38,33 +40,39 @@ void UPopupGachaLog::StartHide()
 	Super::Hide();
 }
 
-void UPopupGachaLog::SetViewModel(UHudGachaLogVM* InVM)
+void UPopupGachaLog::SetViewModel(UPopupGachaLogVM* InVM)
 {
-	if (VM == InVM) return;
-
-	if (VM)
-	{
-		VM->GetOnLogUpdated().RemoveAll(this);
-		VM->GetOnLogCleared().RemoveAll(this);
-	}
-	
 	VM = InVM;
+	
+	AddEvent();
+	
+	Btn_Exit->SetVisibility(ESlateVisibility::Visible);
+}
+
+void UPopupGachaLog::AddEvent()
+{
+	if (!VM) return;
+	
+	VM->GetOnLogUpdated().RemoveAll(this);
+	VM->GetOnLogCleared().RemoveAll(this);
+	
 	VM->GetOnLogUpdated().AddUObject(this, &UPopupGachaLog::HandleLogUpdated);
 	VM->GetOnLogCleared().AddUObject(this, &UPopupGachaLog::HandleLogCleared);
 }
 
-void UPopupGachaLog::RefreshAll()
+void UPopupGachaLog::StartHideTimer()
+{
+	GetWorld()->GetTimerManager().ClearTimer(HideTimerHandle);
+	GetWorld()->GetTimerManager().SetTimer(HideTimerHandle, this, &UPopupGachaLog::StartHide, 3.0f, false);
+}
+
+void UPopupGachaLog::CreateLogSlot(const FGachaLogData& InLogData) const
 {
 	const auto UIMgr = GTUIGetMgrImpl(UIManager);
 	if (!UIMgr) return;
-	
-	SB_Log->ClearChildren();
-	for (const auto& LogData : VM->GetLogList())
-	{
-		auto* GachaLogSlot = UIMgr->CreateSlot<USlotGachaLog>(TEXT("SlotGachaLog"), SB_Log);
-		GachaLogSlot->Init(LogData);
-	}
-	SB_Log->ScrollToEnd();
+
+	auto* LogSlot = UIMgr->CreateSlot<USlotGachaLog>(TEXT("SlotGachaLog"), SB_Log);
+	LogSlot->Init(InLogData);
 }
 
 void UPopupGachaLog::OnClickedClear()
@@ -75,26 +83,17 @@ void UPopupGachaLog::OnClickedClear()
 
 void UPopupGachaLog::HandleLogUpdated()
 {
-	const auto UIMgr = GTUIGetMgrImpl(UIManager);
-	if (!UIMgr) return;
-	
 	const auto& LogList = VM->GetLogList();
-	const auto& Last = LogList.Last();
+	const auto& LastData = LogList.Last();
 	
-	auto* GachaLogSlot = UIMgr->CreateSlot<USlotGachaLog>(TEXT("SlotGachaLog"), SB_Log);
-	GachaLogSlot->Init(Last);
+	CreateLogSlot(LastData);
 	
-	StartAutoHide();
+	StartHideTimer();
 	SB_Log->ScrollToEnd();
+	Btn_Exit->SetVisibility(ESlateVisibility::Collapsed);
 }
 
 void UPopupGachaLog::HandleLogCleared()
 {
 	SB_Log->ClearChildren();
-}
-
-void UPopupGachaLog::StartAutoHide()
-{
-	GetWorld()->GetTimerManager().ClearTimer(HideTimerHandle);
-	GetWorld()->GetTimerManager().SetTimer(HideTimerHandle, this, &UPopupGachaLog::StartHide, 5.0f, false);
 }
