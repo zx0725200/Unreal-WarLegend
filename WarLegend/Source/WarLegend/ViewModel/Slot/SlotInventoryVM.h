@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ETC/Struct.h"
 #include "UObject/Object.h"
 #include "SlotInventoryVM.generated.h"
 
+struct FItemTableData;
 enum class EItemGrade : uint8;
 enum class EItemType : uint8;
 /**
@@ -15,6 +17,12 @@ UCLASS()
 class WARLEGEND_API USlotInventoryVM : public UObject
 {
 	GENERATED_BODY()
+	
+public:
+	void Init(const FItemTableData* InTableData, const FLinearColor& InGradeColor);
+	
+	FMyItem ToSaveData() const;
+	void FromSaveData(const FMyItem& InData);
 	
 public:
 	UPROPERTY()

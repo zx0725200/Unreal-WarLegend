@@ -22,5 +22,5 @@ public:
 	TMap<EItemGrade, bool> GachaFilter;
 	
 	UPROPERTY()
-	TMap<int32, FMyItem> InvenItemData;
+	TArray<FMyItem> InvenItemData;
 };

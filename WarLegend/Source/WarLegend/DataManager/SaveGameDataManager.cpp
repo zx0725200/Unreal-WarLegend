@@ -5,7 +5,6 @@
 
 #include "DataAsset/WLSaveGame.h"
 #include "ETC/Constant.h"
-#include "ETC/Struct.h"
 #include "Kismet/GameplayStatics.h"
 
 void USaveGameDataManager::Initialize(FSubsystemCollectionBase& Collection)
@@ -23,12 +22,11 @@ void USaveGameDataManager::SetGachaFilter(const EItemGrade Grade, const bool bCh
 	SaveGame(Constant::SaveData);
 }
 
-void USaveGameDataManager::SetInvenData(const int32 InItemID, const FMyItem& InData)
+void USaveGameDataManager::AddInvenData( const FMyItem& InData)
 {
 	if (!SaveGameData) return;
 	
-	SaveGameData->InvenItemData.Add(InItemID, InData);
-	SaveGame(Constant::SaveData);
+	SaveGameData->InvenItemData.Add(InData);
 }
 
 void USaveGameDataManager::SaveGame(const FString& InSaveName)
