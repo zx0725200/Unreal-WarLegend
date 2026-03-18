@@ -22,11 +22,7 @@ public:
 	void Init(UUIManagerImpl* InUIMgr, UTableManager* InTableMgr, UDungeonManager* InDungeonMgr);
 	
 	void OpenPopupDungeonMenu();
-	void ExitDungeon();
 
-private:
-	void HandleSlotDungeonMenuClick(int32 InSlotIndex);
-	
 private:
 	TArray<TObjectPtr<UPopupDungeonMenuVM>> VMList;
 	

@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "PopupDungeonMenuVM.generated.h"
 
+class UUIManagerImpl;
+class UDungeonManager;
 /**
  * 
  */
@@ -18,23 +20,24 @@ class WARLEGEND_API UPopupDungeonMenuVM : public UObject
 	GENERATED_BODY()
 	
 public:
+	void Init(UDungeonManager* InDungeonMgr, UUIManagerImpl* InUIMgr);
+	
 	void SetName(const FString& InName);
 	void SetLevel(const int32 InMin, const int32 InMax);
 	void SetID(const int32 InID);
 	
-	void BroadCastConfirm();
+	void BroadCastEnterDungeon();    // 던전 입장
+	void BroadCastExitDungeon();     // 던전 퇴장
 	
 	int32          GetID()				const { return ID; }
 	const FString& GetDungeonName()     const { return Name; }
 	int32          GetMinLevel()		const { return MinLevel; }
 	int32          GetMaxLevel()		const { return MaxLevel; }
 	
-	FOnConfirmRequested&	GetOnConfirmRequested() { return OnConfirmRequested; }
 	FOnNameChanged&			GetOnNameChanged() { return OnNameChanged; }
 	FOnLevelChanged&		GetOnLevelChanged() { return OnLevelChanged; }
 
 private:
-	FOnConfirmRequested OnConfirmRequested;
 	FOnNameChanged      OnNameChanged;
 	FOnLevelChanged     OnLevelChanged;
 	
@@ -49,4 +52,10 @@ private:
 
 	UPROPERTY()
 	int32 MaxLevel = 0;
+	
+	UPROPERTY()
+	TObjectPtr<UDungeonManager> DungeonMgr;
+	
+	UPROPERTY()
+	TObjectPtr<UUIManagerImpl> UIMgr;
 };

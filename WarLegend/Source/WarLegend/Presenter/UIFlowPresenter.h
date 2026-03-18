@@ -33,21 +33,16 @@ public:
 	void OpenPopupGacha() const;
 	void OpenPopupGachaFilter() const;
 	void OpenPopupGachaLog() const;
-	void GotoCity() const;
 #pragma endregion Popup
 	
 #pragma region Hud
-	
+	void GotoCity() const;
 #pragma endregion Hud
 	
 #pragma region ScreenEvent
 	void HandleTitleConfirm();
 #pragma endregion ScreenEvent
-	
-#pragma region PopupEvent
-	void HandleSlotDungeonMenuClick(int32 InSlotIndex);
-#pragma endregion PopupEvent
-	
+
 private:
 	UPROPERTY()
 	TObjectPtr<UDungeonPresenter> DungeonPresenter;

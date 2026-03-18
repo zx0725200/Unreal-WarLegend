@@ -34,11 +34,11 @@ void UDungeonPresenter::OpenPopupDungeonMenu()
 	for (const auto& Data : DungeonList)
 	{
 		UPopupDungeonMenuVM* VM = NewObject<UPopupDungeonMenuVM>(DungeonPopup);
+		VM->Init(DungeonMgr, UIMgr);
 		VM->SetID(Data->DungeonID);
 		VM->SetName(Data->DungeonName);
 		VM->SetLevel(Data->MinLevel, Data->MaxLevel);
-		VM->GetOnConfirmRequested().AddUObject(this, &UDungeonPresenter::HandleSlotDungeonMenuClick);
-
+		
 		VMList.Emplace(VM);
 	}
 
@@ -46,21 +46,4 @@ void UDungeonPresenter::OpenPopupDungeonMenu()
 	// 이후 VM 데이터 바뀌면 Widget이 알아서 갱신
 	DungeonPopup->SetViewModel(VMList);
 	DungeonPopup->Init();
-}
-
-void UDungeonPresenter::ExitDungeon()
-{
-	if (!DungeonMgr) return;
-	DungeonMgr->ExitDungeon();
-}
-
-void UDungeonPresenter::HandleSlotDungeonMenuClick(int32 InSlotIndex)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Dungeon Selected: %d"), InSlotIndex);
-	
-	if (!DungeonMgr || !UIMgr) return;
-	DungeonMgr->EnterDungeon(InSlotIndex);
-
-	// 던전 메뉴 팝업 닫기
-	UIMgr->HideUI(TEXT("PopupDungeonMenu"));
 }

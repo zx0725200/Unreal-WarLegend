@@ -6,7 +6,13 @@
 #include "UObject/Object.h"
 #include "PopupGachaVM.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnGachaRequested);
+struct FGachaLogData;
+class UPopupGachaLogVM;
+class UUIManagerImpl;
+class UTableManager;
+class UInventoryManager;
+class UGachaManager;
+DECLARE_MULTICAST_DELEGATE(FOnToastRequested);
 
 /**
  * 
@@ -17,16 +23,33 @@ class WARLEGEND_API UPopupGachaVM : public UObject
 	GENERATED_BODY()
 	
 public:
+	void Init(UGachaManager* InGachaMgr, UInventoryManager* InInvenMgr, UTableManager* InTableMgr, UUIManagerImpl* InUIMgr, UPopupGachaLogVM* InLogVM);
+	
 	void BroadCastOne();
 	void BroadCastTen();
 	void BroadCastAll();
-	
-	FOnGachaRequested& GetOnClickOne() { return OnClickOne; }
-	FOnGachaRequested& GetOnClickTen() { return OnClickTen; }
-	FOnGachaRequested& GetOnClickAll() { return OnClickAll; }
+
+	FOnToastRequested& GetOnToastRequested() { return OnToastRequested; }
 	
 private:
-	FOnGachaRequested OnClickOne;
-	FOnGachaRequested OnClickTen;
-	FOnGachaRequested OnClickAll;
+	void ShowToast(int32 InItemID);
+	void ShowToastMulti(const TArray<int32>& InItemIDs);
+	
+private:
+	FOnToastRequested OnToastRequested;
+	
+	UPROPERTY() 
+	TObjectPtr<UGachaManager> GachaMgr;
+	
+	UPROPERTY() 
+	TObjectPtr<UInventoryManager> InvenMgr;
+	
+	UPROPERTY() 
+	TObjectPtr<UTableManager> TableMgr;
+	
+	UPROPERTY() 
+	TObjectPtr<UUIManagerImpl> UIMgr;
+	
+	UPROPERTY() 
+	TObjectPtr<UPopupGachaLogVM> LogVM;
 };

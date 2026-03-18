@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "ScreenTitleVM.generated.h"
 
+class UUIManagerImpl;
 /**
  * 
  */

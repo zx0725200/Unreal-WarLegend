@@ -100,9 +100,9 @@ void UUIFlowPresenter::OpenPopupGachaLog() const
 
 void UUIFlowPresenter::GotoCity() const
 {
-	if (!DungeonPresenter) return;
+	if (!GachaPresenter) return;
 	
-	DungeonPresenter->ExitDungeon();
+	GachaPresenter->OpenPopupGachaLog();
 }
 
 void UUIFlowPresenter::HandleTitleConfirm()
@@ -112,9 +112,3 @@ void UUIFlowPresenter::HandleTitleConfirm()
 	
 	UIMgr->ShowUI<UHudPlayerState>(TEXT("HudPlayerState"));
 }
-
-void UUIFlowPresenter::HandleSlotDungeonMenuClick(int32 InSlotIndex)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Start Pos Change %d"), InSlotIndex);
-}
-

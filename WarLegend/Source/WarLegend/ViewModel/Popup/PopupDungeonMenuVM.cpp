@@ -3,6 +3,15 @@
 
 #include "PopupDungeonMenuVM.h"
 
+#include "DataManager/DungeonManager.h"
+#include "DataManager/UIManagerImpl.h"
+
+void UPopupDungeonMenuVM::Init(UDungeonManager* InDungeonMgr, UUIManagerImpl* InUIMgr)
+{
+	DungeonMgr = InDungeonMgr;
+	UIMgr = InUIMgr;
+}
+
 void UPopupDungeonMenuVM::SetName(const FString& InName)
 {
 	Name = InName;
@@ -21,7 +30,15 @@ void UPopupDungeonMenuVM::SetID(const int32 InID)
 	ID = InID;
 }
 
-void UPopupDungeonMenuVM::BroadCastConfirm()
+void UPopupDungeonMenuVM::BroadCastEnterDungeon()
 {
-	OnConfirmRequested.Broadcast(ID);
+	if (!DungeonMgr || !UIMgr) return;
+	DungeonMgr->EnterDungeon(ID);
+	UIMgr->HideUI(TEXT("PopupDungeonMenu"));
+}
+
+void UPopupDungeonMenuVM::BroadCastExitDungeon()
+{
+	if (!DungeonMgr) return;
+	DungeonMgr->ExitDungeon();
 }

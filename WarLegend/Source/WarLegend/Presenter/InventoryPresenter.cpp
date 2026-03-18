@@ -5,7 +5,6 @@
 
 #include "DataManager/TableManager.h"
 #include "DataManager/UIManagerImpl.h"
-#include "ETC/Enum.h"
 #include "Screen/ScreenInventory.h"
 #include "ViewModel/Screen/ScreenInventoryVM.h"
 
@@ -23,19 +22,8 @@ void UInventoryPresenter::OpenScreenInventory()
 	if (auto* ScreenInventory = UIMgr->ShowUI<UScreenInventory>(TEXT("ScreenInventory")))
 	{
 		UScreenInventoryVM* InventoryData = NewObject<UScreenInventoryVM>(ScreenInventory);
-		InventoryData->Init(InvenMgr);
-		
-		for (const EItemType ItemType : TableMgr->GetLeftEquipTypes())
-		{
-			InventoryData->LeftItemTypes.Emplace(ItemType, TableMgr->GetItemTypeName(ItemType));
-		}
-		
-		for (const EItemType ItemType : TableMgr->GetRightEquipTypes())
-		{
-			InventoryData->RightItemTypes.Emplace(ItemType, TableMgr->GetItemTypeName(ItemType));
-		}
+		InventoryData->Init(InvenMgr, TableMgr);
 		
 		ScreenInventory->SetViewModel(InventoryData);
-		ScreenInventory->Init();
 	}
 }

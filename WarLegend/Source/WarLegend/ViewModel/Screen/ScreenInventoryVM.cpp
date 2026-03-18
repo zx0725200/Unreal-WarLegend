@@ -3,8 +3,35 @@
 
 #include "ScreenInventoryVM.h"
 
+#include "DataManager/TableManager.h"
+
+void UScreenInventoryVM::Init(UInventoryManager* InMgr, UTableManager* TableMgr)
+{
+	InvenMgr = InMgr;
+	
+	for (const EItemType ItemType : TableMgr->GetLeftEquipTypes())
+	{
+		LeftItemTypes.Emplace(ItemType, TableMgr->GetItemTypeName(ItemType));
+	}
+		
+	for (const EItemType ItemType : TableMgr->GetRightEquipTypes())
+	{
+		RightItemTypes.Emplace(ItemType, TableMgr->GetItemTypeName(ItemType));
+	}
+}
+
 const TArray<TObjectPtr<USlotInventoryVM>>& UScreenInventoryVM::GetItems() const
 {
 	check(InvenMgr); 
 	return InvenMgr->GetInventoryItemData(); 
+}
+
+const TMap<EItemType, FString>& UScreenInventoryVM::GetLeftItemTypes() const
+{
+	return LeftItemTypes;
+}
+
+const TMap<EItemType, FString>& UScreenInventoryVM::GetLightItemTypes() const
+{
+	return RightItemTypes;
 }

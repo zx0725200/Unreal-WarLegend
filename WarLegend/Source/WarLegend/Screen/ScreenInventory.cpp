@@ -34,6 +34,8 @@ void UScreenInventory::OnClickEvent(const FName& InChildName)
 void UScreenInventory::SetViewModel(UScreenInventoryVM* InData)
 {
 	VM = InData;
+	
+	Init();
 }
 
 void UScreenInventory::Init()
@@ -44,8 +46,8 @@ void UScreenInventory::Init()
 
 void UScreenInventory::InitEquipSlots()
 {
-	CreateEquipSlots(Vertical_Equip, VM->LeftItemTypes);
-	CreateEquipSlots(Vertical_Boss, VM->RightItemTypes);
+	CreateEquipSlots(Vertical_Equip, VM->GetLeftItemTypes());
+	CreateEquipSlots(Vertical_Boss, VM->GetLightItemTypes());
 }
 
 void UScreenInventory::InitInventorySlots()

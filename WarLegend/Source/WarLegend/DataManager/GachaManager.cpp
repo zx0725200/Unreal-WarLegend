@@ -3,7 +3,9 @@
 
 #include "GachaManager.h"
 
+#include "SaveGameDataManager.h"
 #include "TableManager.h"
+#include "DataAsset/WLSaveGame.h"
 #include "DataTable/ItemTableData.h"
 
 void UGachaManager::Initialize(FSubsystemCollectionBase& Collection)
@@ -36,6 +38,21 @@ TArray<int32> UGachaManager::GetGachaItemMultiple(const int32 InCount) const
 	}
 
 	return GachaItemIdList;
+}
+
+void UGachaManager::ApplyFilter()
+{
+	auto* SaveGameMgr = GetGameInstance()->GetSubsystem<USaveGameDataManager>();
+	UWLSaveGame* Save = SaveGameMgr->GetSaveGame();
+	if (!Save) return;
+
+	TArray<EItemGrade> AllowedGrades;
+	for (const auto& [Grade, bChecked] : Save->GachaFilter)
+	{
+		if (!bChecked) continue;
+		AllowedGrades.Emplace(Grade);
+	}
+	SetFilter(AllowedGrades);
 }
 
 void UGachaManager::SetFilter(const TArray<EItemGrade>& InAllowedGrades)

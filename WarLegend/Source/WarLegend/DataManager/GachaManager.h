@@ -36,10 +36,11 @@ public:
 	int32 GetGachaItem() const;
 	TArray<int32> GetGachaItemMultiple(const int32 InCount) const;
 	
-	void SetFilter(const TArray<EItemGrade>& InAllowedGrades);
+	void ApplyFilter(); 
 
 private:
 	void BuildCache();
+	void SetFilter(const TArray<EItemGrade>& InAllowedGrades);
 	
 	EItemGrade GetSelectedGrade() const;
 	int32 GetSelectedItemByGrade(EItemGrade InGrade) const;

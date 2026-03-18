@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "GachaPresenter.generated.h"
 
+struct FGachaLogData;
 class UPopupGachaLogVM;
 class UTableManager;
 enum class EItemGrade : uint8;
@@ -27,17 +28,9 @@ public:
 	void OpenPopupGacha();
 	void OpenPopupGachaFilter();
 	void OpenPopupGachaLog();
-
+	
 private:
-	void ApplyFilter() const;
-	void ShowToast_Gacha(const int32 InItemID);
-	void ShowToast_MultiGacha(const TArray<int32>& InItemList);
-	
-	void HandleClickOne();
-	void HandleClickTen();
-	void HandleClickAll();
-	
-	void HandleFilterChanged(const EItemGrade InGrade, const bool bChecked);
+	void HandleShowToast();
 
 private:
 	UPROPERTY()

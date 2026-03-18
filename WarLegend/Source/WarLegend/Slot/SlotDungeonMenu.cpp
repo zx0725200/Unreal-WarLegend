@@ -27,7 +27,7 @@ void USlotDungeonMenu::OnClickEvent(const FName& InChildName)
 	if (InChildName == TEXT("Btn_Dungeon"))
 	{
 		if (!VM) return;
-		VM->BroadCastConfirm();
+		VM->BroadCastEnterDungeon();
 	}
 }
 
