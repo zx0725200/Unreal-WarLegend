@@ -30,7 +30,6 @@ private:
 	void RefreshLevel(const int32 InMin, const int32 InMax) const;
 	
 	void AddVmEvent();
-	void ClearVmEvent();
 	
 private:
 	UPROPERTY()

@@ -58,16 +58,11 @@ void USlotDungeonMenu::RefreshLevel(const int32 InMin, const int32 InMax) const
 
 void USlotDungeonMenu::AddVmEvent()
 {
-	ClearVmEvent();
-	
-	VM->GetOnNameChanged().AddUObject(this, &USlotDungeonMenu::RefreshName);
-	VM->GetOnLevelChanged().AddUObject(this, &USlotDungeonMenu::RefreshLevel);
-}
-
-void USlotDungeonMenu::ClearVmEvent()
-{
 	if (!VM) return;
 	
 	VM->GetOnNameChanged().RemoveAll(this);
 	VM->GetOnLevelChanged().RemoveAll(this);
+	
+	VM->GetOnNameChanged().AddUObject(this, &USlotDungeonMenu::RefreshName);
+	VM->GetOnLevelChanged().AddUObject(this, &USlotDungeonMenu::RefreshLevel);
 }
