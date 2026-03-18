@@ -3,6 +3,7 @@
 
 #include "DungeonPresenter.h"
 
+#include "DataManager/DungeonManager.h"
 #include "DataManager/TableManager.h"
 #include "DataManager/UIManagerImpl.h"
 #include "DataTable/DungeonTableData.h"
@@ -10,17 +11,18 @@
 #include "ViewModel/Popup/PopupDungeonMenuVM.h"
 
 
-void UDungeonPresenter::Init(UUIManagerImpl* InUIMgr, UTableManager* InTableMgr)
+void UDungeonPresenter::Init(UUIManagerImpl* InUIMgr, UTableManager* InTableMgr, UDungeonManager* InDungeonMgr)
 {
 	UIMgr    = InUIMgr;
 	TableMgr = InTableMgr;
+	DungeonMgr = InDungeonMgr;
 }
 
 void UDungeonPresenter::OpenPopupDungeonMenu()
 {
 	if (!UIMgr || !TableMgr) return;
 	
-	const auto DungeonList = TableMgr->GetDungeonTableData();
+	const auto DungeonList = TableMgr->GetAllDungeonTableData();
 	if (DungeonList.IsEmpty()) return;
 
 	auto* DungeonPopup = UIMgr->ShowUI<UPopupDungeonMenu>(TEXT("PopupDungeonMenu"));
@@ -46,7 +48,19 @@ void UDungeonPresenter::OpenPopupDungeonMenu()
 	DungeonPopup->Init();
 }
 
+void UDungeonPresenter::ExitDungeon()
+{
+	if (!DungeonMgr) return;
+	DungeonMgr->ExitDungeon();
+}
+
 void UDungeonPresenter::HandleSlotDungeonMenuClick(int32 InSlotIndex)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Dungeon Selected: %d"), InSlotIndex);
+	
+	if (!DungeonMgr || !UIMgr) return;
+	DungeonMgr->EnterDungeon(InSlotIndex);
+
+	// 던전 메뉴 팝업 닫기
+	UIMgr->HideUI(TEXT("PopupDungeonMenu"));
 }

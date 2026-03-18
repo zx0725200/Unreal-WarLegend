@@ -10,8 +10,6 @@
 #include "NavigationSystem.h"
 #include "Engine/LocalPlayer.h"
 #include "WarLegend.h"
-#include "DataManager/UIManager.h"
-#include "DataManager/UIManagerImpl.h"
 #include "ETC/Define.h"
 #include "Presenter/UIFlowPresenter.h"
 

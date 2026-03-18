@@ -43,7 +43,15 @@ FItemTableData* UTableManager::GetItemTableData(const int32 InItemId)
 	return (*ItemTableList)[0];
 }
 
-TArray<FDungeonTableData*> UTableManager::GetDungeonTableData()
+FDungeonTableData* UTableManager::GetDungeonTableData(const int32 InDungeonId)
+{
+	const TArray<FDungeonTableData*>* DungeonTableList = DungeonTableData.Find(InDungeonId);
+	if (!DungeonTableList || DungeonTableList->IsEmpty()) return nullptr;
+
+	return (*DungeonTableList)[0];
+}
+
+TArray<FDungeonTableData*> UTableManager::GetAllDungeonTableData()
 {
 	TArray<FDungeonTableData*> OutTableData;
 	

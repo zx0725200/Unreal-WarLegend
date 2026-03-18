@@ -78,4 +78,11 @@ void UHudLeftMenu::OnClickedGachaLog()
 
 void UHudLeftMenu::OnClickedRollBack()
 {
+	const auto UIPresenter = GTUIGetMgr(UUIFlowPresenter);
+	if (!UIPresenter)
+	{
+		return;
+	}
+	
+	UIPresenter->GotoCity();
 }

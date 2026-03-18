@@ -9,6 +9,7 @@
 #include "DataManager/UIManagerImpl.h"
 #include "DataManager/GachaManager.h"
 #include "DataManager/SaveGameDataManager.h"
+#include "DataManager/DungeonManager.h"
 #include "ETC/Define.h"
 #include "Hud/HudPlayerState.h"
 #include "Screen/ScreenTitle.h"
@@ -32,9 +33,10 @@ void UUIFlowPresenter::PlayerControllerChanged(APlayerController* NewPlayerContr
 	auto* TableMgr = GI->GetSubsystem<UTableManager>();
 	auto* GachaMgr = GI->GetSubsystem<UGachaManager>();
 	auto* SaveGameMgr = GI->GetSubsystem<USaveGameDataManager>();
+	auto* DungeonMgr = GI->GetSubsystem<UDungeonManager>();
 	auto* InvenMgr = GTGetMgr(UInventoryManager);
 	
-	DungeonPresenter->Init(UIMgr, TableMgr);
+	DungeonPresenter->Init(UIMgr, TableMgr, DungeonMgr);
 	GachaPresenter->Init(UIMgr, GachaMgr, InvenMgr, SaveGameMgr, TableMgr);
 	InventoryPresenter->Init(UIMgr, InvenMgr, TableMgr);
 }
@@ -94,6 +96,13 @@ void UUIFlowPresenter::OpenPopupGachaLog() const
 	if (!GachaPresenter) return;
 	
 	GachaPresenter->OpenPopupGachaLog();
+}
+
+void UUIFlowPresenter::GotoCity() const
+{
+	if (!DungeonPresenter) return;
+	
+	DungeonPresenter->ExitDungeon();
 }
 
 void UUIFlowPresenter::HandleTitleConfirm()

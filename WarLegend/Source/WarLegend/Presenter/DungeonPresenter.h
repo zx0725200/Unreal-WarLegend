@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "DungeonPresenter.generated.h"
 
+class UDungeonManager;
 class UTableManager;
 class UUIManagerImpl;
 class UPopupDungeonMenuVM;
@@ -18,9 +19,10 @@ class WARLEGEND_API UDungeonPresenter : public UObject
 	GENERATED_BODY()
 	
 public:
-	void Init(UUIManagerImpl* InUIMgr, UTableManager* InTableMgr);
+	void Init(UUIManagerImpl* InUIMgr, UTableManager* InTableMgr, UDungeonManager* InDungeonMgr);
 	
 	void OpenPopupDungeonMenu();
+	void ExitDungeon();
 
 private:
 	void HandleSlotDungeonMenuClick(int32 InSlotIndex);
@@ -33,4 +35,7 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UTableManager> TableMgr;
+	
+	UPROPERTY()
+	TObjectPtr<UDungeonManager> DungeonMgr;
 };

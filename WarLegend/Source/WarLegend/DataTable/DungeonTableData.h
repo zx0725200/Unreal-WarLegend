@@ -40,4 +40,7 @@ struct FDungeonTableData : public  FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float EnemyAtkScale = 1.0f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FVector SpawnLocation = FVector::ZeroVector;
 };

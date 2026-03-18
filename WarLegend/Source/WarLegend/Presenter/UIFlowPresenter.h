@@ -33,6 +33,7 @@ public:
 	void OpenPopupGacha() const;
 	void OpenPopupGachaFilter() const;
 	void OpenPopupGachaLog() const;
+	void GotoCity() const;
 #pragma endregion Popup
 	
 #pragma region Hud

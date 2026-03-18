@@ -44,8 +44,9 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 
 	FItemTableData* GetItemTableData(const int32 InItemId);
+	FDungeonTableData* GetDungeonTableData(const int32 InDungeonId);
 	
-	TArray<FDungeonTableData*> GetDungeonTableData();		// 전체 던전 데이터
+	TArray<FDungeonTableData*> GetAllDungeonTableData();	// 전체 던전 데이터
 	TArray<FItemTableData*> GetAllItemTableData() const;	// 전체 아이템 데이터
 	TArray<EItemType> GetLeftEquipTypes() const;			// Weapon ~ Glove
 	TArray<EItemType> GetRightEquipTypes() const;			// BossWeapon ~ BossArmor
