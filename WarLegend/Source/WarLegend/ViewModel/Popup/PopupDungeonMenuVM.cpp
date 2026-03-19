@@ -33,6 +33,7 @@ void UPopupDungeonMenuVM::SetID(const int32 InID)
 void UPopupDungeonMenuVM::BroadCastEnterDungeon()
 {
 	if (!DungeonMgr || !UIMgr) return;
+	
 	DungeonMgr->EnterDungeon(ID);
 	UIMgr->HideUI(TEXT("PopupDungeonMenu"));
 }
