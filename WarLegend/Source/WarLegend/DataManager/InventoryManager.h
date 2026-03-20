@@ -19,7 +19,7 @@ class WARLEGEND_API UInventoryManager : public ULocalPlayerSubsystem
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	
-	const TArray<TObjectPtr<USlotInventoryVM>>& GetInventoryItemData() const { return InventoryItemData; }
+	const TArray<FMyItem>& GetInventoryItemData() const { return InventoryItemData; }
 	
 	// 뽑기 결과 아이템 ID를 인벤토리에 추가
 	void AddItem(const int32 InItemID);
@@ -33,5 +33,5 @@ private:
 	
 private:
 	UPROPERTY()
-	TArray<TObjectPtr<USlotInventoryVM>> InventoryItemData;
+	TArray<FMyItem> InventoryItemData;
 };

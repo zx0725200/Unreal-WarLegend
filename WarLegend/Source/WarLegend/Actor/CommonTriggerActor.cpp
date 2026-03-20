@@ -2,12 +2,9 @@
 
 
 #include "CommonTriggerActor.h"
-#include "Character/WarLegendPlayerController.h"
 #include "Components/BoxComponent.h"
-#include "DataManager/UIManager.h"
-#include "DataManager/UIManagerImpl.h"
+#include "Controller/WarLegendPlayerController.h"
 #include "Kismet/GameplayStatics.h"
-#include "Popup/PopupDungeonMenu.h"
 #include "Presenter/UIFlowPresenter.h"
 
 
@@ -18,11 +15,9 @@ ACommonTriggerActor::ACommonTriggerActor()
 	PrimaryActorTick.bCanEverTick = false;
 	
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	RootComponent = Mesh;
-
-	// 메쉬는 지나갈 거면 충돌 끄거나 NoCollision 권장
 	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
+	RootComponent = Mesh;
+	
 	Trigger = CreateDefaultSubobject<UBoxComponent>(TEXT("Trigger"));
 	Trigger->SetupAttachment(RootComponent);
 	Trigger->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
@@ -37,18 +32,13 @@ void ACommonTriggerActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (!Trigger)
-	{
-		return;
-	}
-	
+	if (!Trigger) return;
 	
 	Trigger->OnComponentBeginOverlap.AddDynamic(this, &ACommonTriggerActor::OnTriggerBegin);
 }
 
 void ACommonTriggerActor::OnTriggerBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	// 플레이어만 반응
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 	if (OtherActor != PlayerPawn)
 	{
@@ -64,10 +54,6 @@ void ACommonTriggerActor::SetTriggerAction()
 	{
 		OpenDungeonMenu();
 	}
-	else if (ActorHasTag(FName("Boss")))
-	{
-		MoveToBossPosition();
-	}
 }
 
 void ACommonTriggerActor::OpenDungeonMenu()
@@ -75,7 +61,6 @@ void ACommonTriggerActor::OpenDungeonMenu()
 	AWarLegendPlayerController* PlayerController =  Cast<AWarLegendPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
 	if (!PlayerController)
 	{
-		// 대안.
 		PlayerController = Cast<AWarLegendPlayerController>(GetInstigatorController()); 
 	}
 	if (!PlayerController)
@@ -100,13 +85,4 @@ void ACommonTriggerActor::OpenDungeonMenu()
 	UIPresenter->OpenPopupDungeonMenu();
 }
 
-void ACommonTriggerActor::MoveToBossPosition()
-{
-}
-
-// Called every frame
-void ACommonTriggerActor::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
 

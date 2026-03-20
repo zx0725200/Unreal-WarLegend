@@ -3,8 +3,18 @@
 
 #include "HudMonsterHeadUpVM.h"
 
-void UHudMonsterHeadUpVM::SetLapCount(const int32 InCount)
+#include "Character/Monster.h"
+
+void UHudMonsterHeadUpVM::Init(AMonster* InMonster)
 {
-	LapCount = InCount;
+	LapCount = 0;
+	if (!InMonster) return;
+ 
+	InMonster->OnLapCountChanged.AddUObject(this, &UHudMonsterHeadUpVM::HandleLapCountChanged);
+}
+
+void UHudMonsterHeadUpVM::HandleLapCountChanged(AMonster* InMonster, const int32 InNewLapCount)
+{
+	LapCount = InNewLapCount;
 	OnLapCountUpdated.Broadcast(LapCount);
 }

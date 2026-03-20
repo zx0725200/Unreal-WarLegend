@@ -8,6 +8,7 @@
 #include "DataManager/SaveGameDataManager.h"
 #include "DataManager/TableManager.h"
 #include "DataManager/UIManagerImpl.h"
+#include "Kismet/GameplayStatics.h"
 #include "Popup/PopupGacha.h"
 #include "Popup/PopupGachaFilter.h"
 #include "ViewModel/Popup/PopupGachaFilterVM.h"
@@ -15,13 +16,17 @@
 #include "Popup/PopupGachaLog.h"
 #include "ViewModel/Popup/PopupGachaLogVM.h"
 
-void UGachaPresenter::Init(UUIManagerImpl* InUIMgr, UGachaManager* InGachaMgr, UInventoryManager* InInvenMgr, USaveGameDataManager* InSaveGameMgr, UTableManager* InTableMgr)
+void UGachaPresenter::Init(UUIManagerImpl* InUIMgr)
 {
 	UIMgr    = InUIMgr;
-	GachaMgr = InGachaMgr;
-	InvenMgr = InInvenMgr;
-	SaveGameMgr = InSaveGameMgr;
-	TableMgr = InTableMgr;
+	
+	UGameInstance* GI = UGameplayStatics::GetGameInstance(UIMgr);
+	GachaMgr    = GI->GetSubsystem<UGachaManager>();
+	SaveGameMgr = GI->GetSubsystem<USaveGameDataManager>();
+	TableMgr	= GI->GetSubsystem<UTableManager>();
+	
+	ULocalPlayer* LP = GI->GetFirstGamePlayer();
+	InvenMgr = LP->GetSubsystem<UInventoryManager>();
 	
 	GachaLogVM = NewObject<UPopupGachaLogVM>(this);
 	

@@ -72,6 +72,8 @@ void UGachaManager::BuildCache()
 		{ EItemGrade::Epic,    1.f },
 	};
 	
+	TotalWeight = GetTotalWeight();
+	
 	UTableManager* TableMgr = GetGameInstance()->GetSubsystem<UTableManager>();
 	if (!TableMgr)
 	{
@@ -89,7 +91,6 @@ void UGachaManager::BuildCache()
 
 EItemGrade UGachaManager::GetSelectedGrade() const
 {
-	const float TotalWeight = GetTotalWeight();
 	const float ItemWeight = FMath::FRandRange(0.f, TotalWeight);
 	float ItemAccumulation = 0.f;
 	
@@ -128,12 +129,12 @@ int32 UGachaManager::GetSelectedItemByGrade(const EItemGrade InGrade) const
 
 float UGachaManager::GetTotalWeight() const
 {
-	float TotalWeight = 0.f;
+	float TempTotalWeight = 0.f;
 	for (const FGachaGradeWeight& Item : GradeWeightTable)
 	{
-		TotalWeight += Item.Weight;
+		TempTotalWeight += Item.Weight;
 	}
 	
-	return TotalWeight;
+	return TempTotalWeight;
 }
 	

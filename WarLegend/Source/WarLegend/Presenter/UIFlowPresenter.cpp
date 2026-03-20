@@ -31,13 +31,11 @@ void UUIFlowPresenter::PlayerControllerChanged(APlayerController* NewPlayerContr
 	const auto* GI      = GetLocalPlayer()->GetGameInstance();
 	auto* UIMgr= GTGetMgrImpl(UIManager);
 	auto* TableMgr = GI->GetSubsystem<UTableManager>();
-	auto* GachaMgr = GI->GetSubsystem<UGachaManager>();
-	auto* SaveGameMgr = GI->GetSubsystem<USaveGameDataManager>();
 	auto* DungeonMgr = GI->GetSubsystem<UDungeonManager>();
 	auto* InvenMgr = GTGetMgr(UInventoryManager);
 	
 	DungeonPresenter->Init(UIMgr, TableMgr, DungeonMgr);
-	GachaPresenter->Init(UIMgr, GachaMgr, InvenMgr, SaveGameMgr, TableMgr);
+	GachaPresenter->Init(UIMgr);
 	InventoryPresenter->Init(UIMgr, InvenMgr, TableMgr);
 }
 

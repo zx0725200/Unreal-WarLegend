@@ -4,6 +4,7 @@
 #include "ScreenInventoryVM.h"
 
 #include "DataManager/TableManager.h"
+#include "ViewModel/Slot/SlotInventoryVM.h"
 
 void UScreenInventoryVM::Init(UInventoryManager* InMgr, UTableManager* TableMgr)
 {
@@ -20,10 +21,21 @@ void UScreenInventoryVM::Init(UInventoryManager* InMgr, UTableManager* TableMgr)
 	}
 }
 
+void UScreenInventoryVM::RefreshItems()
+{
+	Items.Empty();
+    
+	for (const FMyItem& MyItem : InvenMgr->GetInventoryItemData())
+	{
+		USlotInventoryVM* SlotVM = NewObject<USlotInventoryVM>(this);
+		SlotVM->FromSaveData(MyItem);
+		Items.Emplace(SlotVM);
+	}
+}
+
 const TArray<TObjectPtr<USlotInventoryVM>>& UScreenInventoryVM::GetItems() const
 {
-	check(InvenMgr); 
-	return InvenMgr->GetInventoryItemData(); 
+	return Items;
 }
 
 const TMap<EItemType, FString>& UScreenInventoryVM::GetLeftItemTypes() const

@@ -6,6 +6,8 @@
 #include "UObject/Object.h"
 #include "DungeonPresenter.generated.h"
 
+class UHudMonsterHeadUpVM;
+class AMonster;
 class UDungeonManager;
 class UTableManager;
 class UUIManagerImpl;
@@ -22,8 +24,15 @@ public:
 	void Init(UUIManagerImpl* InUIMgr, UTableManager* InTableMgr, UDungeonManager* InDungeonMgr);
 	
 	void OpenPopupDungeonMenu();
+	
+private:
+	void HandleMonsterSpawned(AMonster* InMonster, int32 InAliveCount);
 
 private:
+	UPROPERTY()
+	TArray<TObjectPtr<UHudMonsterHeadUpVM>> LapVMList;
+	
+	UPROPERTY()
 	TArray<TObjectPtr<UPopupDungeonMenuVM>> VMList;
 	
 	UPROPERTY()

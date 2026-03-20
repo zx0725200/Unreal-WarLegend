@@ -12,7 +12,6 @@ class WARLEGEND_API AWLPatrolPathActor : public AActor
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
 	AWLPatrolPathActor();
 
 public:
@@ -20,7 +19,7 @@ public:
 	int32 GetWaypointCount() const;
 	
 	UFUNCTION(BlueprintCallable, Category = "Patrol")
-	FVector GetWaypointWorldLocation(int32 InIndex) const;
+	FVector GetWaypointWorldLocation(const int32 InIndex) const;
  
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Patrol", meta = (MakeEditWidget = true))

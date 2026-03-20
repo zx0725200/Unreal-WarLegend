@@ -2,7 +2,7 @@
 
 #include "UMyButton.h"
 #include "Blueprint/WidgetTree.h"
-#include "Character/WarLegendPlayerController.h"
+#include "Controller/WarLegendPlayerController.h"
 #include "DataManager/UIManager.h"
 #include "DataManager/UIManagerImpl.h"
 #include "Kismet/GameplayStatics.h"
@@ -144,7 +144,6 @@ void UWLUserWidgetBase::LockPlayerInput()
 	}
 	
 	FInputModeUIOnly UIOnlyGameMode;
-	//UIOnlyGameMode.SetWidgetToFocus(GetCachedWidget()); // 포커스 잡아서 ESC 받기
 	PlayerController->SetInputMode(UIOnlyGameMode);
 	
 	SetFocus(); 

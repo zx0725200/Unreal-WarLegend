@@ -51,4 +51,6 @@ private:
 	TArray<FGachaGradeWeight> GradeWeightTable;		// 등급별 가중치 테이블
 	TArray<EItemGrade> FilterGrades;				// 필터 처리된 등급
 	TMap<EItemGrade, TArray<int32>> GradeToItemIDs; // 등급별 아이템 ID 캐시
+	
+	float TotalWeight = 0.f;
 };

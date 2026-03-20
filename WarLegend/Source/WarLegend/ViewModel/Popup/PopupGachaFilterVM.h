@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core/PopupWidgetBase.h"
 #include "PopupGachaFilterVM.generated.h"
 
 enum class EItemGrade : uint8;
@@ -18,7 +17,7 @@ DECLARE_MULTICAST_DELEGATE(FOnFilterConfirm);
  * 
  */
 UCLASS()
-class WARLEGEND_API UPopupGachaFilterVM : public UPopupWidgetBase
+class WARLEGEND_API UPopupGachaFilterVM : public UObject
 {
 	GENERATED_BODY()
 

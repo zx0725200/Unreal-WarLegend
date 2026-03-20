@@ -2,6 +2,7 @@
 
 #include "Struct.generated.h"
 
+struct FItemTableData;
 enum class EItemType : uint8;
 enum class EItemGrade : uint8;
 
@@ -10,6 +11,8 @@ struct FMyItem
 {
 	GENERATED_BODY()
 
+	void Init(const FItemTableData* InTableData, const FLinearColor& InGradeColor);
+	
 public:
 	UPROPERTY()
 	FName Name;

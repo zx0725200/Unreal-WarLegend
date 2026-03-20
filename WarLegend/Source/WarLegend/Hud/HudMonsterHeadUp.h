@@ -3,10 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/TextBlock.h"
 #include "Core/HudWidgetBase.h"
 #include "HudMonsterHeadUp.generated.h"
 
+class UTextBlock;
 class UHudMonsterHeadUpVM;
 /**
  * 

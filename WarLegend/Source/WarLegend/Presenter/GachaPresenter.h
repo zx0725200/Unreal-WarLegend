@@ -23,7 +23,7 @@ class WARLEGEND_API UGachaPresenter : public UObject
 	GENERATED_BODY()
 	
 public:
-	void Init(UUIManagerImpl* InUIMgr, UGachaManager* InGachaMgr, UInventoryManager* InInvenMgr, USaveGameDataManager* InSaveGameMgr, UTableManager* InTableMgr);
+	void Init(UUIManagerImpl* InUIMgr);
 
 	void OpenPopupGacha();
 	void OpenPopupGachaFilter();

@@ -3,9 +3,6 @@
 
 #include "Core/PopupWidgetBase.h"
 
-#include "Character/WarLegendPlayerController.h"
-#include "Kismet/GameplayStatics.h"
-
 void UPopupWidgetBase::Awake()
 {
 	Super::Awake();

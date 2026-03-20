@@ -21,12 +21,16 @@ class WARLEGEND_API UScreenInventoryVM : public UObject
 	
 public:
 	void Init(UInventoryManager* InMgr, UTableManager* TableMgr);
+	void RefreshItems();
 	
 	const TArray<TObjectPtr<USlotInventoryVM>>& GetItems() const;
 	const TMap<EItemType, FString>& GetLeftItemTypes() const;
 	const TMap<EItemType, FString>& GetLightItemTypes() const;
 	
 private:
+	UPROPERTY()
+	TArray<TObjectPtr<USlotInventoryVM>> Items;
+	
 	UPROPERTY(EditDefaultsOnly)
 	TMap<EItemType, FString> LeftItemTypes;
 	

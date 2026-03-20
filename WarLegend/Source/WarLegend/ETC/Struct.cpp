@@ -1,0 +1,17 @@
+﻿
+#include "Struct.h"
+
+#include "DataTable/ItemTableData.h"
+
+void FMyItem::Init(const FItemTableData* InTableData, const FLinearColor& InGradeColor)
+{
+	ID             = InTableData->ID;
+	ItemName       = InTableData->ItemName;
+	ItemTypeName   = InTableData->ItemTypeName;
+	ItemType       = InTableData->ItemType;
+	ItemGrade      = InTableData->ItemGrade;
+	ItemGradeColor = InGradeColor;
+	HP             = InTableData->HP;
+	ATK            = InTableData->ATK;
+	DEF            = InTableData->DEF;
+}

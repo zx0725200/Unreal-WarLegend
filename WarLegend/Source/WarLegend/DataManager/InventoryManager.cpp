@@ -53,22 +53,24 @@ void UInventoryManager::Internal_AddItem(const int32 InItemID)
 	}
 	
 	const auto ItemTableData = TableMgr->GetItemTableData(InItemID);
-	if (!ItemTableData) return;
+	if (!ItemTableData)
+	{
+		return;
+	}
 	
 	const auto ItemGradeColor = GTGetMgrImpl(UIManager)->GetItemColor(ItemTableData->ItemGrade);
 	
-	USlotInventoryVM* ItemData = NewObject<USlotInventoryVM>(this);
-	ItemData->Init(ItemTableData, ItemGradeColor);
+	FMyItem ItemData;
+	ItemData.Init(ItemTableData, ItemGradeColor);
 	InventoryItemData.Emplace(ItemData);
 	
-	AddSaveItemData(ItemData->ToSaveData());
-}
-
-void UInventoryManager::AddSaveItemData(const FMyItem& InData)
-{
 	USaveGameDataManager* SaveGameMgr = GetLocalPlayer()->GetGameInstance()->GetSubsystem<USaveGameDataManager>();
-	if (!SaveGameMgr) return;
-	SaveGameMgr->AddInvenData(InData);
+	if (!SaveGameMgr)
+	{
+		return;
+	}
+	
+	SaveGameMgr->AddInvenData(ItemData);
 }
 
 void UInventoryManager::SaveData() const
@@ -87,10 +89,5 @@ void UInventoryManager::LoadData()
 	UWLSaveGame* SaveData = SaveGameMgr->GetSaveGame();
 	if (!SaveData) return;
 
-	for (const auto& MyItem : SaveData->InvenItemData)
-	{
-		USlotInventoryVM* VM = NewObject<USlotInventoryVM>(this);
-		VM->FromSaveData(MyItem);
-		InventoryItemData.Emplace(VM);
-	}
+	InventoryItemData = SaveData->InvenItemData;
 }
