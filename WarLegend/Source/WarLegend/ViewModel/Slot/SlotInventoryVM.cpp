@@ -34,6 +34,7 @@ FMyItem USlotInventoryVM::ToSaveData() const
 
 void USlotInventoryVM::FromSaveData(const FMyItem& InData)
 {
+	UniqueID		= InData.UniqueID;
 	ID				= InData.ID;
 	ItemName		= InData.ItemName;
 	ItemTypeName	= InData.ItemTypeName;

@@ -24,14 +24,16 @@ public:
 	// 뽑기 결과 아이템 ID를 인벤토리에 추가
 	void AddItem(const int32 InItemID);
 	void AddItems(const TArray<int32>& InItemList);
+	void ResetItem();
 	
 private:
 	void Internal_AddItem(const int32 InItemID);
-	void AddSaveItemData(const FMyItem& InData);
 	void SaveData() const;
 	void LoadData();
 	
 private:
 	UPROPERTY()
 	TArray<FMyItem> InventoryItemData;
+	
+	int32 UniqueInventoryItemID;
 };

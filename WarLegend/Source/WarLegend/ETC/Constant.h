@@ -13,4 +13,5 @@ namespace Constant
 #pragma endregion
 	
 	constexpr float DungeonExitTime = 0.5f;
+	constexpr float MapSize = 1800.0f;
 }

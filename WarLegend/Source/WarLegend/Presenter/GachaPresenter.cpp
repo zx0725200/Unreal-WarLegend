@@ -68,6 +68,7 @@ void UGachaPresenter::OpenPopupGachaLog()
 	if (!PopupGachaLog) return;
 	
 	PopupGachaLog->SetViewModel(GachaLogVM);
+	PopupGachaLog->ShowAsFull();
 }
 
 void UGachaPresenter::HandleShowToast()
@@ -76,4 +77,5 @@ void UGachaPresenter::HandleShowToast()
 	if (!PopupLog) return;
 	
 	PopupLog->SetViewModel(GachaLogVM);
+	PopupLog->ShowAsToast();
 }

@@ -29,6 +29,13 @@ void USaveGameDataManager::AddInvenData( const FMyItem& InData)
 	SaveGameData->InvenItemData.Add(InData);
 }
 
+void USaveGameDataManager::ClearInvenData()
+{
+	if (!SaveGameData) return;
+	
+	SaveGameData->InvenItemData.Empty();
+}
+
 void USaveGameDataManager::SaveGame(const FString& InSaveName)
 {
 	if (!SaveGameData) return;

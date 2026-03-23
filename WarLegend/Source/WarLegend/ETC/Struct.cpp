@@ -3,8 +3,9 @@
 
 #include "DataTable/ItemTableData.h"
 
-void FMyItem::Init(const FItemTableData* InTableData, const FLinearColor& InGradeColor)
+void FMyItem::Init(const FItemTableData* InTableData, const FLinearColor& InGradeColor, const int32 InUniqueID)
 {
+	UniqueID	   = InUniqueID;
 	ID             = InTableData->ID;
 	ItemName       = InTableData->ItemName;
 	ItemTypeName   = InTableData->ItemTypeName;

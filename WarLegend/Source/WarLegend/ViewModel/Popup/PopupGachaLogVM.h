@@ -24,12 +24,10 @@ public:
 	void ClearAll();
 	
 	const TArray<FGachaLogData>& GetLogList() const { return LogList; }
-	FOnLogUpdated& GetOnLogUpdated() { return OnLogUpdated; }
 	FOnLogCleared& GetOnLogCleared() { return OnLogCleared; }
 	
 private:
 	TArray<FGachaLogData> LogList;
 	
-	FOnLogUpdated OnLogUpdated;
 	FOnLogCleared OnLogCleared;
 };

@@ -35,6 +35,8 @@ private:
 	
 	void CreateEquipSlots(UVerticalBox* InParent, const TMap<EItemType, FString>& InItemData) const;
 	
+	void OnClickedReset();
+	
 private:
 	UPROPERTY(EditDefaultsOnly, Category="DungeonMenu")
 	TSubclassOf<USlotEquipItem> EquipSlotClass;

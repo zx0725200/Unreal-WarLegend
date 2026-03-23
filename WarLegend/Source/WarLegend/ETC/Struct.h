@@ -11,9 +11,12 @@ struct FMyItem
 {
 	GENERATED_BODY()
 
-	void Init(const FItemTableData* InTableData, const FLinearColor& InGradeColor);
+	void Init(const FItemTableData* InTableData, const FLinearColor& InGradeColor, const int32 InUniqueID);
 	
 public:
+	UPROPERTY()
+	int32 UniqueID = 0;
+	
 	UPROPERTY()
 	FName Name;
 	

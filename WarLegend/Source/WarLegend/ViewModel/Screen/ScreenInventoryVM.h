@@ -22,6 +22,7 @@ class WARLEGEND_API UScreenInventoryVM : public UObject
 public:
 	void Init(UInventoryManager* InMgr, UTableManager* TableMgr);
 	void RefreshItems();
+	void HandleReset();
 	
 	const TArray<TObjectPtr<USlotInventoryVM>>& GetItems() const;
 	const TMap<EItemType, FString>& GetLeftItemTypes() const;

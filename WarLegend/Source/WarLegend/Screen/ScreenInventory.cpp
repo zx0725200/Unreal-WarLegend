@@ -29,6 +29,11 @@ void UScreenInventory::OnDisable()
 void UScreenInventory::OnClickEvent(const FName& InChildName)
 {
 	Super::OnClickEvent(InChildName);
+	
+	if (InChildName == TEXT("Btn_Reset"))
+	{
+		OnClickedReset();
+	}
 }
 
 void UScreenInventory::SetViewModel(UScreenInventoryVM* InData)
@@ -71,4 +76,15 @@ void UScreenInventory::CreateEquipSlots(UVerticalBox* InParent, const TMap<EItem
 		
 		InParent->AddChild(SlotEquipItem);
 	}
+}
+
+void UScreenInventory::OnClickedReset()
+{
+	if (!VM)
+	{
+		return;
+	}
+	
+	TileView_Inventory->ClearListItems();
+	VM->HandleReset();
 }

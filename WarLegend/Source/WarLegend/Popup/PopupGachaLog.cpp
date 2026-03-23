@@ -18,6 +18,8 @@ void UPopupGachaLog::Awake()
 void UPopupGachaLog::OnEnable()
 {
 	Super::OnEnable();
+	
+	Btn_Exit->SetVisibility(ESlateVisibility::Visible);
 }
 
 void UPopupGachaLog::OnDisable()
@@ -43,21 +45,21 @@ void UPopupGachaLog::StartHide()
 void UPopupGachaLog::SetViewModel(UPopupGachaLogVM* InVM)
 {
 	VM = InVM;
-	
-	AddEvent();
-	
-	Btn_Exit->SetVisibility(ESlateVisibility::Visible);
 }
 
-void UPopupGachaLog::AddEvent()
+void UPopupGachaLog::ShowAsToast()
 {
 	if (!VM) return;
 	
-	VM->GetOnLogUpdated().RemoveAll(this);
-	VM->GetOnLogCleared().RemoveAll(this);
+	CreateLogSlot();
+	ApplyDisplayMode(EGachaLogDisplayMode::Toast);
+}
+
+void UPopupGachaLog::ShowAsFull()
+{
+	if (!VM) return;
 	
-	VM->GetOnLogUpdated().AddUObject(this, &UPopupGachaLog::HandleLogUpdated);
-	VM->GetOnLogCleared().AddUObject(this, &UPopupGachaLog::HandleLogCleared);
+	ApplyDisplayMode(EGachaLogDisplayMode::Full);
 }
 
 void UPopupGachaLog::StartHideTimer()
@@ -66,34 +68,42 @@ void UPopupGachaLog::StartHideTimer()
 	GetWorld()->GetTimerManager().SetTimer(HideTimerHandle, this, &UPopupGachaLog::StartHide, 3.0f, false);
 }
 
-void UPopupGachaLog::CreateLogSlot(const FGachaLogData& InLogData) const
+void UPopupGachaLog::ApplyDisplayMode(const EGachaLogDisplayMode InMode)
 {
-	const auto UIMgr = GTUIGetMgrImpl(UIManager);
-	if (!UIMgr) return;
-
-	auto* LogSlot = UIMgr->CreateSlot<USlotGachaLog>(TEXT("SlotGachaLog"), SB_Log);
-	LogSlot->Init(InLogData);
+	const bool bToast = (InMode == EGachaLogDisplayMode::Toast);
+	
+	SB_Log->ScrollToEnd();
+	
+	Btn_Exit->SetVisibility(bToast ? ESlateVisibility::Collapsed : ESlateVisibility::Visible);
+	
+	GetWorld()->GetTimerManager().ClearTimer(HideTimerHandle);
+	
+	if (!bToast)
+	{
+		return;
+	}
+	
+	StartHideTimer();
 }
 
-void UPopupGachaLog::OnClickedClear()
-{
-	if (!VM) return;
-	VM->ClearAll();
-}
-
-void UPopupGachaLog::HandleLogUpdated()
+void UPopupGachaLog::CreateLogSlot() const
 {
 	const auto& LogList = VM->GetLogList();
 	const auto& LastData = LogList.Last();
 	
-	CreateLogSlot(LastData);
-	
-	StartHideTimer();
-	SB_Log->ScrollToEnd();
-	Btn_Exit->SetVisibility(ESlateVisibility::Collapsed);
+	const auto UIMgr = GTUIGetMgrImpl(UIManager);
+	if (!UIMgr) return;
+
+	auto* LogSlot = UIMgr->CreateSlot<USlotGachaLog>(TEXT("SlotGachaLog"), SB_Log);
+	LogSlot->Init(LastData);
 }
 
-void UPopupGachaLog::HandleLogCleared()
+void UPopupGachaLog::OnClickedClear()
 {
-	SB_Log->ClearChildren();
+	if (!VM)
+	{
+		return;
+	}
+	
+	VM->ClearAll();
 }

@@ -14,25 +14,22 @@ class WARLEGEND_API ACommonTriggerActor : public AActor
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
 	ACommonTriggerActor();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
 	UFUNCTION()
 	void OnTriggerBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
-	void SetTriggerAction();
+	// 여러 트리거가 생길수도 있기 때문에 확장성을 위해 함수 제작.
+	void ExecuteTriggerByType();
 	
-	void OpenDungeonMenu();
+	// -- 트리거에 따른 함수 분리. 
+	void OpenDungeonMenu() const;
 
 private:
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> Mesh;
-
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr <UBoxComponent> Trigger;
 };

@@ -6,7 +6,6 @@
 void UPopupGachaLogVM::AddLog(const FGachaLogData& InData)
 {
 	LogList.Add(InData);
-	OnLogUpdated.Broadcast();
 }
 
 void UPopupGachaLogVM::ClearAll()

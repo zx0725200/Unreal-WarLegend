@@ -19,6 +19,8 @@ void UScreenInventoryVM::Init(UInventoryManager* InMgr, UTableManager* TableMgr)
 	{
 		RightItemTypes.Emplace(ItemType, TableMgr->GetItemTypeName(ItemType));
 	}
+	
+	RefreshItems();
 }
 
 void UScreenInventoryVM::RefreshItems()
@@ -31,6 +33,16 @@ void UScreenInventoryVM::RefreshItems()
 		SlotVM->FromSaveData(MyItem);
 		Items.Emplace(SlotVM);
 	}
+}
+
+void UScreenInventoryVM::HandleReset()
+{
+	if (!InvenMgr)
+	{
+		return;
+	}
+	
+	InvenMgr->ResetItem();
 }
 
 const TArray<TObjectPtr<USlotInventoryVM>>& UScreenInventoryVM::GetItems() const

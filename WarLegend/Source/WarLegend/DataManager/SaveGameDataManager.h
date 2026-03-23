@@ -22,6 +22,7 @@ public:
 	
 	void SetGachaFilter(const EItemGrade InGrade, const bool bChecked);
 	void AddInvenData(const FMyItem& InData);
+	void ClearInvenData();
 	
 	void SaveGame(const FString& InSaveName);
 	UWLSaveGame* GetSaveGame() const { return SaveGameData; }

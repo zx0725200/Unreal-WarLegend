@@ -14,6 +14,13 @@ class UScrollBox;
 /**
  * 
  */
+UENUM()
+enum class EGachaLogDisplayMode : uint8
+{
+	Toast,
+	Full,
+};
+
 UCLASS()
 class WARLEGEND_API UPopupGachaLog : public UPopupWidgetBase
 {
@@ -26,19 +33,18 @@ public:
 	virtual void OnClickEvent(const FName& InChildName) override;
 	
 	void SetViewModel(UPopupGachaLogVM* InVM);
+	void ShowAsToast();
+	void ShowAsFull();
 
 private:
 	UFUNCTION()
 	void StartHide();
-	
-	void AddEvent();
 	void StartHideTimer();
-	void CreateLogSlot(const FGachaLogData& InLogData) const;
+	
+	void CreateLogSlot() const;
+	void ApplyDisplayMode(EGachaLogDisplayMode InMode);
 	
 	void OnClickedClear();
-	
-	void HandleLogUpdated();
-	void HandleLogCleared();
 
 private:
 	UPROPERTY()

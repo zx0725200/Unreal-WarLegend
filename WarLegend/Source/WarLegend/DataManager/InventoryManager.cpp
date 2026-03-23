@@ -12,7 +12,6 @@
 #include "ETC/Constant.h"
 #include "ETC/Define.h"
 #include "ETC/Struct.h"
-#include "ViewModel/Slot/SlotInventoryVM.h"
 
 void UInventoryManager::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -35,6 +34,16 @@ void UInventoryManager::AddItems(const TArray<int32>& InItemList)
 	}
 	
 	SaveData();
+}
+
+void UInventoryManager::ResetItem()
+{
+	InventoryItemData.Reset();
+	
+	USaveGameDataManager* SaveGameMgr = GetLocalPlayer()->GetGameInstance()->GetSubsystem<USaveGameDataManager>();
+	if (!SaveGameMgr) return;
+	
+	SaveGameMgr->ClearInvenData();
 }
 
 void UInventoryManager::Internal_AddItem(const int32 InItemID)
@@ -61,7 +70,7 @@ void UInventoryManager::Internal_AddItem(const int32 InItemID)
 	const auto ItemGradeColor = GTGetMgrImpl(UIManager)->GetItemColor(ItemTableData->ItemGrade);
 	
 	FMyItem ItemData;
-	ItemData.Init(ItemTableData, ItemGradeColor);
+	ItemData.Init(ItemTableData, ItemGradeColor, UniqueInventoryItemID++);
 	InventoryItemData.Emplace(ItemData);
 	
 	USaveGameDataManager* SaveGameMgr = GetLocalPlayer()->GetGameInstance()->GetSubsystem<USaveGameDataManager>();
@@ -90,4 +99,10 @@ void UInventoryManager::LoadData()
 	if (!SaveData) return;
 
 	InventoryItemData = SaveData->InvenItemData;
+	
+	UniqueInventoryItemID = 0;
+	for (const auto& Item : InventoryItemData)
+	{
+		UniqueInventoryItemID = FMath::Max(UniqueInventoryItemID, Item.UniqueID + 1);
+	}
 }

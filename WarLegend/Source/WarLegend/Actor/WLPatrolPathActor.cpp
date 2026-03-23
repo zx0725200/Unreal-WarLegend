@@ -3,15 +3,17 @@
 
 #include "WLPatrolPathActor.h"
 
+#include "ETC/Constant.h"
+
 
 AWLPatrolPathActor::AWLPatrolPathActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	
 	Waypoints.Add(FVector(0.f, 0.f, 0.f));
-	Waypoints.Add(FVector(0, 1800.f, 0.f));
-	Waypoints.Add(FVector(-1800.f, 1800.f, 0));
-	Waypoints.Add(FVector(-1800.f, 0.f, 0.f));
+	Waypoints.Add(FVector(0, Constant::MapSize, 0.f));
+	Waypoints.Add(FVector(-Constant::MapSize, Constant::MapSize, 0));
+	Waypoints.Add(FVector(-Constant::MapSize, 0.f, 0.f));
 }
 
 int32 AWLPatrolPathActor::GetWaypointCount() const

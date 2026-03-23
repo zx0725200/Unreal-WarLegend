@@ -26,6 +26,9 @@ public:
 	
 public:
 	UPROPERTY()
+	int32 UniqueID = 0;
+	
+	UPROPERTY()
 	int32 ID = 0;
 	
 	UPROPERTY()

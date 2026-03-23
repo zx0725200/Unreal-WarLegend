@@ -8,13 +8,11 @@
 #include "Presenter/UIFlowPresenter.h"
 
 
-// Sets default values
 ACommonTriggerActor::ACommonTriggerActor()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 	
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	UStaticMeshComponent* Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	RootComponent = Mesh;
 	
@@ -27,12 +25,14 @@ ACommonTriggerActor::ACommonTriggerActor()
 	Trigger->SetGenerateOverlapEvents(true);
 }
 
-// Called when the game starts or when spawned
 void ACommonTriggerActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (!Trigger) return;
+	if (!Trigger)
+	{
+		return;
+	}
 	
 	Trigger->OnComponentBeginOverlap.AddDynamic(this, &ACommonTriggerActor::OnTriggerBegin);
 }
@@ -45,18 +45,20 @@ void ACommonTriggerActor::OnTriggerBegin(UPrimitiveComponent* OverlappedComp, AA
 		return;
 	}
 	
-	SetTriggerAction();
+	ExecuteTriggerByType();
 }
 
-void ACommonTriggerActor::SetTriggerAction()
+void ACommonTriggerActor::ExecuteTriggerByType()
 {
-	if (ActorHasTag(FName("Dungeon")))
+	if (!ActorHasTag(FName("Dungeon")))
 	{
-		OpenDungeonMenu();
+		return;
 	}
+	
+	OpenDungeonMenu();
 }
 
-void ACommonTriggerActor::OpenDungeonMenu()
+void ACommonTriggerActor::OpenDungeonMenu() const
 {
 	AWarLegendPlayerController* PlayerController =  Cast<AWarLegendPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
 	if (!PlayerController)
