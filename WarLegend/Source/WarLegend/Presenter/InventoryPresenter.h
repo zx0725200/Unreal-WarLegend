@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "InventoryPresenter.generated.h"
 
+struct FMyItem;
 class UTableManager;
 class UInventoryManager;
 class UUIManagerImpl;
@@ -21,6 +22,7 @@ public:
 	void Init(UUIManagerImpl* InUIMgr, UInventoryManager* InInvenMgr, UTableManager* InTableMgr);
 	
 	void OpenScreenInventory();
+	void HandleOpenItemInfo(const FMyItem& InItem);
 	
 private:
 	UPROPERTY()

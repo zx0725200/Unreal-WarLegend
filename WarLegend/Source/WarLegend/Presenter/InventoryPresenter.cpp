@@ -5,6 +5,7 @@
 
 #include "DataManager/TableManager.h"
 #include "DataManager/UIManagerImpl.h"
+#include "Popup/PopupItemInfo.h"
 #include "Screen/ScreenInventory.h"
 #include "ViewModel/Screen/ScreenInventoryVM.h"
 
@@ -23,7 +24,14 @@ void UInventoryPresenter::OpenScreenInventory()
 	{
 		UScreenInventoryVM* InventoryData = NewObject<UScreenInventoryVM>(ScreenInventory);
 		InventoryData->Init(InvenMgr, TableMgr);
+		InventoryData->GetOnItemInfoRequested().AddUObject(this, &UInventoryPresenter::HandleOpenItemInfo);
 		
 		ScreenInventory->SetViewModel(InventoryData);
 	}
+}
+
+void UInventoryPresenter::HandleOpenItemInfo(const FMyItem& InItem)
+{
+	auto* Popup = UIMgr->ShowUI<UPopupItemInfo>(TEXT("PopupItemInfo"));
+	if (!Popup) return;
 }

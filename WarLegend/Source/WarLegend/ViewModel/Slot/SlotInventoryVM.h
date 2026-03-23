@@ -7,9 +7,7 @@
 #include "UObject/Object.h"
 #include "SlotInventoryVM.generated.h"
 
-struct FItemTableData;
-enum class EItemGrade : uint8;
-enum class EItemType : uint8;
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnItemInfoRequested, const FMyItem&);
 /**
  * 
  */
@@ -19,39 +17,13 @@ class WARLEGEND_API USlotInventoryVM : public UObject
 	GENERATED_BODY()
 	
 public:
-	void Init(const FItemTableData* InTableData, const FLinearColor& InGradeColor);
+	void Init(const FMyItem& InData);
+	void OpenPopupItemInfo();
 	
-	FMyItem ToSaveData() const;
-	void FromSaveData(const FMyItem& InData);
-	
-public:
-	UPROPERTY()
-	int32 UniqueID = 0;
-	
-	UPROPERTY()
-	int32 ID = 0;
-	
-	UPROPERTY()
-	FString ItemName;
-	
-	UPROPERTY()
-	FString ItemTypeName;
-	
-	UPROPERTY()
-	FLinearColor ItemGradeColor;
-	
-	UPROPERTY()
-	EItemType ItemType;
-	
-	UPROPERTY()
-	EItemGrade ItemGrade;
-	
-	UPROPERTY()
-	int32 HP = 0;
-	
-	UPROPERTY()
-	int32 ATK = 0;
-	
-	UPROPERTY()
-	int32 DEF = 0;
+	const FMyItem& GetMyItem() { return MyItem; }
+	FOnItemInfoRequested& GetOnItemInfoRequested() { return OnItemInfoRequested; }
+
+private:
+	FMyItem MyItem;
+	FOnItemInfoRequested OnItemInfoRequested;
 };

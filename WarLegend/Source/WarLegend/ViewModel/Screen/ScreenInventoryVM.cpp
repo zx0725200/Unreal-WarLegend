@@ -3,21 +3,22 @@
 
 #include "ScreenInventoryVM.h"
 
+#include "DataManager/InventoryManager.h"
 #include "DataManager/TableManager.h"
 #include "ViewModel/Slot/SlotInventoryVM.h"
 
-void UScreenInventoryVM::Init(UInventoryManager* InMgr, UTableManager* TableMgr)
+void UScreenInventoryVM::Init(UInventoryManager* InMgr, UTableManager* InTableMgr)
 {
 	InvenMgr = InMgr;
 	
-	for (const EItemType ItemType : TableMgr->GetLeftEquipTypes())
+	for (const EItemType ItemType : InTableMgr->GetLeftEquipTypes())
 	{
-		LeftItemTypes.Emplace(ItemType, TableMgr->GetItemTypeName(ItemType));
+		LeftItemTypes.Emplace(ItemType, InTableMgr->GetItemTypeName(ItemType));
 	}
 		
-	for (const EItemType ItemType : TableMgr->GetRightEquipTypes())
+	for (const EItemType ItemType : InTableMgr->GetRightEquipTypes())
 	{
-		RightItemTypes.Emplace(ItemType, TableMgr->GetItemTypeName(ItemType));
+		RightItemTypes.Emplace(ItemType, InTableMgr->GetItemTypeName(ItemType));
 	}
 	
 	RefreshItems();
@@ -30,7 +31,8 @@ void UScreenInventoryVM::RefreshItems()
 	for (const FMyItem& MyItem : InvenMgr->GetInventoryItemData())
 	{
 		USlotInventoryVM* SlotVM = NewObject<USlotInventoryVM>(this);
-		SlotVM->FromSaveData(MyItem);
+		SlotVM->Init(MyItem);
+		SlotVM->GetOnItemInfoRequested().AddUObject(this, &UScreenInventoryVM::HandleOpenItemInfo);
 		Items.Emplace(SlotVM);
 	}
 }
@@ -43,6 +45,11 @@ void UScreenInventoryVM::HandleReset()
 	}
 	
 	InvenMgr->ResetItem();
+}
+
+void UScreenInventoryVM::HandleOpenItemInfo(const FMyItem& InItem)
+{
+	OnItemInfoRequested.Broadcast(InItem);
 }
 
 const TArray<TObjectPtr<USlotInventoryVM>>& UScreenInventoryVM::GetItems() const

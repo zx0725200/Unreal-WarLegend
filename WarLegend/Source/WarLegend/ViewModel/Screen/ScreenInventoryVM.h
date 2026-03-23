@@ -3,10 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DataManager/InventoryManager.h"
 #include "UObject/Object.h"
+#include "ViewModel/Slot/SlotInventoryVM.h"
 #include "ScreenInventoryVM.generated.h"
 
+class UUIManagerImpl;
 class UTableManager;
 class UInventoryManager;
 class USlotInventoryVM;
@@ -20,13 +21,16 @@ class WARLEGEND_API UScreenInventoryVM : public UObject
 	GENERATED_BODY()
 	
 public:
-	void Init(UInventoryManager* InMgr, UTableManager* TableMgr);
+	void Init(UInventoryManager* InMgr, UTableManager* InTableMgr);
 	void RefreshItems();
+	
 	void HandleReset();
+	void HandleOpenItemInfo(const FMyItem& InItem);
 	
 	const TArray<TObjectPtr<USlotInventoryVM>>& GetItems() const;
 	const TMap<EItemType, FString>& GetLeftItemTypes() const;
 	const TMap<EItemType, FString>& GetLightItemTypes() const;
+	FOnItemInfoRequested& GetOnItemInfoRequested() { return OnItemInfoRequested; }
 	
 private:
 	UPROPERTY()
@@ -40,4 +44,6 @@ private:
 	
 	UPROPERTY()
 	TObjectPtr<UInventoryManager> InvenMgr;
+	
+	FOnItemInfoRequested OnItemInfoRequested;
 };

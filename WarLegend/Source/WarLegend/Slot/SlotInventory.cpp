@@ -13,6 +13,10 @@ void USlotInventory::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
 	IUserObjectListEntry::NativeOnListItemObjectSet(ListItemObject);
 	VM = Cast<USlotInventoryVM>(ListItemObject);
+	if (!VM)
+	{
+		return;
+	}
 	
 	SetNormalState();
 	SetData();
@@ -37,9 +41,11 @@ void USlotInventory::OnClickEvent(const FName& InChildName)
 
 void USlotInventory::SetData() const
 {
-	const auto ItemColor = VM->ItemGradeColor;
-	const FText ItemName = FText::FromString(VM->ItemName);
-	const FText ItemTypeName = FText::FromString(VM->ItemTypeName);
+	const auto MyItem = VM->GetMyItem();
+	
+	const auto ItemColor = MyItem.ItemGradeColor;
+	const FText ItemName = FText::FromString(MyItem.ItemName);
+	const FText ItemTypeName = FText::FromString(MyItem.ItemTypeName);
 	
 	Txt_Grade->SetText(ItemTypeName);
 	Txt_Grade->SetColorAndOpacity(ItemColor);
@@ -50,17 +56,18 @@ void USlotInventory::SetData() const
 
 void USlotInventory::OnClickedSlot()
 {
-	FMyItem MyItem;
-	MyItem.Name = TEXT("SelectItem");
-	MyItem.ID = VM->ID;
-		
-	EVENT_BROADCAST(MyItem.Name, FMyItem, this, MyItem);
+	auto MyItem = VM->GetMyItem();
+	MyItem.EventName = TEXT("SelectItem");
+	
+	EVENT_BROADCAST(MyItem.EventName, FMyItem, this, MyItem);
 }
 
 void USlotInventory::SetSelectedState()
 {
 	Img_Select->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	Img_NotSelect->SetVisibility(ESlateVisibility::Collapsed);
+	
+	VM->OpenPopupItemInfo();
 }
 
 void USlotInventory::SetNormalState()
@@ -71,7 +78,9 @@ void USlotInventory::SetNormalState()
 
 void USlotInventory::HandleClickedSlot(FGameplayTag InTag, const FMyItem& InItem)
 {
-	if (InItem.ID == VM->ID)
+	const auto MyItem = VM->GetMyItem();
+	
+	if (InItem.UniqueID == MyItem.UniqueID)
 	{
 		SetSelectedState();
 	}

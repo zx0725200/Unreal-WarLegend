@@ -15,6 +15,9 @@ struct FMyItem
 	
 public:
 	UPROPERTY()
+	FName EventName;
+	
+	UPROPERTY()
 	int32 UniqueID = 0;
 	
 	UPROPERTY()

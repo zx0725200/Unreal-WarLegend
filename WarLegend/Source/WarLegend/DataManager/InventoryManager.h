@@ -7,7 +7,6 @@
 #include "InventoryManager.generated.h"
 
 struct FMyItem;
-class USlotInventoryVM;
 /**
  * 
  */
