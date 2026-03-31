@@ -6,8 +6,10 @@
 #include "TableManager.h"
 #include "Actor/WLPatrolPathActor.h"
 #include "Character/Monster.h"
+#include "Character/WarLegendCharacter.h"
 #include "DataTable/DungeonTableData.h"
 #include "ETC/Constant.h"
+#include "ETC/Enum.h"
 #include "Kismet/GameplayStatics.h"
 
 void UDungeonManager::Initialize(FSubsystemCollectionBase& Collection)
@@ -80,8 +82,12 @@ void UDungeonManager::TeleportPlayer(const FVector& InLocation) const
 
 	APawn* PlayerPawn = World->GetFirstPlayerController()->GetPawn();
 	if (!PlayerPawn) return;
+	
+	AWarLegendCharacter* MyCharacter = Cast<AWarLegendCharacter>(PlayerPawn);
+	if (!MyCharacter) return;
 
-	PlayerPawn->SetActorLocation(InLocation);
+	MyCharacter->ChangeCamera(ECameraMode::Battle);
+	MyCharacter->SetActorLocation(InLocation);
 }
 
 AWLPatrolPathActor* UDungeonManager::GetPatrolPath()

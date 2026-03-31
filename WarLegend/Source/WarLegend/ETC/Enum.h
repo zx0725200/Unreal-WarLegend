@@ -30,3 +30,11 @@ enum class EItemEquipType : uint8
 	EquipItem	UMETA(DisplayName="EquipItem"),
 	BossItem	UMETA(DisplayName="BossItem"),
 };
+
+UENUM(BlueprintType)
+enum class ECameraMode : uint8
+{
+	None,
+	Battle	UMETA(DisplayName="Battle"),
+	City	UMETA(DisplayName="City"),
+};

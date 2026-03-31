@@ -10,7 +10,9 @@
 #include "NavigationSystem.h"
 #include "Engine/LocalPlayer.h"
 #include "WarLegend.h"
+#include "Character/WarLegendCharacter.h"
 #include "ETC/Define.h"
+#include "ETC/Enum.h"
 #include "Presenter/UIFlowPresenter.h"
 
 AWarLegendPlayerController::AWarLegendPlayerController()
@@ -126,6 +128,7 @@ bool AWarLegendPlayerController::IsUpdateCachedDestination()
 
 void AWarLegendPlayerController::Init()
 {
+	ChangeCityCamera();
 	SetMouseState();
 	ShowTitle();
 }
@@ -155,6 +158,28 @@ void AWarLegendPlayerController::SetMouseState()
 	}
 }
 
+void AWarLegendPlayerController::ChangeCityCamera()
+{
+	AWarLegendCharacter* MyCharacter = Cast<AWarLegendCharacter>(GetPawn());
+	if (!MyCharacter)
+	{
+		return;
+	}
+	
+	MyCharacter->ChangeCamera(ECameraMode::City);
+}
+
+void AWarLegendPlayerController::ChangeBattleCamera()
+{
+	AWarLegendCharacter* MyCharacter = Cast<AWarLegendCharacter>(GetPawn());
+	if (!MyCharacter)
+	{
+		return;
+	}
+	
+	MyCharacter->ChangeCamera(ECameraMode::Battle);
+}
+
 void AWarLegendPlayerController::MoveToClickOrCloset(const FVector& InClickLocation)
 {
 	FVector Location;
@@ -172,7 +197,7 @@ bool AWarLegendPlayerController::IsReachableLocation(const FVector& InClickLocat
 	UNavigationSystemV1* NavSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
 	if (!NavSystem) return false;
 
-	// 1) 클릭 지점을 네비메시 위로 투영 (오프 네비 클릭 방지)
+	// 클릭 지점을 네비메시 위로 투영 (오프 네비 클릭 방지)
 	FNavLocation OutNavLoc;
 	const FVector Extent(200.f, 200.f, 500.f); // 상황 따라 조절
 	if (!NavSystem->ProjectPointToNavigation(InClickLocation, OutNavLoc, Extent))
@@ -183,12 +208,12 @@ bool AWarLegendPlayerController::IsReachableLocation(const FVector& InClickLocat
 	const FVector Start = MyPawn->GetActorLocation();
 	const FVector Goal  = OutNavLoc.Location;
 
-	// 2) 경로 생성 (부분 경로면 마지막 도달 점 사용)
+	// 경로 생성 (부분 경로면 마지막 도달 점 사용)
 	UNavigationPath* Path = NavSystem->FindPathToLocationSynchronously(GetWorld(), Start, Goal, MyPawn);
 
 	if (!Path || Path->PathPoints.Num() == 0)
 	{
-		// 경로를 못 만들면(완전 단절 등) 그냥 투영점으로라도 시도
+		// 경로를 못 만들면 그냥 투영점으로라도 시도
 		OutLocation = Goal;
 		return true;
 	}

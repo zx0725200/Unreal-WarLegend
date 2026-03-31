@@ -3,46 +3,38 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "WarLegendBaseCharacter.h"
 #include "WarLegendCharacter.generated.h"
 
+enum class ECameraMode : uint8;
 class UCameraComponent;
 class USpringArmComponent;
 
-/**
- *  A controllable top-down perspective character
- */
 UCLASS(abstract)
-class AWarLegendCharacter : public ACharacter
+class AWarLegendCharacter : public AWarLegendBaseCharacter
 {
 	GENERATED_BODY()
 
-private:
-
-	/** Top down camera */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UCameraComponent> TopDownCameraComponent;
-
-	/** Camera boom positioning the camera above the character */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USpringArmComponent> CameraBoom;
-
 public:
-
-	/** Constructor */
 	AWarLegendCharacter();
 
-	/** Initialization */
-	virtual void BeginPlay() override;
-
-	/** Update */
-	virtual void Tick(float DeltaSeconds) override;
-
-	/** Returns the camera component **/
-	UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent.Get(); }
-
-	/** Returns the Camera Boom component **/
-	USpringArmComponent* GetCameraBoom() const { return CameraBoom.Get(); }
-
+	void ChangeCamera(ECameraMode InMode);
+	
+private:
+	void SetBattleCamera();
+	void SetCityCamera();
+	
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Camera", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USpringArmComponent> BattleCameraArm;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Camera", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USpringArmComponent> TopDownCameraArm;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Camera", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UCameraComponent> BattleCamera;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Camera", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UCameraComponent> TopDownCamera;
 };
 

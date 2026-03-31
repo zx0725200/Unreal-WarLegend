@@ -93,6 +93,8 @@ private:
 	
 	void ShowTitle() const;
 	void SetMouseState();
+	void ChangeCityCamera();
+	void ChangeBattleCamera();
 	
 	/** PlayerMove */
 	void MoveToClickOrCloset(const FVector& InClickLocation);
