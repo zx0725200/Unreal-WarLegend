@@ -11,7 +11,7 @@ class UCameraComponent;
 class USpringArmComponent;
 
 UCLASS(abstract)
-class AWarLegendCharacter : public AWarLegendBaseCharacter
+class WARLEGEND_API AWarLegendCharacter : public AWarLegendBaseCharacter
 {
 	GENERATED_BODY()
 
