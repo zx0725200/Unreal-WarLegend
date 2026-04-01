@@ -7,6 +7,8 @@
 #include "GameFramework/PlayerController.h"
 #include "WarLegendPlayerController.generated.h"
 
+struct FInputActionValue;
+class UBattleInputConfig;
 class UNiagaraSystem;
 class UInputMappingContext;
 class UInputAction;
@@ -14,26 +16,54 @@ class UPathFollowingComponent;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
-/**
- *  Player controller for a top-down perspective game.
- *  Implements point and click based controls
- */
 UCLASS(abstract)
 class AWarLegendPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+	
+public:
+	AWarLegendPlayerController();
+	
+	void ChangeCity();
+	void ChangeBattle();
+	
+	void ChangeLocation(const FVector& InVector);
 
 protected:
-
-	/** Component used for moving along a NavMesh path. */
+	virtual void SetupInputComponent() override;
+	virtual void BeginPlay() override;
+	
+	void OnInputStarted();
+	void OnInventoryOpen();
+	void OnEscClicked();
+	
+#pragma region Battle
+	void OnBattleMove(const FInputActionValue& InActionValue);
+	void OnBattleLook(const FInputActionValue& InActionValue);
+#pragma endregion
+	
+	void MoveOnceToCachedDestination();
+	
+	bool IsUpdateCachedDestination();
+	
+private:
+	void Init();
+	
+	void ShowTitle() const;
+	void SetMouseState();
+	
+	void MoveToClickOrCloset(const FVector& InClickLocation);
+	bool IsReachableLocation(const FVector& InClickLocation, FVector& OutLocation) const;
+	
+protected:
+	// 네비메쉬용
 	UPROPERTY(VisibleDefaultsOnly, Category = AI)
 	TObjectPtr<UPathFollowingComponent> PathFollowingComponent;
-
-	/** Time Threshold to know if it was a short press */
+	
 	UPROPERTY(EditAnywhere, Category="Input")
 	float ShortPressThreshold;
-
-	/** FX Class that we will spawn when clicking */
+	
+	// 커서이펙트
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UNiagaraSystem> FXCursor;
 
@@ -54,6 +84,10 @@ protected:
 	/** Jump Input Action */
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> SetDestinationTouchAction;
+	
+	// 배틀 인풋
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Battle", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UBattleInputConfig> InputBattleDataAsset;
 
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;
@@ -66,39 +100,6 @@ protected:
 
 	/** Time that the click input has been pressed */
 	float FollowTime = 0.0f;
-
-public:
-
-	/** Constructor */
-	AWarLegendPlayerController();
-
-protected:
-
-	/** Initialize input bindings */
-	virtual void SetupInputComponent() override;
-	virtual void BeginPlay() override;
-	
-	/** Input handlers */
-	void OnInputStarted();
-	void OnInventoryOpen();
-	void OnEscClicked();
-	
-	void MoveOnceToCachedDestination();
-	
-	bool IsUpdateCachedDestination();
-	
-private:
-	/** Init */
-	void Init();
-	
-	void ShowTitle() const;
-	void SetMouseState();
-	void ChangeCityCamera();
-	void ChangeBattleCamera();
-	
-	/** PlayerMove */
-	void MoveToClickOrCloset(const FVector& InClickLocation);
-	bool IsReachableLocation(const FVector& InClickLocation, FVector& OutLocation) const;
 };
 
 

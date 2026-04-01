@@ -32,7 +32,7 @@ enum class EItemEquipType : uint8
 };
 
 UENUM(BlueprintType)
-enum class ECameraMode : uint8
+enum class EPlayerLocType : uint8
 {
 	None,
 	Battle	UMETA(DisplayName="Battle"),

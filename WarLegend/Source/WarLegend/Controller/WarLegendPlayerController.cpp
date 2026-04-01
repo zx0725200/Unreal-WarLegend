@@ -9,10 +9,11 @@
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
 #include "Engine/LocalPlayer.h"
-#include "WarLegend.h"
 #include "Character/WarLegendCharacter.h"
+#include "Component/BattleInputComponent.h"
 #include "ETC/Define.h"
 #include "ETC/Enum.h"
+#include "ETC/GamePlayTag.h"
 #include "Presenter/UIFlowPresenter.h"
 
 AWarLegendPlayerController::AWarLegendPlayerController()
@@ -32,34 +33,30 @@ AWarLegendPlayerController::AWarLegendPlayerController()
 
 void AWarLegendPlayerController::SetupInputComponent()
 {
-	// set up gameplay key bindings
 	Super::SetupInputComponent();
-
-	// Only set up input on local player controllers
-	if (IsLocalPlayerController())
+	
+	if (!IsLocalPlayerController())
 	{
-		// Add Input Mapping Context
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(DefaultMappingContext, 0);
-		}
-
-		// Set up action bindings
-		if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
-		{
-			// Setup mouse input events
-			EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnInputStarted);
-			EnhancedInputComponent->BindAction(SetInventoryAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnInventoryOpen);
-			EnhancedInputComponent->BindAction(SetEscClickAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnEscClicked);
-			
-			// Setup touch input events
-			EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnInputStarted);
-		}
-		else
-		{
-			UE_LOG(LogWarLegend, Error, TEXT("'%s' Failed to find an Enhanced Input Component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
-		}
+		return;
 	}
+
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	VALID_RETURN(Subsystem);
+	
+	UBattleInputComponent* BattleInput = Cast<UBattleInputComponent>(InputComponent);
+	VALID_RETURN(BattleInput);
+	VALID_RETURN(DefaultMappingContext, InputBattleDataAsset, SetDestinationClickAction, SetInventoryAction, SetEscClickAction);
+	
+	Subsystem->AddMappingContext(DefaultMappingContext, 0);
+	
+	// Battle용 바인딩
+	BattleInput->BindNativeInputAction(InputBattleDataAsset, GamePlayTag::Battle_Move, ETriggerEvent::Triggered, this, &AWarLegendPlayerController::OnBattleMove);
+	BattleInput->BindNativeInputAction(InputBattleDataAsset, GamePlayTag::Battle_Look, ETriggerEvent::Triggered, this, &AWarLegendPlayerController::OnBattleLook);
+
+	// City/공통 바인딩
+	BattleInput->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnInputStarted);
+	BattleInput->BindAction(SetInventoryAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnInventoryOpen);
+	BattleInput->BindAction(SetEscClickAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnEscClicked);
 }
 
 void AWarLegendPlayerController::BeginPlay()
@@ -103,6 +100,46 @@ void AWarLegendPlayerController::OnEscClicked()
 	UIPresenter->HandleEscClick();
 }
 
+void AWarLegendPlayerController::OnBattleMove(const FInputActionValue& InActionValue)
+{
+	AWarLegendCharacter* MyCharacter = Cast<AWarLegendCharacter>(GetPawn());
+	VALID_RETURN(MyCharacter);
+	
+	const FVector2D MoveVector = InActionValue.Get<FVector2D>();
+	const FRotator MoveRotation(0.f, GetControlRotation().Yaw, 0.f);
+	
+	if (MoveVector.Y != 0.f)
+	{
+		const FVector ForwardDir = MoveRotation.RotateVector(FVector::ForwardVector);
+		
+		MyCharacter->AddMovementInput(ForwardDir, MoveVector.Y);
+	}
+	
+	if (MoveVector.X != 0.f)
+	{
+		const FVector RightDir = MoveRotation.RotateVector(FVector::RightVector);
+		
+		MyCharacter->AddMovementInput(RightDir, MoveVector.X);
+	}
+}
+
+void AWarLegendPlayerController::OnBattleLook(const FInputActionValue& InActionValue)
+{
+	AWarLegendCharacter* MyCharacter = Cast<AWarLegendCharacter>(GetPawn());
+	VALID_RETURN(MyCharacter);
+	
+	const FVector2D MoveVector = InActionValue.Get<FVector2D>();
+	if (MoveVector.X != 0.f)
+	{
+		MyCharacter->AddControllerYawInput(MoveVector.X);
+	}
+	
+	if (MoveVector.Y != 0.f)
+	{
+		MyCharacter->AddControllerPitchInput(MoveVector.Y);
+	}
+}
+
 void AWarLegendPlayerController::MoveOnceToCachedDestination()
 {
 	MoveToClickOrCloset(CachedDestination);
@@ -128,7 +165,7 @@ bool AWarLegendPlayerController::IsUpdateCachedDestination()
 
 void AWarLegendPlayerController::Init()
 {
-	ChangeCityCamera();
+	ChangeCity();
 	SetMouseState();
 	ShowTitle();
 }
@@ -158,26 +195,42 @@ void AWarLegendPlayerController::SetMouseState()
 	}
 }
 
-void AWarLegendPlayerController::ChangeCityCamera()
+void AWarLegendPlayerController::ChangeCity()
 {
-	AWarLegendCharacter* MyCharacter = Cast<AWarLegendCharacter>(GetPawn());
-	if (!MyCharacter)
-	{
-		return;
-	}
+	VALID_RETURN(DefaultMappingContext, InputBattleDataAsset->MappingContext);
 	
-	MyCharacter->ChangeCamera(ECameraMode::City);
+	AWarLegendCharacter* MyCharacter = Cast<AWarLegendCharacter>(GetPawn());
+	VALID_RETURN(MyCharacter);
+	
+	auto* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	VALID_RETURN(Subsystem);
+	
+	Subsystem->RemoveMappingContext(InputBattleDataAsset->MappingContext);
+	Subsystem->AddMappingContext(DefaultMappingContext, 0);
+	MyCharacter->ChangeCamera(EPlayerLocType::City);
 }
 
-void AWarLegendPlayerController::ChangeBattleCamera()
+void AWarLegendPlayerController::ChangeBattle()
+{
+	VALID_RETURN(DefaultMappingContext, InputBattleDataAsset->MappingContext);
+	
+	AWarLegendCharacter* MyCharacter = Cast<AWarLegendCharacter>(GetPawn());
+	VALID_RETURN(MyCharacter);
+	
+	auto* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	VALID_RETURN(Subsystem);
+	
+	Subsystem->RemoveMappingContext(DefaultMappingContext);
+	Subsystem->AddMappingContext(InputBattleDataAsset->MappingContext, 0);
+	MyCharacter->ChangeCamera(EPlayerLocType::Battle);
+}
+
+void AWarLegendPlayerController::ChangeLocation(const FVector& InVector)
 {
 	AWarLegendCharacter* MyCharacter = Cast<AWarLegendCharacter>(GetPawn());
-	if (!MyCharacter)
-	{
-		return;
-	}
+	VALID_RETURN(MyCharacter);
 	
-	MyCharacter->ChangeCamera(ECameraMode::Battle);
+	MyCharacter->SetActorLocation(InVector);
 }
 
 void AWarLegendPlayerController::MoveToClickOrCloset(const FVector& InClickLocation)

@@ -6,7 +6,8 @@
 #include "WarLegendBaseCharacter.h"
 #include "WarLegendCharacter.generated.h"
 
-enum class ECameraMode : uint8;
+class UBattleInputConfig;
+enum class EPlayerLocType : uint8;
 class UCameraComponent;
 class USpringArmComponent;
 
@@ -18,8 +19,12 @@ class WARLEGEND_API AWarLegendCharacter : public AWarLegendBaseCharacter
 public:
 	AWarLegendCharacter();
 
-	void ChangeCamera(ECameraMode InMode);
+	void ChangeCamera(EPlayerLocType InMode);
 	
+	virtual void AddMovementInput(FVector WorldDirection, float ScaleValue = 1, bool bForce = false) override;
+	virtual void AddControllerYawInput(float Val) override;
+	virtual void AddControllerPitchInput(float Val) override;
+
 private:
 	void SetBattleCamera();
 	void SetCityCamera();

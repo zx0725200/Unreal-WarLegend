@@ -67,7 +67,12 @@ FORCEINLINE bool CheckAllValid(Args&&... args)
 }
 
 #define VALID_RETURN(...) \
-if (false == CheckAllValid(__VA_ARGS__)) { return; }
+if (false == CheckAllValid(__VA_ARGS__)) \
+{ \
+	UE_LOG(LogTemp, Warning, TEXT("Valid check failed: %s [%s:%d]"), \
+		*FString(__FUNCTION__), *FString(__FILE__), __LINE__); \
+	return; \
+}
 
 #define GET_GUARD_RETURN(VarName, Expression) \
 const auto VarName = Expression; \

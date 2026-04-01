@@ -5,6 +5,11 @@
 
 UInputAction* UBattleInputConfig::GetBattleInputAction(const FGameplayTag& InInputTag)
 {
+	if (BattleInputActions.IsEmpty())
+	{
+		return nullptr;
+	}
+	
 	for (const auto& BattleInputConfig : BattleInputActions)
 	{
 		if (BattleInputConfig.BattleTag == InInputTag && BattleInputConfig.BattleAction)

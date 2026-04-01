@@ -1,15 +1,21 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "WarLegendCharacter.h"
+
+#include "EnhancedInputSubsystemInterface.h"
+#include "EnhancedInputSubsystems.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Camera/CameraComponent.h"
+#include "Component/BattleInputComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "DataAsset/BattleInputConfig.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Materials/Material.h"
 #include "Engine/World.h"
 #include "ETC/Enum.h"
+#include "ETC/GamePlayTag.h"
 
 AWarLegendCharacter::AWarLegendCharacter()
 {
@@ -38,16 +44,31 @@ AWarLegendCharacter::AWarLegendCharacter()
 	GetMesh()->bReceivesDecals = false;
 }
 
-void AWarLegendCharacter::ChangeCamera(const ECameraMode InMode)
+void AWarLegendCharacter::ChangeCamera(const EPlayerLocType InMode)
 {
-	if (InMode == ECameraMode::City)
+	if (InMode == EPlayerLocType::City)
 	{
 		SetCityCamera();
 	}
-	else if (InMode == ECameraMode::Battle)
+	else if (InMode == EPlayerLocType::Battle)
 	{
 		SetBattleCamera();
 	}
+}
+
+void AWarLegendCharacter::AddMovementInput(FVector WorldDirection, float ScaleValue, bool bForce)
+{
+	Super::AddMovementInput(WorldDirection, ScaleValue, bForce);
+}
+
+void AWarLegendCharacter::AddControllerYawInput(float Val)
+{
+	Super::AddControllerYawInput(Val);
+}
+
+void AWarLegendCharacter::AddControllerPitchInput(float Val)
+{
+	Super::AddControllerPitchInput(Val);
 }
 
 void AWarLegendCharacter::SetBattleCamera()
@@ -55,8 +76,8 @@ void AWarLegendCharacter::SetBattleCamera()
 	BattleCamera->SetActive(true);
 	TopDownCamera->SetActive(false);
 	
-	BattleCameraArm->TargetArmLength = 200.f;
-	BattleCameraArm->SocketOffset = FVector(0.0f, 55.0f, 65.0f);
+	BattleCameraArm->TargetArmLength = 500.f;
+	BattleCameraArm->SocketOffset = FVector(0.0f, 0.0f, 0.0f);
 	BattleCameraArm->bUsePawnControlRotation = true;
 	
 	BattleCamera->bUsePawnControlRotation = false;

@@ -6,6 +6,7 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "DungeonManager.generated.h"
 
+enum class EPlayerLocType : uint8;
 class AMonster;
 class AWLPatrolPathActor;
  
@@ -38,6 +39,8 @@ private:
 	void HandleLapCountChanged(AMonster* InMonster, const int32 InNewLapCount);
 	void HandleMonsterDead(AMonster* InMonster);
 	void HandleMonsterWin();
+	
+	void ChangePlayerState(const EPlayerLocType InType);
 	
 	void TeleportPlayer(const FVector& InLocation) const;
 	

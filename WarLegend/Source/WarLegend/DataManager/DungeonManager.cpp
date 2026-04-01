@@ -7,6 +7,7 @@
 #include "Actor/WLPatrolPathActor.h"
 #include "Character/Monster.h"
 #include "Character/WarLegendCharacter.h"
+#include "Controller/WarLegendPlayerController.h"
 #include "DataTable/DungeonTableData.h"
 #include "ETC/Constant.h"
 #include "ETC/Enum.h"
@@ -41,7 +42,8 @@ void UDungeonManager::EnterDungeon(const int32 InDungeonID)
 
 	const auto* DungeonTableData = TableMgr->GetDungeonTableData(InDungeonID);
 	if (!DungeonTableData) return;
-
+	
+	ChangePlayerState(EPlayerLocType::Battle);
 	TeleportPlayer(DungeonTableData->SpawnLocation);
 	
 	InitDungeonSetting();
@@ -49,6 +51,7 @@ void UDungeonManager::EnterDungeon(const int32 InDungeonID)
 
 void UDungeonManager::ExitDungeon()
 {
+	ChangePlayerState(EPlayerLocType::City);
 	const FVector TownLocation = FVector(1780.f, -1153.f, 302.f);
 	TeleportPlayer(TownLocation);
 	
@@ -80,14 +83,10 @@ void UDungeonManager::TeleportPlayer(const FVector& InLocation) const
 	const UWorld* World = GetGameInstance()->GetWorld();
 	if (!World) return;
 
-	APawn* PlayerPawn = World->GetFirstPlayerController()->GetPawn();
-	if (!PlayerPawn) return;
+	auto* PlayerController = Cast<AWarLegendPlayerController>(World->GetFirstPlayerController());
+	if (!PlayerController) return;
 	
-	AWarLegendCharacter* MyCharacter = Cast<AWarLegendCharacter>(PlayerPawn);
-	if (!MyCharacter) return;
-
-	MyCharacter->ChangeCamera(ECameraMode::Battle);
-	MyCharacter->SetActorLocation(InLocation);
+	PlayerController->ChangeLocation(InLocation);
 }
 
 AWLPatrolPathActor* UDungeonManager::GetPatrolPath()
@@ -171,4 +170,22 @@ void UDungeonManager::HandleMonsterWin()
 	OnDungeonFailed.Broadcast();
 	
 	GetWorld()->GetTimerManager().SetTimer(ExitTimerHandle, this, &UDungeonManager::ExitDungeon, Constant::DungeonExitTime, false);
+}
+
+void UDungeonManager::ChangePlayerState(const EPlayerLocType InType)
+{
+	const UWorld* World = GetGameInstance()->GetWorld();
+	if (!World) return;
+	
+	auto* PlayerController = Cast<AWarLegendPlayerController>(World->GetFirstPlayerController());
+	if (!PlayerController) return;
+	
+	if (InType == EPlayerLocType::Battle)
+	{
+		PlayerController->ChangeBattle();
+	}
+	else if (InType == EPlayerLocType::City)
+	{
+		PlayerController->ChangeCity();
+	}
 }
