@@ -4,15 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "WarLegendBaseCharacter.h"
+#include "AbilitySystemInterface.h"
 #include "WarLegendCharacter.generated.h"
 
 class UBattleInputConfig;
 enum class EPlayerLocType : uint8;
 class UCameraComponent;
 class USpringArmComponent;
+class UCharAbilitySystemComponent;
+class UCharAttributeSet;
 
-UCLASS(abstract)
-class WARLEGEND_API AWarLegendCharacter : public AWarLegendBaseCharacter
+UCLASS()
+class WARLEGEND_API AWarLegendCharacter : public AWarLegendBaseCharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -21,13 +24,21 @@ public:
 
 	void ChangeCamera(EPlayerLocType InMode);
 	
-	virtual void AddMovementInput(FVector WorldDirection, float ScaleValue = 1, bool bForce = false) override;
-	virtual void AddControllerYawInput(float Val) override;
-	virtual void AddControllerPitchInput(float Val) override;
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 private:
 	void SetBattleCamera();
 	void SetCityCamera();
+	
+	void ApplyCityMovement();
+	void ApplyBattleMovement();
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
+	TObjectPtr<UCharAbilitySystemComponent> CharAbilitySystemComponent;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
+	TObjectPtr<UCharAttributeSet> CharAttributeSet;
 	
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Camera", meta = (AllowPrivateAccess = "true"))

@@ -32,4 +32,12 @@ protected:
 	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	bool bAcceleration;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float WaitingRelaxState = 5.f;
+	
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	bool bShouldEnterRelaxState;
+	
+	float IdleElapsedTime;
 };

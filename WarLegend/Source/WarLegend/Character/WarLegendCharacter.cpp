@@ -1,21 +1,16 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #include "WarLegendCharacter.h"
 
-#include "EnhancedInputSubsystemInterface.h"
-#include "EnhancedInputSubsystems.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Camera/CameraComponent.h"
-#include "Component/BattleInputComponent.h"
+#include "Ability/CharAbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "DataAsset/BattleInputConfig.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Materials/Material.h"
 #include "Engine/World.h"
+#include "ETC/Constant.h"
 #include "ETC/Enum.h"
-#include "ETC/GamePlayTag.h"
 
 AWarLegendCharacter::AWarLegendCharacter()
 {
@@ -27,15 +22,23 @@ AWarLegendCharacter::AWarLegendCharacter()
 	
 	BattleCameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("BattleCameraArm"));
 	BattleCameraArm->SetupAttachment(RootComponent);
+	BattleCameraArm->TargetArmLength = Constant::BattleArmLength;
+	BattleCameraArm->bUsePawnControlRotation = true;
 	
 	BattleCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("BattleCamera"));
 	BattleCamera->SetupAttachment(BattleCameraArm, USpringArmComponent::SocketName);
+	BattleCamera->bUsePawnControlRotation = false;
 	
 	TopDownCameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("TopDownCameraArm"));
 	TopDownCameraArm->SetupAttachment(RootComponent);
+	TopDownCameraArm->SetUsingAbsoluteRotation(true);
+	TopDownCameraArm->TargetArmLength = Constant::TopDownArmLength;
+	TopDownCameraArm->SetRelativeRotation(Constant::TopDownArmRotation);
+	TopDownCameraArm->bDoCollisionTest = false;
 	
 	TopDownCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
 	TopDownCamera->SetupAttachment(TopDownCameraArm, USpringArmComponent::SocketName);
+	TopDownCamera->bUsePawnControlRotation = false;
 	
 	PrimaryActorTick.bCanEverTick = false;
 	PrimaryActorTick.bStartWithTickEnabled = false;
@@ -49,60 +52,46 @@ void AWarLegendCharacter::ChangeCamera(const EPlayerLocType InMode)
 	if (InMode == EPlayerLocType::City)
 	{
 		SetCityCamera();
+		ApplyCityMovement();
 	}
 	else if (InMode == EPlayerLocType::Battle)
 	{
 		SetBattleCamera();
+		ApplyBattleMovement();
 	}
 }
 
-void AWarLegendCharacter::AddMovementInput(FVector WorldDirection, float ScaleValue, bool bForce)
+UAbilitySystemComponent* AWarLegendCharacter::GetAbilitySystemComponent() const
 {
-	Super::AddMovementInput(WorldDirection, ScaleValue, bForce);
-}
-
-void AWarLegendCharacter::AddControllerYawInput(float Val)
-{
-	Super::AddControllerYawInput(Val);
-}
-
-void AWarLegendCharacter::AddControllerPitchInput(float Val)
-{
-	Super::AddControllerPitchInput(Val);
+	return CharAbilitySystemComponent;
 }
 
 void AWarLegendCharacter::SetBattleCamera()
 {
 	BattleCamera->SetActive(true);
 	TopDownCamera->SetActive(false);
-	
-	BattleCameraArm->TargetArmLength = 500.f;
-	BattleCameraArm->SocketOffset = FVector(0.0f, 0.0f, 0.0f);
-	BattleCameraArm->bUsePawnControlRotation = true;
-	
-	BattleCamera->bUsePawnControlRotation = false;
-	
-	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.f, 500.f, 0.f);
-	GetCharacterMovement()->MaxWalkSpeed = 400.f;
-	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 }
 
 void AWarLegendCharacter::SetCityCamera()
 {
 	BattleCamera->SetActive(false);
 	TopDownCamera->SetActive(true);
-	
-	// Unreal TopDown 기본세팅.
-	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.f, 640.f, 0.f);
-	GetCharacterMovement()->bConstrainToPlane = true;
-	GetCharacterMovement()->bSnapToPlaneAtStart = true;
-	
-	TopDownCameraArm->SetUsingAbsoluteRotation(true);
-	TopDownCameraArm->TargetArmLength = 800.f;
-	TopDownCameraArm->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
-	TopDownCameraArm->bDoCollisionTest = false;
-	
-	TopDownCamera->bUsePawnControlRotation = false;
+}
+
+void AWarLegendCharacter::ApplyCityMovement()
+{
+	UCharacterMovementComponent* MoveComp = GetCharacterMovement();
+	MoveComp->bOrientRotationToMovement = true;
+	MoveComp->RotationRate = FRotator(0.f, Constant::CityRotationYawRate, 0.f);
+	MoveComp->bConstrainToPlane = true;
+	MoveComp->bSnapToPlaneAtStart = true;
+}
+
+void AWarLegendCharacter::ApplyBattleMovement()
+{
+	UCharacterMovementComponent* MoveComp = GetCharacterMovement();
+	MoveComp->bOrientRotationToMovement = true;
+	MoveComp->RotationRate = FRotator(0.f, Constant::BattleRotationYawRate, 0.f);
+	MoveComp->MaxWalkSpeed = Constant::BattleMaxWalkSpeed;
+	MoveComp->BrakingDecelerationWalking = Constant::BattleBrakingDeceleration;
 }

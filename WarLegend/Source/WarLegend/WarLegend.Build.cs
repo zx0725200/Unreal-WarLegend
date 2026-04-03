@@ -23,7 +23,9 @@ public class WarLegend : ModuleRules
 			"Slate",
 			"SlateCore",
 			"GameplayMessageRuntime",
-			"GameplayTags"
+			"GameplayTags",
+			"GameplayTasks",
+			"GameplayAbilities"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

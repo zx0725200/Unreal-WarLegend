@@ -44,7 +44,7 @@ void UDungeonManager::EnterDungeon(const int32 InDungeonID)
 	if (!DungeonTableData) return;
 	
 	ChangePlayerState(EPlayerLocType::Battle);
-	TeleportPlayer(DungeonTableData->SpawnLocation);
+	TeleportPlayer(Constant::PlayerSpawnLocation);
 	
 	InitDungeonSetting();
 }
@@ -52,8 +52,7 @@ void UDungeonManager::EnterDungeon(const int32 InDungeonID)
 void UDungeonManager::ExitDungeon()
 {
 	ChangePlayerState(EPlayerLocType::City);
-	const FVector TownLocation = FVector(1780.f, -1153.f, 302.f);
-	TeleportPlayer(TownLocation);
+	TeleportPlayer(Constant::PlayerSpawnLocation);
 	
 	GetWorld()->GetTimerManager().ClearTimer(SpawnTimerHandle);
 	GetWorld()->GetTimerManager().ClearTimer(ExitTimerHandle);

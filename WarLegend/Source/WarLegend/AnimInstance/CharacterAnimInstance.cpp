@@ -17,13 +17,23 @@ void UCharacterAnimInstance::NativeInitializeAnimation()
 	MyMovementComponent = MyCharacter->GetCharacterMovement();
 }
 
-void UCharacterAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSeconds)
+void UCharacterAnimInstance::NativeThreadSafeUpdateAnimation(const float DeltaSeconds)
 {
 	VALID_RETURN(MyCharacter, MyMovementComponent);
-	
 	Super::NativeThreadSafeUpdateAnimation(DeltaSeconds);
 	
 	GroundSpeed = MyCharacter->GetVelocity().Size2D();
-	
 	bAcceleration = MyMovementComponent->GetCurrentAcceleration().SizeSquared2D() > 0.f;
+	
+	if (bAcceleration)
+	{
+		IdleElapsedTime = 0.f;
+		bShouldEnterRelaxState = false;
+	}
+	else
+	{
+		IdleElapsedTime += DeltaSeconds;
+
+		bShouldEnterRelaxState = (IdleElapsedTime >= WaitingRelaxState);
+	}
 }
