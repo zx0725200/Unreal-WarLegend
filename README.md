@@ -69,4 +69,4 @@ View → ViewModel → Manager (단방향 의존)
 
 ## Tech Stack
 
-`Unreal Engine 5.7` · `C++` · `Gameplay Ability System` · `Behavior Tree` · `Dedicated Server`
+`Unreal Engine 5.7` · `C++` · `Gameplay Ability System` · `Behavior Tree` ·
