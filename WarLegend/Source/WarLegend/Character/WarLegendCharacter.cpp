@@ -4,6 +4,7 @@
 #include "Camera/CameraComponent.h"
 #include "Ability/CharAbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "DataAsset/CharDataConfig.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -39,12 +40,6 @@ AWarLegendCharacter::AWarLegendCharacter()
 	TopDownCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
 	TopDownCamera->SetupAttachment(TopDownCameraArm, USpringArmComponent::SocketName);
 	TopDownCamera->bUsePawnControlRotation = false;
-	
-	PrimaryActorTick.bCanEverTick = false;
-	PrimaryActorTick.bStartWithTickEnabled = false;
-	
-	// 데칼 끄기.
-	GetMesh()->bReceivesDecals = false;
 }
 
 void AWarLegendCharacter::ChangeCamera(const EPlayerLocType InMode)
@@ -64,6 +59,21 @@ void AWarLegendCharacter::ChangeCamera(const EPlayerLocType InMode)
 UAbilitySystemComponent* AWarLegendCharacter::GetAbilitySystemComponent() const
 {
 	return CharAbilitySystemComponent;
+}
+
+void AWarLegendCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (CharDataConfig.IsNull())
+	{
+		return;
+	}
+	
+	if (UCharDataConfig* LoadedData = CharDataConfig.LoadSynchronous())
+	{
+		LoadedData->GiveToAbilitySystemComponent(CharAbilitySystemComponent);
+	}
 }
 
 void AWarLegendCharacter::SetBattleCamera()

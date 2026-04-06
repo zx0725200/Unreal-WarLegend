@@ -9,7 +9,7 @@ void UCharplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo,
 {
 	Super::OnGiveAbility(ActorInfo, Spec);
 	
-	if (ActorInfo == nullptr || !Spec.IsActive())
+	if (ActorInfo == nullptr || Spec.IsActive())
 	{
 		return;
 	}
