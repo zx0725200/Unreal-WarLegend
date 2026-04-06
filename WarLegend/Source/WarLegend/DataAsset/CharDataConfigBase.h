@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
-#include "CharDataConfig.generated.h"
+#include "CharDataConfigBase.generated.h"
 
 class UGameplayAbility;
 class UCharAbilitySystemComponent;
@@ -12,7 +12,7 @@ class UCharAbilitySystemComponent;
  * 
  */
 UCLASS()
-class WARLEGEND_API UCharDataConfig : public UDataAsset
+class WARLEGEND_API UCharDataConfigBase : public UDataAsset
 {
 	GENERATED_BODY()
 	

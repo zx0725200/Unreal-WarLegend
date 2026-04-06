@@ -1,4 +1,6 @@
 #include "WarLegendPlayerController.h"
+
+#include "AbilitySystemComponent.h"
 #include "GameFramework/Pawn.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "NiagaraFunctionLibrary.h"
@@ -8,6 +10,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
+#include "Ability/CharAbilitySystemComponent.h"
 #include "Engine/LocalPlayer.h"
 #include "Character/WarLegendCharacter.h"
 #include "Component/BattleInputComponent.h"
@@ -52,6 +55,8 @@ void AWarLegendPlayerController::SetupInputComponent()
 	// Battle용 바인딩
 	BattleInput->BindNativeInputAction(InputBattleDataAsset, GamePlayTag::Battle_Move, ETriggerEvent::Triggered, this, &AWarLegendPlayerController::OnBattleMove);
 	BattleInput->BindNativeInputAction(InputBattleDataAsset, GamePlayTag::Battle_Look, ETriggerEvent::Triggered, this, &AWarLegendPlayerController::OnBattleLook);
+	
+	BattleInput->BindAbilityInputAction(InputBattleDataAsset, this, &ThisClass::OnAbilityInputPressed, & ThisClass::OnAbilityInputReleased);
 
 	// City/공통 바인딩
 	BattleInput->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnInputStarted);
@@ -138,6 +143,18 @@ void AWarLegendPlayerController::OnBattleLook(const FInputActionValue& InActionV
 	{
 		MyCharacter->AddControllerPitchInput(MoveVector.Y);
 	}
+}
+
+void AWarLegendPlayerController::OnAbilityInputPressed(const FGameplayTag InTag)
+{
+	AWarLegendCharacter* MyCharacter = Cast<AWarLegendCharacter>(GetPawn());
+	VALID_RETURN(MyCharacter);
+	
+	MyCharacter->GetWarriorAbilitySystemComponent()->OnAbilityInputPressed(InTag);
+}
+
+void AWarLegendPlayerController::OnAbilityInputReleased(FGameplayTag InTag)
+{
 }
 
 void AWarLegendPlayerController::MoveOnceToCachedDestination()

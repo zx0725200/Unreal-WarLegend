@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "WarLegendBaseCharacter.h"
-#include "AbilitySystemInterface.h"
 #include "WarLegendCharacter.generated.h"
 
-class UCharDataConfig;
+class UCharCombatComponent;
+struct FStreamableHandle;
+class UCharDataConfigBase;
 class UBattleInputConfig;
 enum class EPlayerLocType : uint8;
 class UCameraComponent;
@@ -25,15 +26,18 @@ public:
 
 	void ChangeCamera(EPlayerLocType InMode);
 	
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	UCharCombatComponent* GetCharCombatComponent();
 
 protected:
 	virtual void PossessedBy(AController* NewController) override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 private:
+	void LoadBattleMode();
+	void ApplyBattleMode();
+	
 	void SetBattleCamera();
 	void SetCityCamera();
-	
 	void ApplyCityMovement();
 	void ApplyBattleMovement();
 
@@ -49,5 +53,10 @@ private:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Camera", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> TopDownCamera;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UCharCombatComponent> CharCombatComponent;
+	
+	TSharedPtr<FStreamableHandle> DataLoadHandle;
 };
 

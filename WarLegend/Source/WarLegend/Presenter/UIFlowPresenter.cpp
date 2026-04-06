@@ -98,9 +98,7 @@ void UUIFlowPresenter::OpenPopupGachaLog() const
 
 void UUIFlowPresenter::GotoCity() const
 {
-	if (!GachaPresenter) return;
 	
-	GachaPresenter->OpenPopupGachaLog();
 }
 
 void UUIFlowPresenter::HandleTitleConfirm()

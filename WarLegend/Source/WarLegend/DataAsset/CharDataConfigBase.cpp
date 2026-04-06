@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DataAsset/CharDataConfig.h"
+#include "DataAsset/CharDataConfigBase.h"
 
 #include "Abilities/GameplayAbility.h"
 #include "Ability/CharAbilitySystemComponent.h"
 
-void UCharDataConfig::GiveToAbilitySystemComponent(UCharAbilitySystemComponent* InAbilityComponent, const int32 InApplyLevel)
+void UCharDataConfigBase::GiveToAbilitySystemComponent(UCharAbilitySystemComponent* InAbilityComponent, const int32 InApplyLevel)
 {
 	if (!InAbilityComponent)
 	{
@@ -17,7 +17,7 @@ void UCharDataConfig::GiveToAbilitySystemComponent(UCharAbilitySystemComponent* 
 	GiveAbilities(ReactiveAbilities, InAbilityComponent, InApplyLevel); 
 }
 
-void UCharDataConfig::GiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& InAbilities, UCharAbilitySystemComponent* InAbilityComponent, const int32 InApplyLevel)
+void UCharDataConfigBase::GiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& InAbilities, UCharAbilitySystemComponent* InAbilityComponent, const int32 InApplyLevel)
 {
 	if (InAbilities.IsEmpty())
 	{

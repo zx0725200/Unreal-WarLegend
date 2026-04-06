@@ -21,6 +21,9 @@ public:
 	
 	template<class UserObject, typename CallbackFunc>
 	void BindNativeInputAction(UBattleInputConfig* InBattleInputConfig, const FGameplayTag& InTag, ETriggerEvent InTriggerEvent, UserObject* InContextObj, CallbackFunc InFunc);
+
+	template<class UserObject,typename CallbackFunc>
+	void BindAbilityInputAction(const UBattleInputConfig* InBattleInputConfig, UserObject* ContextObject, CallbackFunc InputPressedFunc, CallbackFunc InputRelasedFunc);
 };
 
 template <class UserObject, typename CallbackFunc>
@@ -30,5 +33,18 @@ void UBattleInputComponent::BindNativeInputAction(UBattleInputConfig* InBattleIn
 	if (auto* FoundAction = InBattleInputConfig->GetBattleInputAction(InTag))
 	{
 		BindAction(FoundAction, InTriggerEvent, InContextObj, InFunc);
+	}
+}
+
+template <class UserObject, typename CallbackFunc>
+void UBattleInputComponent::BindAbilityInputAction(const UBattleInputConfig* InBattleInputConfig,
+	UserObject* ContextObject, CallbackFunc InputPressedFunc, CallbackFunc InputReleasedFunc)
+{
+	for (const FBattleInputStruct& AbilityInputActionConfig : InBattleInputConfig->AbilityInputActions)
+	{
+		if(!AbilityInputActionConfig.BattleTag.IsValid() || !AbilityInputActionConfig.BattleAction) continue;
+
+		BindAction(AbilityInputActionConfig.BattleAction,ETriggerEvent::Started,ContextObject, InputPressedFunc,AbilityInputActionConfig.BattleTag);
+		BindAction(AbilityInputActionConfig.BattleAction,ETriggerEvent::Completed,ContextObject, InputReleasedFunc,AbilityInputActionConfig.BattleTag);
 	}
 }

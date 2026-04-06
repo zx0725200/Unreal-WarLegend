@@ -7,7 +7,7 @@
 #include "GameFramework/Character.h"
 #include "WarLegendBaseCharacter.generated.h"
 
-class UCharDataConfig;
+class UCharDataConfigBase;
 class UCharAttributeSet;
 class UCharAbilitySystemComponent;
 
@@ -35,5 +35,5 @@ protected:
 	TObjectPtr<UCharAttributeSet> CharAttributeSet;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharData")
-	TSoftObjectPtr<UCharDataConfig> CharDataConfig;
+	TSoftObjectPtr<UCharDataConfigBase> CharDataConfig;
 };

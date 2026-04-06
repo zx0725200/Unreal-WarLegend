@@ -3,8 +3,11 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Camera/CameraComponent.h"
 #include "Ability/CharAbilitySystemComponent.h"
+#include "Component/CharCombatComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "DataAsset/CharDataConfig.h"
+#include "DataAsset/CharDataConfigBase.h"
+#include "Engine/AssetManager.h"
+#include "Engine/StreamableManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -40,6 +43,8 @@ AWarLegendCharacter::AWarLegendCharacter()
 	TopDownCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
 	TopDownCamera->SetupAttachment(TopDownCameraArm, USpringArmComponent::SocketName);
 	TopDownCamera->bUsePawnControlRotation = false;
+	
+	CharCombatComponent = CreateDefaultSubobject<UCharCombatComponent>(TEXT("CharCombatComponent"));
 }
 
 void AWarLegendCharacter::ChangeCamera(const EPlayerLocType InMode)
@@ -51,29 +56,60 @@ void AWarLegendCharacter::ChangeCamera(const EPlayerLocType InMode)
 	}
 	else if (InMode == EPlayerLocType::Battle)
 	{
-		SetBattleCamera();
-		ApplyBattleMovement();
+		LoadBattleMode();
 	}
 }
 
-UAbilitySystemComponent* AWarLegendCharacter::GetAbilitySystemComponent() const
+UCharCombatComponent* AWarLegendCharacter::GetCharCombatComponent()
 {
-	return CharAbilitySystemComponent;
+	return CharCombatComponent;
 }
 
 void AWarLegendCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
+}
 
+void AWarLegendCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	if (DataLoadHandle.IsValid())
+	{
+		DataLoadHandle->CancelHandle();
+		DataLoadHandle.Reset();
+	}
+	
+	Super::EndPlay(EndPlayReason);
+}
+
+void AWarLegendCharacter::LoadBattleMode()
+{
 	if (CharDataConfig.IsNull())
 	{
 		return;
 	}
 	
-	if (UCharDataConfig* LoadedData = CharDataConfig.LoadSynchronous())
+	if (CharDataConfig.Get())
 	{
-		LoadedData->GiveToAbilitySystemComponent(CharAbilitySystemComponent);
+		ApplyBattleMode();
+		return;
 	}
+	
+	FStreamableManager& Streamable = UAssetManager::GetStreamableManager();
+	DataLoadHandle = Streamable.RequestAsyncLoad(CharDataConfig.ToSoftObjectPath(), FStreamableDelegate::CreateUObject(this, &AWarLegendCharacter::ApplyBattleMode));
+}
+
+void AWarLegendCharacter::ApplyBattleMode()
+{
+	UCharDataConfigBase* LoadedData = CharDataConfig.Get();
+	if (!LoadedData || !CharAbilitySystemComponent)
+	{
+		return;
+	}
+
+	LoadedData->GiveToAbilitySystemComponent(CharAbilitySystemComponent);
+	
+	SetBattleCamera();
+	ApplyBattleMovement();
 }
 
 void AWarLegendCharacter::SetBattleCamera()

@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "WarLegendPlayerController.generated.h"
 
+struct FGameplayTag;
 struct FInputActionValue;
 class UBattleInputConfig;
 class UNiagaraSystem;
@@ -40,6 +41,8 @@ protected:
 #pragma region Battle
 	void OnBattleMove(const FInputActionValue& InActionValue);
 	void OnBattleLook(const FInputActionValue& InActionValue);
+	void OnAbilityInputPressed(FGameplayTag InTag);
+	void OnAbilityInputReleased(FGameplayTag InTag);
 #pragma endregion
 	
 	void MoveOnceToCachedDestination();

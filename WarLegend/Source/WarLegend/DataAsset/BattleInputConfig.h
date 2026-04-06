@@ -30,11 +30,15 @@ class WARLEGEND_API UBattleInputConfig : public UDataAsset
 	GENERATED_BODY()
 	
 public:
+	UInputAction* GetBattleInputAction(const FGameplayTag& InInputTag);
+	
+public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UInputMappingContext> MappingContext;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "BattleAction"))
 	TArray<FBattleInputStruct> BattleInputActions;
 	
-	UInputAction* GetBattleInputAction(const FGameplayTag& InInputTag);
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "BattleAction"))
+	TArray<FBattleInputStruct> AbilityInputActions;
 };
