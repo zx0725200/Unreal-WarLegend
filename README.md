@@ -19,15 +19,9 @@ View → ViewModel → Manager (단방향 의존)
 
 ### Presenter
 
-| 클래스 | 역할 |
-|--------|------|
-| `UIFlowPresenter` | 최상위 진입점 (`LocalPlayerSubsystem`). 도메인별 Presenter 소유 |
-| `DungeonPresenter` | 던전 UI 흐름, 몬스터 HeadUp VM 생성 |
-| `GachaPresenter` | 뽑기 · 필터 · 로그 UI 흐름 |
-| `InventoryPresenter` | 인벤토리 UI 흐름, 아이템 상세 팝업 연결 |
-
+- `UIFlowPresenter`(`LocalPlayerSubsystem`)가 최상위 진입점
 - VM 생성 → View에 주입
-- 크로스 UI 이벤트 처리 (토스트 표시, 아이템 상세 팝업 등)
+- UI의 표시 · 숨김 흐름 관리
 
 ### ViewModel
 
@@ -40,10 +34,10 @@ View → ViewModel → Manager (단방향 의존)
 
 | 분류 | 설명 |
 |------|------|
-| `Hud` | 상시 표시 UI |
-| `Popup` | 모달 UI |
-| `Screen` | 전체화면 UI |
-| `Slot` | 재사용 단위 |
+| `Hud` | 플레이어 상태, 몬스터 HP 등 게임 중 상시 노출되는 정보 표시 |
+| `Popup` | 던전 선택, 뽑기, 필터 등 특정 행동 시 열리는 중간 크기의 UI |
+| `Screen` | 인벤토리, 타이틀 등 전체 화면을 차지하는 UI |
+| `Slot` | 아이템 슬롯, 던전 목록 항목 등 리스트 내 반복 사용되는 단위 위젯 |
 
 ### Manager (SubSystem)
 
@@ -55,18 +49,18 @@ View → ViewModel → Manager (단방향 의존)
 |---------|------|
 | `UIManager` | DataAsset 기반 UI 등록, FName 키로 Show/Hide 관리 |
 | `TableManager` | DataTable 로드 후 캐싱, 조회 인터페이스 제공 |
-| `SaveGameDataManager` | 언리얼 SaveGame으로 인벤토리 · 뽑기 필터 영속화 |
+| `SaveGameDataManager` | 언리얼 SaveGame으로 인벤토리 · 뽑기 필터 저장 및 로드 |
 | `GachaManager` | 등급별 가중치 확률 뽑기, 필터 적용 |
-| `DungeonManager` | 던전 데이터 관리, 몬스터 스폰 및 생존 카운트 추적 |
+| `DungeonManager` | 던전 데이터 관리, 몬스터 스폰 |
 
 **LocalPlayerSubsystem** — 플레이어 귀속 데이터
 
 | Manager | 역할 |
 |---------|------|
-| `InventoryManager` | 아이템 CRUD, 동일 ID 아이템 획득 시 수량 스택 처리 |
+| `InventoryManager` | 아이템 추가 · 삭제 · 조회, 동일 ID 아이템 획득 시 수량 스택 처리 |
 
 ---
 
 ## Tech Stack
 
-`Unreal Engine 5.7` · `C++` · `Gameplay Ability System` · `Behavior Tree` ·
+`Unreal Engine 5.7` · `C++` · `Gameplay Ability System` · `Behavior Tree`
