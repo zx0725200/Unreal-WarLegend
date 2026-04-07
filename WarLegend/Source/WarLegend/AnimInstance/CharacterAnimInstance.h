@@ -19,12 +19,12 @@ class WARLEGEND_API UCharacterAnimInstance : public UCharacterAnimInstanceBase
 public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeThreadSafeUpdateAnimation(float DeltaSeconds) override;
-	
+
 protected:
-	UPROPERTY()
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|Refrences")
 	TObjectPtr<AWarLegendCharacter> MyCharacter;
 	
-	UPROPERTY()
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|Refrences")
 	TObjectPtr<UCharacterMovementComponent> MyMovementComponent;
 	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
