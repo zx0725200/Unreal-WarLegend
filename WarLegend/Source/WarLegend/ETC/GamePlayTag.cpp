@@ -9,5 +9,7 @@ namespace GamePlayTag
 	UE_DEFINE_GAMEPLAY_TAG(Battle_UnEquip, "Battle.UnEquipWeapon");
 	
 	// 플레이어 태그
-	UE_DEFINE_GAMEPLAY_TAG(Player_Weapon_Axe, "Player.Weapon_Axe");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Weapon_Axe, "Player.Weapon.Axe");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Equip_Axe, "Player.Event.Equip.Axe");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Event_UnEquip_Axe, "Player.Event.UnEquip.Axe");
 }
