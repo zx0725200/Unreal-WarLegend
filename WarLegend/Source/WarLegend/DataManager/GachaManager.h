@@ -31,12 +31,11 @@ class WARLEGEND_API UGachaManager : public UGameInstanceSubsystem
 	GENERATED_BODY()
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-
-public:	
+	
+	void ApplyFilter();
+	
 	int32 GetGachaItem() const;
 	TArray<int32> GetGachaItemMultiple(const int32 InCount) const;
-	
-	void ApplyFilter(); 
 
 private:
 	void BuildCache();

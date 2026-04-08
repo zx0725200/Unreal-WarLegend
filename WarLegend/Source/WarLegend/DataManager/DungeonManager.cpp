@@ -6,7 +6,6 @@
 #include "TableManager.h"
 #include "Actor/WLPatrolPathActor.h"
 #include "Character/Monster.h"
-#include "Character/WarLegendCharacter.h"
 #include "Controller/WarLegendPlayerController.h"
 #include "DataTable/DungeonTableData.h"
 #include "ETC/Constant.h"
