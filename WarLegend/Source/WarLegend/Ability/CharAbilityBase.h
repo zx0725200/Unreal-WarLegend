@@ -10,7 +10,7 @@ class UCharAbilitySystemComponent;
 class UCharCombatComponent;
 
 UENUM(BlueprintType)
-enum class ECharAbilityActivation : uint8
+enum class ECharAbilityApplyType : uint8
 {
 	OnTriggered,
 	OnGiven
@@ -22,16 +22,18 @@ class WARLEGEND_API UCharAbilityBase : public UGameplayAbility
 	GENERATED_BODY()
 	
 protected:
+	// 어빌리티 등록되고 콜백 실행.
 	virtual void OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 	
-	UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
+	// 블루프린트 호출 용
+	UFUNCTION(BlueprintPure, Category = "Char|Ability")
 	UCharCombatComponent* GetPawnCombatComponentFromActorInfo() const;
 	
-	UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
+	UFUNCTION(BlueprintPure, Category = "Char|Ability")
 	UCharAbilitySystemComponent* GetCharAbilityComponentFromActorInfo() const;
 	
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "CharAbility")
-	ECharAbilityActivation AbilityActivation = ECharAbilityActivation::OnTriggered;
+	ECharAbilityApplyType AbilityApplyType = ECharAbilityApplyType::OnTriggered;
 };

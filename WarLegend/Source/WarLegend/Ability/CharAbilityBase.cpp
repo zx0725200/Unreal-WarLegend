@@ -15,7 +15,7 @@ void UCharAbilityBase::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo,
 		return;
 	}
 	
-	if (AbilityActivation == ECharAbilityActivation::OnTriggered)
+	if (AbilityApplyType == ECharAbilityApplyType::OnTriggered)
 	{
 		return;
 	}
@@ -33,7 +33,7 @@ void UCharAbilityBase::EndAbility(const FGameplayAbilitySpecHandle Handle, const
 		return;
 	}
 	
-	if (AbilityActivation == ECharAbilityActivation::OnTriggered)
+	if (AbilityApplyType == ECharAbilityApplyType::OnTriggered)
 	{
 		return;
 	}

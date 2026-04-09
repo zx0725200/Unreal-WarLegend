@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "CharAbilitySystemComponent.generated.h"
 
+struct FWarriorHeroAbilitySet;
 /**
  * 
  */
@@ -15,6 +16,13 @@ class WARLEGEND_API UCharAbilitySystemComponent : public UAbilitySystemComponent
 	GENERATED_BODY()
 
 public:
+	// 캐릭터 컨트롤러에서 Bind 호출용.
 	void OnAbilityInputPressed(const FGameplayTag& InInputTag);
 	void OnAbilityInputReleased(const FGameplayTag& InInputTag);
+	
+	UFUNCTION(BlueprintCallable, Category = "Warrior|Ability", meta = (ApplyLevel = "1"))
+	void GiveWeaponAbilities(const TArray<FWarriorHeroAbilitySet>& InWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutAbilityHandles);
+	
+	UFUNCTION(BlueprintCallable, Category = "Warrior|Ability")
+	void RemoveWeaponAbilities(UPARAM(ref) TArray<FGameplayAbilitySpecHandle>& InRemoveHandle);
 };

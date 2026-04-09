@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ETC/Struct.h"
 #include "GameFramework/Actor.h"
 #include "CharWeaponBase.generated.h"
 
@@ -24,4 +25,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapons")
 	TObjectPtr<UBoxComponent> WeaponCollisionBox;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponData")
+	FWarriorHeroWeaponData HeroWeaponData;
 };

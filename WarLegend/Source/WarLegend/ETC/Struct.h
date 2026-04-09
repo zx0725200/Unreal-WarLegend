@@ -1,7 +1,11 @@
 ﻿#pragma once
+#include "GameplayTagContainer.h"
 
 #include "Struct.generated.h"
 
+class UWarriorAbility;
+class UInputMappingContext;
+class UCharacterAnimLayer;
 struct FItemTableData;
 enum class EItemType : uint8;
 enum class EItemGrade : uint8;
@@ -60,4 +64,33 @@ public:
 	FString ItemName;
 	FLinearColor GradeColor;
 	FString Time;
+};
+
+USTRUCT(BlueprintType)
+struct FWarriorHeroAbilitySet
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "InputTag"))
+	FGameplayTag InputTag;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UWarriorAbility> AbilityToGrant;
+
+	bool IsValid() const;
+};
+
+USTRUCT(BlueprintType)
+struct FWarriorHeroWeaponData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TSubclassOf<UCharacterAnimLayer> WeaponAnimLayerToLink;
+	
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	UInputMappingContext* WeaponInputMappingContext;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
+	TArray<FWarriorHeroAbilitySet> DefaultWeaponAbilities;
 };

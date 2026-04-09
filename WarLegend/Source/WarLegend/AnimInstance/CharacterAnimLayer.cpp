@@ -2,3 +2,10 @@
 
 
 #include "CharacterAnimLayer.h"
+
+#include "CharacterAnimInstance.h"
+
+UCharacterAnimInstance* UCharacterAnimLayer::GetCharacterAnimInstance()
+{
+	return Cast<UCharacterAnimInstance>(GetOwningComponent()->GetAnimInstance());
+}

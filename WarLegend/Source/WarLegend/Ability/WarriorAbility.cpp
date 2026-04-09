@@ -28,5 +28,6 @@ AWarLegendPlayerController* UWarriorAbility::GetHeroControllerFromActorInfo()
 
 UCharCombatComponent* UWarriorAbility::GetHeroCombatComponentFromActorInfo()
 {
-	return GetHeroCharacterFromActorInfo()->GetCharCombatComponent();
+	AWarLegendCharacter* MyCharacter = GetHeroCharacterFromActorInfo();
+	return MyCharacter ? MyCharacter->GetCharCombatComponent() : nullptr;
 }

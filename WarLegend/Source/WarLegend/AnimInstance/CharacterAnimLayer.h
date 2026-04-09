@@ -6,6 +6,7 @@
 #include "CharacterAnimInstanceBase.h"
 #include "CharacterAnimLayer.generated.h"
 
+class UCharacterAnimInstance;
 /**
  * 
  */
@@ -13,4 +14,8 @@ UCLASS()
 class WARLEGEND_API UCharacterAnimLayer : public UCharacterAnimInstanceBase
 {
 	GENERATED_BODY()
+	
+public:
+	UFUNCTION(BlueprintPure, meta = (BlueprintThreadSafe))
+	UCharacterAnimInstance* GetCharacterAnimInstance();
 };
