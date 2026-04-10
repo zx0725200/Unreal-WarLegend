@@ -10,7 +10,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
-#include "Ability/CharAbilitySystemComponent.h"
+#include "Ability/HeroAbilitySystemComponent.h"
 #include "Engine/LocalPlayer.h"
 #include "Character/WarLegendCharacter.h"
 #include "Component/BattleInputComponent.h"

@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharAbilityBase.h"
-#include "WarriorAbility.generated.h"
+#include "CommonAbilityBase.h"
+#include "HeroAbility.generated.h"
 
 class AWarLegendPlayerController;
 class AWarLegendCharacter;
@@ -12,19 +12,16 @@ class AWarLegendCharacter;
  * 
  */
 UCLASS()
-class WARLEGEND_API UWarriorAbility : public UCharAbilityBase
+class WARLEGEND_API UHeroAbility : public UCommonAbilityBase
 {
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
+	UFUNCTION(BlueprintPure, Category = "Hero|Ability")
 	AWarLegendCharacter* GetHeroCharacterFromActorInfo();
 
-	UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
+	UFUNCTION(BlueprintPure, Category = "Hero|Ability")
 	AWarLegendPlayerController* GetHeroControllerFromActorInfo();
-
-	UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
-	UCharCombatComponent* GetHeroCombatComponentFromActorInfo();
 
 private:
 	TWeakObjectPtr<AWarLegendCharacter> CachedWarriorHeroCharacter;

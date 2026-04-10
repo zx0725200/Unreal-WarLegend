@@ -7,9 +7,9 @@
 #include "GameFramework/Character.h"
 #include "WarLegendBaseCharacter.generated.h"
 
-class UCharDataConfigBase;
-class UCharAttributeSet;
-class UCharAbilitySystemComponent;
+class UCommonAbilityConfigBase;
+class UHeroAttributeSet;
+class UHeroAbilitySystemComponent;
 
 UCLASS()
 class WARLEGEND_API AWarLegendBaseCharacter : public ACharacter, public IAbilitySystemInterface
@@ -21,19 +21,19 @@ public:
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
-	UCharAbilitySystemComponent* GetWarriorAbilitySystemComponent() const { return CharAbilitySystemComponent; }
-	UCharAttributeSet* GetWarriorAttributeSet() const { return CharAttributeSet; }
+	UHeroAbilitySystemComponent* GetWarriorAbilitySystemComponent() const { return CharAbilitySystemComponent; }
+	UHeroAttributeSet* GetWarriorAttributeSet() const { return CharAttributeSet; }
 	
 protected:
 	virtual void PossessedBy(AController* NewController) override;
 	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
-	TObjectPtr<UCharAbilitySystemComponent> CharAbilitySystemComponent;
+	TObjectPtr<UHeroAbilitySystemComponent> CharAbilitySystemComponent;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
-	TObjectPtr<UCharAttributeSet> CharAttributeSet;
+	TObjectPtr<UHeroAttributeSet> CharAttributeSet;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharData")
-	TSoftObjectPtr<UCharDataConfigBase> CharDataConfig;
+	TSoftObjectPtr<UCommonAbilityConfigBase> CharDataConfig;
 };

@@ -2,10 +2,10 @@
 
 #include "UObject/ConstructorHelpers.h"
 #include "Camera/CameraComponent.h"
-#include "Ability/CharAbilitySystemComponent.h"
-#include "Component/CharCombatComponent.h"
+#include "Ability/HeroAbilitySystemComponent.h"
+#include "Component/HeroCombatComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "DataAsset/CharDataConfigBase.h"
+#include "DataAsset/CommonAbilityConfigBase.h"
 #include "Engine/AssetManager.h"
 #include "Engine/StreamableManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -44,7 +44,7 @@ AWarLegendCharacter::AWarLegendCharacter()
 	TopDownCamera->SetupAttachment(TopDownCameraArm, USpringArmComponent::SocketName);
 	TopDownCamera->bUsePawnControlRotation = false;
 	
-	CharCombatComponent = CreateDefaultSubobject<UCharCombatComponent>(TEXT("CharCombatComponent"));
+	CharCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("CharCombatComponent"));
 }
 
 void AWarLegendCharacter::ChangeCamera(const EPlayerLocType InMode)
@@ -60,7 +60,7 @@ void AWarLegendCharacter::ChangeCamera(const EPlayerLocType InMode)
 	}
 }
 
-UCharCombatComponent* AWarLegendCharacter::GetCharCombatComponent()
+UHeroCombatComponent* AWarLegendCharacter::GetCharCombatComponent()
 {
 	return CharCombatComponent;
 }
@@ -100,13 +100,13 @@ void AWarLegendCharacter::LoadBattleMode()
 
 void AWarLegendCharacter::ApplyBattleMode()
 {
-	UCharDataConfigBase* LoadedData = CharDataConfig.Get();
+	UCommonAbilityConfigBase* LoadedData = CharDataConfig.Get();
 	if (!LoadedData || !CharAbilitySystemComponent)
 	{
 		return;
 	}
 
-	LoadedData->GiveToAbilitySystemComponent(CharAbilitySystemComponent);
+	LoadedData->GiveAbilityToComponent(CharAbilitySystemComponent);
 	
 	SetBattleCamera();
 	ApplyBattleMovement();

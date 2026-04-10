@@ -7,7 +7,7 @@
 #include "CharFunctionLibrary.generated.h"
 
 struct FGameplayTag;
-class UCharAbilitySystemComponent;
+class UHeroAbilitySystemComponent;
 /**
  * 
  */
@@ -24,7 +24,7 @@ class WARLEGEND_API UCharFunctionLibrary : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 	
 public:
-	static UCharAbilitySystemComponent* NativeGetWarriorASCFromActor(AActor* InActor);
+	static UHeroAbilitySystemComponent* NativeGetWarriorASCFromActor(AActor* InActor);
 
 	UFUNCTION(BlueprintCallable, Category = "Warrior|FunctionLibrary")
 	static void AddGameplayTagToActorIfNone(AActor* InActor,FGameplayTag TagToAdd);

@@ -4,14 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
-#include "CharAbilitySystemComponent.generated.h"
+#include "HeroAbilitySystemComponent.generated.h"
 
 struct FWarriorHeroAbilitySet;
 /**
  * 
  */
 UCLASS()
-class WARLEGEND_API UCharAbilitySystemComponent : public UAbilitySystemComponent
+class WARLEGEND_API UHeroAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
 

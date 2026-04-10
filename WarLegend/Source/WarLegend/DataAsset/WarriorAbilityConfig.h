@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharDataConfigBase.h"
+#include "CommonAbilityConfigBase.h"
 #include "GameplayTagContainer.h"
-#include "WarriorDataConfig.generated.h"
+#include "WarriorAbilityConfig.generated.h"
 
-class UWarriorAbility;
+class UHeroAbility;
 
 USTRUCT(BlueprintType)
 struct FWarriorAbilityStruct
@@ -18,7 +18,7 @@ struct FWarriorAbilityStruct
 	FGameplayTag AbilityTag;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSubclassOf<UWarriorAbility> WarriorAbility;
+	TSubclassOf<UHeroAbility> WarriorAbility;
 
 	bool IsValid() const;
 };
@@ -27,12 +27,12 @@ struct FWarriorAbilityStruct
  * 
  */
 UCLASS()
-class WARLEGEND_API UWarriorDataConfig : public UCharDataConfigBase
+class WARLEGEND_API UWarriorAbilityConfig : public UCommonAbilityConfigBase
 {
 	GENERATED_BODY()
 	
 public:
-	virtual void GiveToAbilitySystemComponent(UCharAbilitySystemComponent* InAbilityComponent, const int32 InApplyLevel = 1) override;
+	virtual void GiveAbilityToComponent(UHeroAbilitySystemComponent* InAbilityComponent) override;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Ability", meta = (TitleProperty = "AbilityTag"))

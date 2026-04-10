@@ -5,14 +5,14 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "PawnCombatComponentBase.h"
-#include "CharCombatComponent.generated.h"
+#include "HeroCombatComponent.generated.h"
 
 
 class ACharWeaponBase;
 struct FGameplayTag;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class WARLEGEND_API UCharCombatComponent : public UPawnCombatComponentBase
+class WARLEGEND_API UHeroCombatComponent : public UPawnCombatComponentBase
 {
 	GENERATED_BODY()
 	

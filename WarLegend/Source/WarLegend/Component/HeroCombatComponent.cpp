@@ -1,13 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "CharCombatComponent.h"
+#include "HeroCombatComponent.h"
 
 #include "Actor/CharWeaponBase.h"
 #include "ETC/Define.h"
 
 
-void UCharCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ACharWeaponBase* InWeapon, const bool bRegister)
+void UHeroCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ACharWeaponBase* InWeapon, const bool bRegister)
 {
 	VALID_RETURN(InWeaponTag);
 	CharacterWeaponMap.Emplace(InWeaponTag,InWeapon);
@@ -20,7 +20,7 @@ void UCharCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, AChar
 	CurrentEquippedWeaponTag = InWeaponTag;
 }
 
-ACharWeaponBase* UCharCombatComponent::GetCharacterCarriedWeaponByTag(const FGameplayTag InWeaponTag) const
+ACharWeaponBase* UHeroCombatComponent::GetCharacterCarriedWeaponByTag(const FGameplayTag InWeaponTag) const
 {
 	if (CharacterWeaponMap.Contains(InWeaponTag))
 	{
@@ -33,7 +33,7 @@ ACharWeaponBase* UCharCombatComponent::GetCharacterCarriedWeaponByTag(const FGam
 	return nullptr;
 }
 
-ACharWeaponBase* UCharCombatComponent::GetCharacterCurrentEquippedWeapon() const
+ACharWeaponBase* UHeroCombatComponent::GetCharacterCurrentEquippedWeapon() const
 {
 	if (!CurrentEquippedWeaponTag.IsValid())
 	{

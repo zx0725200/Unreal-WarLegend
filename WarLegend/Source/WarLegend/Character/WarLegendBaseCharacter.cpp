@@ -3,8 +3,8 @@
 
 #include "Character/WarLegendBaseCharacter.h"
 
-#include "Ability/CharAbilitySystemComponent.h"
-#include "Ability/CharAttributeSet.h"
+#include "Ability/HeroAbilitySystemComponent.h"
+#include "Ability/HeroAttributeSet.h"
 
 AWarLegendBaseCharacter::AWarLegendBaseCharacter()
 {
@@ -13,8 +13,8 @@ AWarLegendBaseCharacter::AWarLegendBaseCharacter()
 	
 	GetMesh()->bReceivesDecals = false;
 	
-	CharAbilitySystemComponent = CreateDefaultSubobject<UCharAbilitySystemComponent>(TEXT("CharAbilitySystemComponent"));
-	CharAttributeSet = CreateDefaultSubobject<UCharAttributeSet>(TEXT("CharAttributeSet"));
+	CharAbilitySystemComponent = CreateDefaultSubobject<UHeroAbilitySystemComponent>(TEXT("CharAbilitySystemComponent"));
+	CharAttributeSet = CreateDefaultSubobject<UHeroAttributeSet>(TEXT("CharAttributeSet"));
 }
 
 UAbilitySystemComponent* AWarLegendBaseCharacter::GetAbilitySystemComponent() const

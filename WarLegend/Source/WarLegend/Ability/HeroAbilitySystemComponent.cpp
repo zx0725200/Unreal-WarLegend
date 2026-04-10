@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Ability/CharAbilitySystemComponent.h"
-#include "Ability/WarriorAbility.h"
+#include "Ability/HeroAbilitySystemComponent.h"
+#include "Ability/HeroAbility.h"
 #include "ETC/Struct.h"
 
-void UCharAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInputTag)
+void UHeroAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInputTag)
 {
 	if (!InInputTag.IsValid())
 	{
@@ -23,11 +23,11 @@ void UCharAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InIn
 	}
 }
 
-void UCharAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InInputTag)
+void UHeroAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InInputTag)
 {
 }
 
-void UCharAbilitySystemComponent::GiveWeaponAbilities(
+void UHeroAbilitySystemComponent::GiveWeaponAbilities(
 	const TArray<FWarriorHeroAbilitySet>& InWeaponAbilities, int32 ApplyLevel,
 	TArray<FGameplayAbilitySpecHandle>& OutAbilityHandles)
 {
@@ -46,13 +46,13 @@ void UCharAbilitySystemComponent::GiveWeaponAbilities(
 		FGameplayAbilitySpec AbilitySpec(AbilitySet.AbilityToGrant);
 		AbilitySpec.SourceObject = GetAvatarActor();
 		AbilitySpec.Level = ApplyLevel;
-		AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilitySet.InputTag);
+		AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilitySet.BattleTag);
 		
 		OutAbilityHandles.AddUnique(GiveAbility(AbilitySpec));
 	}
 }
 
-void UCharAbilitySystemComponent::RemoveWeaponAbilities(TArray<FGameplayAbilitySpecHandle>& InRemoveHandle)
+void UHeroAbilitySystemComponent::RemoveWeaponAbilities(TArray<FGameplayAbilitySpecHandle>& InRemoveHandle)
 {
 	if (InRemoveHandle.IsEmpty())
 	{

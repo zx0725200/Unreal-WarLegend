@@ -38,3 +38,16 @@ enum class EPlayerLocType : uint8
 	Battle	UMETA(DisplayName="Battle"),
 	City	UMETA(DisplayName="City"),
 };
+
+UENUM(BlueprintType)
+enum class ECharAbilityApplyType : uint8
+{
+	OnTriggered,
+	OnGiven
+};
+
+enum class EAbilityGiveMode : uint8
+{
+	GiveOnly,
+	GiveAndActivateOnce
+};

@@ -3,7 +3,7 @@
 
 #include "Struct.generated.h"
 
-class UWarriorAbility;
+class UHeroAbility;
 class UInputMappingContext;
 class UCharacterAnimLayer;
 struct FItemTableData;
@@ -71,11 +71,11 @@ struct FWarriorHeroAbilitySet
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "InputTag"))
-	FGameplayTag InputTag;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "BattleTag"))
+	FGameplayTag BattleTag;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSubclassOf<UWarriorAbility> AbilityToGrant;
+	TSubclassOf<UHeroAbility> AbilityToGrant;
 
 	bool IsValid() const;
 };
@@ -91,6 +91,6 @@ struct FWarriorHeroWeaponData
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	UInputMappingContext* WeaponInputMappingContext;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "Battle"))
 	TArray<FWarriorHeroAbilitySet> DefaultWeaponAbilities;
 };

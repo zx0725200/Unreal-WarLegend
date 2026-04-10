@@ -6,15 +6,15 @@
 #include "WarLegendBaseCharacter.h"
 #include "WarLegendCharacter.generated.h"
 
-class UCharCombatComponent;
+class UHeroCombatComponent;
 struct FStreamableHandle;
-class UCharDataConfigBase;
+class UCommonAbilityConfigBase;
 class UBattleInputConfig;
 enum class EPlayerLocType : uint8;
 class UCameraComponent;
 class USpringArmComponent;
-class UCharAbilitySystemComponent;
-class UCharAttributeSet;
+class UHeroAbilitySystemComponent;
+class UHeroAttributeSet;
 
 UCLASS()
 class WARLEGEND_API AWarLegendCharacter : public AWarLegendBaseCharacter
@@ -26,7 +26,7 @@ public:
 
 	void ChangeCamera(EPlayerLocType InMode);
 	
-	UCharCombatComponent* GetCharCombatComponent();
+	UHeroCombatComponent* GetCharCombatComponent();
 
 protected:
 	virtual void PossessedBy(AController* NewController) override;
@@ -55,7 +55,7 @@ private:
 	TObjectPtr<UCameraComponent> TopDownCamera;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UCharCombatComponent> CharCombatComponent;
+	TObjectPtr<UHeroCombatComponent> CharCombatComponent;
 	
 	TSharedPtr<FStreamableHandle> DataLoadHandle;
 };

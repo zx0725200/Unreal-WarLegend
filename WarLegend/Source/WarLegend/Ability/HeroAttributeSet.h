@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
-#include "CharAttributeSet.generated.h"
+#include "HeroAttributeSet.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class WARLEGEND_API UCharAttributeSet : public UAttributeSet
+class WARLEGEND_API UHeroAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
 	

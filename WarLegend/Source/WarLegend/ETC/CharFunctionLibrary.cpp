@@ -3,18 +3,18 @@
 
 #include "CharFunctionLibrary.h"
 #include "AbilitySystemBlueprintLibrary.h"
-#include "Ability/CharAbilitySystemComponent.h"
+#include "Ability/HeroAbilitySystemComponent.h"
 
-UCharAbilitySystemComponent* UCharFunctionLibrary::NativeGetWarriorASCFromActor(AActor* InActor)
+UHeroAbilitySystemComponent* UCharFunctionLibrary::NativeGetWarriorASCFromActor(AActor* InActor)
 {
 	check(InActor);
 
-	return CastChecked<UCharAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(InActor));
+	return CastChecked<UHeroAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(InActor));
 }
 
 void UCharFunctionLibrary::AddGameplayTagToActorIfNone(AActor* InActor, FGameplayTag TagToAdd)
 {
-	UCharAbilitySystemComponent* ASC = NativeGetWarriorASCFromActor(InActor);
+	UHeroAbilitySystemComponent* ASC = NativeGetWarriorASCFromActor(InActor);
 
 	if (!ASC->HasMatchingGameplayTag(TagToAdd))
 	{
@@ -24,7 +24,7 @@ void UCharFunctionLibrary::AddGameplayTagToActorIfNone(AActor* InActor, FGamepla
 
 void UCharFunctionLibrary::RemoveGameplayFromActorIfFound(AActor* InActor, FGameplayTag TagToRemove)
 {
-	UCharAbilitySystemComponent* ASC = NativeGetWarriorASCFromActor(InActor);
+	UHeroAbilitySystemComponent* ASC = NativeGetWarriorASCFromActor(InActor);
 
 	if (ASC->HasMatchingGameplayTag(TagToRemove))
 	{
@@ -34,7 +34,7 @@ void UCharFunctionLibrary::RemoveGameplayFromActorIfFound(AActor* InActor, FGame
 
 bool UCharFunctionLibrary::NativeDoesActorHaveTag(AActor* InActor, FGameplayTag TagToCheck)
 {
-	UCharAbilitySystemComponent* ASC = NativeGetWarriorASCFromActor(InActor);
+	UHeroAbilitySystemComponent* ASC = NativeGetWarriorASCFromActor(InActor);
 
 	return ASC->HasMatchingGameplayTag(TagToCheck);
 }

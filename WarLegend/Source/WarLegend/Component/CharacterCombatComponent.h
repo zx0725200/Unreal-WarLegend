@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharCombatComponent.h"
+#include "HeroCombatComponent.h"
 #include "CharacterCombatComponent.generated.h"
 
 
@@ -11,7 +11,7 @@ class ACharWeaponBase;
 struct FGameplayTag;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class WARLEGEND_API UCharacterCombatComponent : public UCharCombatComponent
+class WARLEGEND_API UCharacterCombatComponent : public UHeroCombatComponent
 {
 	GENERATED_BODY()
 	
