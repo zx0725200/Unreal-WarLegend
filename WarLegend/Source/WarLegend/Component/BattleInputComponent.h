@@ -4,12 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "EnhancedInputComponent.h"
-#include "DataAsset/BattleInputConfig.h"
+#include "DataAsset/HeroBattleInputConfig.h"
 #include "BattleInputComponent.generated.h"
 
 
 struct FGameplayTag;
-class UBattleInputConfig;
+class UHeroBattleInputConfig;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class WARLEGEND_API UBattleInputComponent : public UEnhancedInputComponent
@@ -20,14 +20,14 @@ public:
 	UBattleInputComponent();
 	
 	template<class UserObject, typename CallbackFunc>
-	void BindNativeInputAction(UBattleInputConfig* InBattleInputConfig, const FGameplayTag& InTag, ETriggerEvent InTriggerEvent, UserObject* InContextObj, CallbackFunc InFunc);
+	void BindNativeInputAction(UHeroBattleInputConfig* InBattleInputConfig, const FGameplayTag& InTag, ETriggerEvent InTriggerEvent, UserObject* InContextObj, CallbackFunc InFunc);
 
 	template<class UserObject,typename CallbackFunc>
-	void BindAbilityInputAction(const UBattleInputConfig* InBattleInputConfig, UserObject* ContextObject, CallbackFunc InputPressedFunc, CallbackFunc InputRelasedFunc);
+	void BindAbilityInputAction(const UHeroBattleInputConfig* InBattleInputConfig, UserObject* ContextObject, CallbackFunc InputPressedFunc, CallbackFunc InputRelasedFunc);
 };
 
 template <class UserObject, typename CallbackFunc>
-void UBattleInputComponent::BindNativeInputAction(UBattleInputConfig* InBattleInputConfig,
+void UBattleInputComponent::BindNativeInputAction(UHeroBattleInputConfig* InBattleInputConfig,
 	const FGameplayTag& InTag, ETriggerEvent InTriggerEvent, UserObject* InContextObj, CallbackFunc InFunc)
 {
 	if (auto* FoundAction = InBattleInputConfig->GetBattleInputAction(InTag))
@@ -37,7 +37,7 @@ void UBattleInputComponent::BindNativeInputAction(UBattleInputConfig* InBattleIn
 }
 
 template <class UserObject, typename CallbackFunc>
-void UBattleInputComponent::BindAbilityInputAction(const UBattleInputConfig* InBattleInputConfig,
+void UBattleInputComponent::BindAbilityInputAction(const UHeroBattleInputConfig* InBattleInputConfig,
 	UserObject* ContextObject, CallbackFunc InputPressedFunc, CallbackFunc InputReleasedFunc)
 {
 	for (const FBattleInputStruct& AbilityInputActionConfig : InBattleInputConfig->AbilityInputActions)

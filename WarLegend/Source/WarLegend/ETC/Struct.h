@@ -67,7 +67,7 @@ public:
 };
 
 USTRUCT(BlueprintType)
-struct FWarriorHeroAbilitySet
+struct FHeroAbilitySet
 {
 	GENERATED_BODY()
 
@@ -92,5 +92,5 @@ struct FWarriorHeroWeaponData
 	UInputMappingContext* WeaponInputMappingContext;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "Battle"))
-	TArray<FWarriorHeroAbilitySet> DefaultWeaponAbilities;
+	TArray<FHeroAbilitySet> DefaultWeaponAbilities;
 };

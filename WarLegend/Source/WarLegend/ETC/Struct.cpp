@@ -18,7 +18,7 @@ void FMyItem::Init(const FItemTableData* InTableData, const FLinearColor& InGrad
 	DEF            = InTableData->DEF;
 }
 
-bool FWarriorHeroAbilitySet::IsValid() const
+bool FHeroAbilitySet::IsValid() const
 {
 	return BattleTag.IsValid() && AbilityToGrant;
 }

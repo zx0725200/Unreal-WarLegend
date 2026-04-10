@@ -9,7 +9,7 @@
 
 struct FGameplayTag;
 struct FInputActionValue;
-class UBattleInputConfig;
+class UHeroBattleInputConfig;
 class UNiagaraSystem;
 class UInputMappingContext;
 class UInputAction;
@@ -90,7 +90,7 @@ protected:
 	
 	// 배틀 인풋
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Battle", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UBattleInputConfig> InputBattleDataAsset;
+	TObjectPtr<UHeroBattleInputConfig> InputBattleDataAsset;
 
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;

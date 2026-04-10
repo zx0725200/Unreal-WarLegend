@@ -3,15 +3,13 @@
 
 #include "Ability/HeroAbilitySystemComponent.h"
 #include "Ability/HeroAbility.h"
+#include "ETC/Define.h"
 #include "ETC/Struct.h"
 
 void UHeroAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInputTag)
 {
-	if (!InInputTag.IsValid())
-	{
-		return;
-	}
-
+	VALID_RETURN(InInputTag);
+	
 	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
 		if(!AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InInputTag))
@@ -27,16 +25,14 @@ void UHeroAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InI
 {
 }
 
-void UHeroAbilitySystemComponent::GiveWeaponAbilities(
-	const TArray<FWarriorHeroAbilitySet>& InWeaponAbilities, int32 ApplyLevel,
-	TArray<FGameplayAbilitySpecHandle>& OutAbilityHandles)
+void UHeroAbilitySystemComponent::GiveWeaponAbilities(const TArray<FHeroAbilitySet>& InWeaponAbilities, TArray<FGameplayAbilitySpecHandle>& OutAbilityHandles)
 {
 	if (InWeaponAbilities.IsEmpty())
 	{
 		return;
 	}
 
-	for (const FWarriorHeroAbilitySet& AbilitySet : InWeaponAbilities)
+	for (const FHeroAbilitySet& AbilitySet : InWeaponAbilities)
 	{
 		if(!AbilitySet.IsValid())
 		{
@@ -45,29 +41,23 @@ void UHeroAbilitySystemComponent::GiveWeaponAbilities(
 
 		FGameplayAbilitySpec AbilitySpec(AbilitySet.AbilityToGrant);
 		AbilitySpec.SourceObject = GetAvatarActor();
-		AbilitySpec.Level = ApplyLevel;
 		AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilitySet.BattleTag);
 		
-		OutAbilityHandles.AddUnique(GiveAbility(AbilitySpec));
+		OutAbilityHandles.Add(GiveAbility(AbilitySpec));
 	}
 }
 
-void UHeroAbilitySystemComponent::RemoveWeaponAbilities(TArray<FGameplayAbilitySpecHandle>& InRemoveHandle)
+void UHeroAbilitySystemComponent::RemoveWeaponAbilities(TArray<FGameplayAbilitySpecHandle>& RemoveHandle)
 {
-	if (InRemoveHandle.IsEmpty())
+	if (RemoveHandle.IsEmpty())
 	{
 		return;
 	}
 
-	for (const FGameplayAbilitySpecHandle& SpecHandle : InRemoveHandle)
+	for (const FGameplayAbilitySpecHandle& SpecHandle : RemoveHandle)
 	{
-		if (!SpecHandle.IsValid())
-		{
-			continue;
-		}
-		
 		ClearAbility(SpecHandle);
 	}
 
-	InRemoveHandle.Empty();
+	RemoveHandle.Empty();
 }

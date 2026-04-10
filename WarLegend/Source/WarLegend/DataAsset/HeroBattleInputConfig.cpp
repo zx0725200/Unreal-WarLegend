@@ -1,9 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "BattleInputConfig.h"
+#include "HeroBattleInputConfig.h"
 
-UInputAction* UBattleInputConfig::GetBattleInputAction(const FGameplayTag& InInputTag)
+UInputAction* UHeroBattleInputConfig::GetBattleInputAction(const FGameplayTag& InInputTag)
 {
 	if (BattleInputActions.IsEmpty())
 	{

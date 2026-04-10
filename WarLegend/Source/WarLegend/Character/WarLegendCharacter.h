@@ -9,7 +9,7 @@
 class UHeroCombatComponent;
 struct FStreamableHandle;
 class UCommonAbilityConfigBase;
-class UBattleInputConfig;
+class UHeroBattleInputConfig;
 enum class EPlayerLocType : uint8;
 class UCameraComponent;
 class USpringArmComponent;

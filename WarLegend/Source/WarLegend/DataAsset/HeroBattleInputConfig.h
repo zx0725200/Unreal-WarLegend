@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Engine/DataAsset.h"
-#include "BattleInputConfig.generated.h"
+#include "HeroBattleInputConfig.generated.h"
 
 class UInputMappingContext;
 class UInputAction;
@@ -25,7 +25,7 @@ public:
 };
 
 UCLASS()
-class WARLEGEND_API UBattleInputConfig : public UDataAsset
+class WARLEGEND_API UHeroBattleInputConfig : public UDataAsset
 {
 	GENERATED_BODY()
 	

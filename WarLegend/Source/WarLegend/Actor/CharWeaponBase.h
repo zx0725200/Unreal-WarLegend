@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayAbilitySpecHandle.h"
 #include "ETC/Struct.h"
 #include "GameFramework/Actor.h"
 #include "CharWeaponBase.generated.h"
@@ -17,8 +18,14 @@ class WARLEGEND_API ACharWeaponBase : public AActor
 public:
 	ACharWeaponBase();
 	
+	UFUNCTION(BlueprintCallable)
+	void SetAbilityHandleList(const TArray<FGameplayAbilitySpecHandle>& InSpecHandles);
+	
 	UBoxComponent* GetWeaponCollisionBox();
 	
+	UFUNCTION(BlueprintPure)
+	TArray<FGameplayAbilitySpecHandle> GetAbilityHandleList() const;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapons")
 	TObjectPtr<UStaticMeshComponent> WeaponMesh;
@@ -28,4 +35,7 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponData")
 	FWarriorHeroWeaponData HeroWeaponData;
+	
+private:
+	TArray<FGameplayAbilitySpecHandle> AbilityHandleList;
 };
