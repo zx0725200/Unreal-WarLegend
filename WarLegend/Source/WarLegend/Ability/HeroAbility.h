@@ -24,6 +24,6 @@ public:
 	AWarLegendPlayerController* GetHeroControllerFromActorInfo();
 
 private:
-	TWeakObjectPtr<AWarLegendCharacter> CachedWarriorHeroCharacter;
-	TWeakObjectPtr<AWarLegendPlayerController> CachedWarriorHeroController;
+	TWeakObjectPtr<AWarLegendCharacter> HeroCharacter;
+	TWeakObjectPtr<AWarLegendPlayerController> HeroController;
 };

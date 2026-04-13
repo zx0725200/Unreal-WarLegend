@@ -8,20 +8,20 @@
 
 AWarLegendCharacter* UHeroAbility::GetHeroCharacterFromActorInfo()
 {
-	if (!CachedWarriorHeroCharacter.IsValid())
+	if (!HeroCharacter.IsValid())
 	{
-		CachedWarriorHeroCharacter = Cast<AWarLegendCharacter>(CurrentActorInfo->AvatarActor);
+		HeroCharacter = Cast<AWarLegendCharacter>(CurrentActorInfo->AvatarActor);
 	}
 	// .Get()이 알아서 nullptr 반환
-	return CachedWarriorHeroCharacter.Get();
+	return HeroCharacter.Get();
 }
 
 AWarLegendPlayerController* UHeroAbility::GetHeroControllerFromActorInfo()
 {
-	if (!CachedWarriorHeroController.IsValid())
+	if (!HeroController.IsValid())
 	{
-		CachedWarriorHeroController = Cast<AWarLegendPlayerController>(CurrentActorInfo->PlayerController);
+		HeroController = Cast<AWarLegendPlayerController>(CurrentActorInfo->PlayerController);
 	}
 	// .Get()이 알아서 nullptr 반환
-	return CachedWarriorHeroController.Get();
+	return HeroController.Get();
 }

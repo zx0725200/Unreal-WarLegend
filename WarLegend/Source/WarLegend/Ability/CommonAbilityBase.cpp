@@ -8,7 +8,7 @@
 
 UHeroCombatComponent* UCommonAbilityBase::GetHeroCombatComponentFromActorInfo() const
 {
-	const auto AvatarActor = GetAvatarActorFromActorInfo();
+	const AActor* AvatarActor = GetAvatarActorFromActorInfo();
 	if (AvatarActor == nullptr)
 	{
 		return nullptr;
@@ -19,5 +19,11 @@ UHeroCombatComponent* UCommonAbilityBase::GetHeroCombatComponentFromActorInfo() 
 
 UHeroAbilitySystemComponent* UCommonAbilityBase::GetHeroAbilityComponentFromActorInfo() const
 {
-	return Cast<UHeroAbilitySystemComponent>(GetAbilitySystemComponentFromActorInfo());
+	UAbilitySystemComponent* AbilitySystemComponent = GetAbilitySystemComponentFromActorInfo();
+	if (AbilitySystemComponent == nullptr)
+	{
+		return nullptr;
+	}
+	
+	return Cast<UHeroAbilitySystemComponent>(AbilitySystemComponent);
 }

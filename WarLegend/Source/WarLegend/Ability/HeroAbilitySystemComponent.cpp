@@ -3,14 +3,17 @@
 
 #include "Ability/HeroAbilitySystemComponent.h"
 #include "Ability/HeroAbility.h"
-#include "ETC/Define.h"
 #include "ETC/Struct.h"
 
 void UHeroAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInputTag)
 {
-	VALID_RETURN(InInputTag);
+	const TArray<FGameplayAbilitySpec>& ActivateAbilityList = GetActivatableAbilities();
+	if (ActivateAbilityList.IsEmpty())
+	{
+		return;
+	}
 	
-	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	for (const FGameplayAbilitySpec& AbilitySpec : ActivateAbilityList)
 	{
 		if(!AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InInputTag))
 		{
@@ -25,14 +28,14 @@ void UHeroAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InI
 {
 }
 
-void UHeroAbilitySystemComponent::GiveWeaponAbilities(const TArray<FHeroAbilitySet>& InWeaponAbilities, TArray<FGameplayAbilitySpecHandle>& OutAbilityHandles)
+void UHeroAbilitySystemComponent::GiveWeaponAbilities(const TArray<FHeroAbilitySet>& InWeaponAbilityList, TArray<FGameplayAbilitySpecHandle>& OutAbilityHandleList)
 {
-	if (InWeaponAbilities.IsEmpty())
+	if (InWeaponAbilityList.IsEmpty())
 	{
 		return;
 	}
 
-	for (const FHeroAbilitySet& AbilitySet : InWeaponAbilities)
+	for (const FHeroAbilitySet& AbilitySet : InWeaponAbilityList)
 	{
 		if(!AbilitySet.IsValid())
 		{
@@ -43,21 +46,22 @@ void UHeroAbilitySystemComponent::GiveWeaponAbilities(const TArray<FHeroAbilityS
 		AbilitySpec.SourceObject = GetAvatarActor();
 		AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilitySet.BattleTag);
 		
-		OutAbilityHandles.Add(GiveAbility(AbilitySpec));
+		FGameplayAbilitySpecHandle AbilitySpecHandle = GiveAbility(AbilitySpec);
+		OutAbilityHandleList.Add(AbilitySpecHandle);
 	}
 }
 
-void UHeroAbilitySystemComponent::RemoveWeaponAbilities(TArray<FGameplayAbilitySpecHandle>& RemoveHandle)
+void UHeroAbilitySystemComponent::RemoveWeaponAbilities(TArray<FGameplayAbilitySpecHandle>& RemoveHandleList)
 {
-	if (RemoveHandle.IsEmpty())
+	if (RemoveHandleList.IsEmpty())
 	{
 		return;
 	}
 
-	for (const FGameplayAbilitySpecHandle& SpecHandle : RemoveHandle)
+	for (const FGameplayAbilitySpecHandle& SpecHandle : RemoveHandleList)
 	{
 		ClearAbility(SpecHandle);
 	}
 
-	RemoveHandle.Empty();
+	RemoveHandleList.Empty();
 }

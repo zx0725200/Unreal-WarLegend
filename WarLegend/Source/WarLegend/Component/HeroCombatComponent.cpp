@@ -22,14 +22,11 @@ void UHeroCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, AChar
 
 ACharWeaponBase* UHeroCombatComponent::GetCharacterCarriedWeaponByTag(const FGameplayTag InWeaponTag) const
 {
-	if (CharacterWeaponMap.Contains(InWeaponTag))
+	if (const auto FoundWeapon = CharacterWeaponMap.Find(InWeaponTag))
 	{
-		if (const auto FoundWeapon = CharacterWeaponMap.Find(InWeaponTag))
-		{
-			return *FoundWeapon;
-		}
+		return *FoundWeapon;
 	}
-
+	
 	return nullptr;
 }
 

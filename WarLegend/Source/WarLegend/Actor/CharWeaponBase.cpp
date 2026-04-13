@@ -15,9 +15,9 @@ ACharWeaponBase::ACharWeaponBase()
 	WeaponCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
-void ACharWeaponBase::SetAbilityHandleList(const TArray<FGameplayAbilitySpecHandle>& InSpecHandles)
+void ACharWeaponBase::SetAbilityHandleList(const TArray<FGameplayAbilitySpecHandle>& InSpecHandleList)
 {
-	AbilityHandleList = InSpecHandles;
+	AbilityHandleList = InSpecHandleList;
 }
 
 UBoxComponent* ACharWeaponBase::GetWeaponCollisionBox()

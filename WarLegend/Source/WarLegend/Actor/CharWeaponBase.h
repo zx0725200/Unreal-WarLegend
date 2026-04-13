@@ -19,7 +19,7 @@ public:
 	ACharWeaponBase();
 	
 	UFUNCTION(BlueprintCallable)
-	void SetAbilityHandleList(const TArray<FGameplayAbilitySpecHandle>& InSpecHandles);
+	void SetAbilityHandleList(const TArray<FGameplayAbilitySpecHandle>& InSpecHandleList);
 	
 	UBoxComponent* GetWeaponCollisionBox();
 	

@@ -21,8 +21,8 @@ public:
 	void OnAbilityInputReleased(const FGameplayTag& InInputTag);
 	
 	UFUNCTION(BlueprintCallable, Category = "Hero|Ability")
-	void GiveWeaponAbilities(const TArray<FHeroAbilitySet>& InWeaponAbilities, TArray<FGameplayAbilitySpecHandle>& OutAbilityHandles);
+	void GiveWeaponAbilities(const TArray<FHeroAbilitySet>& InWeaponAbilityList, TArray<FGameplayAbilitySpecHandle>& OutAbilityHandleList);
 	
 	UFUNCTION(BlueprintCallable, Category = "Hero|Ability")
-	void RemoveWeaponAbilities(UPARAM(ref) TArray<FGameplayAbilitySpecHandle>& RemoveHandle);
+	void RemoveWeaponAbilities(UPARAM(ref) TArray<FGameplayAbilitySpecHandle>& RemoveHandleList);
 };

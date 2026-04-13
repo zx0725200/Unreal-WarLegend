@@ -34,5 +34,5 @@ private:
 	UPROPERTY()
 	TArray<FMyItem> InventoryItemData;
 	
-	int32 UniqueInventoryItemID;
+	int32 UniqueInventoryItemID = 0;
 };
