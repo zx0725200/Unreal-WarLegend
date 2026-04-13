@@ -28,6 +28,8 @@ AWarLegendCharacter::AWarLegendCharacter()
 	BattleCameraArm->SetupAttachment(RootComponent);
 	BattleCameraArm->TargetArmLength = Constant::BattleArmLength;
 	BattleCameraArm->bUsePawnControlRotation = true;
+	BattleCameraArm->bEnableCameraLag = true;
+	BattleCameraArm->CameraLagMaxTimeStep = 0.005f;
 	
 	BattleCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("BattleCamera"));
 	BattleCamera->SetupAttachment(BattleCameraArm, USpringArmComponent::SocketName);
