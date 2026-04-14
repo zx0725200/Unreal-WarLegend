@@ -3,10 +3,10 @@
 
 #include "CharacterCombatComponent.h"
 
-#include "Actor/CharWeapon.h"
+#include "Actor/HeroWeapon.h"
 
 
-ACharWeaponBase* UCharacterCombatComponent::GetCharWeaponByTag(FGameplayTag InWeaponTag) const
+AHeroWeaponBase* UCharacterCombatComponent::GetCharWeaponByTag(FGameplayTag InWeaponTag) const
 {
-	return Cast<ACharWeaponBase>(GetCharacterCarriedWeaponByTag(InWeaponTag));
+	return Cast<AHeroWeaponBase>(GetCharacterCarriedWeaponByTag(InWeaponTag));
 }

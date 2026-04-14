@@ -2,9 +2,7 @@
 
 
 #include "HudLeftMenu.h"
-
-#include "Presenter/GachaPresenter.h"
-#include "Presenter/UIFlowPresenter.h"
+#include "UIFlowPresenter.h"
 
 void UHudLeftMenu::OnClickEvent(const FName& InChildName)
 {

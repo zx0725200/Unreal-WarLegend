@@ -7,7 +7,7 @@
 #include "CharacterCombatComponent.generated.h"
 
 
-class ACharWeaponBase;
+class AHeroWeaponBase;
 struct FGameplayTag;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -17,5 +17,5 @@ class WARLEGEND_API UCharacterCombatComponent : public UHeroCombatComponent
 	
 public:
 	UFUNCTION(BlueprintCallable, Category = "Warrior|Combat")
-	ACharWeaponBase* GetCharWeaponByTag(FGameplayTag InWeaponTag) const;
+	AHeroWeaponBase* GetCharWeaponByTag(FGameplayTag InWeaponTag) const;
 };

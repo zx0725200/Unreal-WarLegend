@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharWeaponBase.h"
-#include "CharWeapon.generated.h"
+#include "HeroWeaponBase.h"
+#include "HeroWeapon.generated.h"
 
 UCLASS()
-class WARLEGEND_API ACharWeapon : public ACharWeaponBase
+class WARLEGEND_API AHeroWeapon : public AHeroWeaponBase
 {
 	GENERATED_BODY()
 

@@ -5,20 +5,24 @@
 
 #include "DataManager/InventoryManager.h"
 #include "DataManager/TableManager.h"
+#include "ETC/Define.h"
 #include "ViewModel/Slot/SlotInventoryVM.h"
 
-void UScreenInventoryVM::Init(UInventoryManager* InMgr, UTableManager* InTableMgr)
+void UScreenInventoryVM::Init()
 {
-	InvenMgr = InMgr;
+	Super::Init();
 	
-	for (const EItemType ItemType : InTableMgr->GetLeftEquipTypes())
+	UTableManager* TableMgr = GetTableManager();
+	VALID_RETURN(TableMgr);
+	
+	for (const EItemType ItemType : GetTableManager()->GetLeftEquipTypes())
 	{
-		LeftItemTypes.Emplace(ItemType, InTableMgr->GetItemTypeName(ItemType));
+		LeftItemTypes.Emplace(ItemType, TableMgr->GetItemTypeName(ItemType));
 	}
 		
-	for (const EItemType ItemType : InTableMgr->GetRightEquipTypes())
+	for (const EItemType ItemType : TableMgr->GetRightEquipTypes())
 	{
-		RightItemTypes.Emplace(ItemType, InTableMgr->GetItemTypeName(ItemType));
+		RightItemTypes.Emplace(ItemType, TableMgr->GetItemTypeName(ItemType));
 	}
 	
 	RefreshItems();
@@ -28,6 +32,9 @@ void UScreenInventoryVM::RefreshItems()
 {
 	Items.Empty();
     
+	const auto InvenMgr = GetInvenManager();
+	VALID_RETURN(InvenMgr);
+	
 	for (const FMyItem& MyItem : InvenMgr->GetInventoryItemData())
 	{
 		USlotInventoryVM* SlotVM = NewObject<USlotInventoryVM>(this);
@@ -39,10 +46,8 @@ void UScreenInventoryVM::RefreshItems()
 
 void UScreenInventoryVM::HandleReset()
 {
-	if (!InvenMgr)
-	{
-		return;
-	}
+	const auto InvenMgr = GetInvenManager();
+	VALID_RETURN(InvenMgr);
 	
 	InvenMgr->ResetItem();
 }

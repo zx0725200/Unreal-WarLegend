@@ -3,11 +3,14 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "ETC/Define.h"
+#include "Interface/IViewModelInterface.h"
 #include "WLUserWidgetBase.generated.h"
 
 /**
  * UI 코드의 기반이 되는 베이스 위젯입니다.
  */
+
+class UScreenInventoryVM;
 
 UENUM(Blueprintable)
 enum class EUserWidgetType : uint8
@@ -20,7 +23,7 @@ enum class EUserWidgetType : uint8
 };
 
 UCLASS()
-class WARLEGEND_API UWLUserWidgetBase : public UUserWidget
+class WARLEGEND_API UWLUserWidgetBase : public UUserWidget, public IViewModelInterface
 {
 	GENERATED_BODY()
 	
@@ -48,6 +51,7 @@ protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
+	virtual void BindViewModel() override;
 	
 private:
 	void InitChildWidget(TArray<UWidget*>& Children);
@@ -57,6 +61,8 @@ private:
 
 public:
 	FWLUIEventHandle UIEventHandle;
+	
+	using UViewModelClass = UScreenInventoryVM;
 	
 private:
 	EUserWidgetType WidgetType;

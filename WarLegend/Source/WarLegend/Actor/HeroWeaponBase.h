@@ -6,17 +6,17 @@
 #include "GameplayAbilitySpecHandle.h"
 #include "ETC/Struct.h"
 #include "GameFramework/Actor.h"
-#include "CharWeaponBase.generated.h"
+#include "HeroWeaponBase.generated.h"
 
 class UBoxComponent;
 
 UCLASS()
-class WARLEGEND_API ACharWeaponBase : public AActor
+class WARLEGEND_API AHeroWeaponBase : public AActor
 {
 	GENERATED_BODY()
 
 public:
-	ACharWeaponBase();
+	AHeroWeaponBase();
 	
 	UFUNCTION(BlueprintCallable)
 	void SetAbilityHandleList(const TArray<FGameplayAbilitySpecHandle>& InSpecHandleList);

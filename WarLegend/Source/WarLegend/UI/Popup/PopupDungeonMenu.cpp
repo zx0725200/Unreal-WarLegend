@@ -3,7 +3,7 @@
 #include "Components/VerticalBox.h"
 #include "DataManager/UIManager.h"
 #include "DataManager/UIManagerImpl.h"
-#include "Slot/SlotDungeonMenu.h"
+#include "UI/Slot/SlotDungeonMenu.h"
 
 void UPopupDungeonMenu::Awake()
 {
@@ -69,6 +69,11 @@ void UPopupDungeonMenu::InitSlotPool()
 		DungeonMenu->Hide();
 		PooledSlots.Add(DungeonMenu);
 	}
+}
+
+void UPopupDungeonMenu::BindViewModel()
+{
+	Super::BindViewModel();
 }
 
 void UPopupDungeonMenu::RefreshPage()

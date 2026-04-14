@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/SlateWrapperTypes.h"
+#include "Interface/IViewModelInterface.h"
 #include "UObject/Object.h"
 #include "UIManagerImpl.generated.h"
 
@@ -61,7 +62,18 @@ private:
 template <typename TRetType>
 TRetType* UUIManagerImpl::ShowUI(const FName& UIName, ESlateVisibility Visible = ESlateVisibility::Visible)
 {
-	return Cast<TRetType>(ShowUIBase(UIName, Visible));
+	if (TRetType* Widget = Cast<TRetType>(ShowUIBase(UIName, Visible)))
+	{
+		// 인터페이스로 캐스팅 시도
+		if (auto* VMWidget = Cast<IViewModelInterface>(Widget))
+		{
+			VMWidget->BindViewModel();
+		}
+		
+		return Widget;
+	}
+	
+	return nullptr;
 }
 
 template <typename TRetType>

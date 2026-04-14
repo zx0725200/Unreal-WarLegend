@@ -29,6 +29,9 @@ public:
 	void SetViewModel(UScreenInventoryVM* InData);
 	void Init();
 	
+protected:
+	virtual void BindViewModel() override;
+	
 private:
 	void InitEquipSlots();
 	void InitInventorySlots();
@@ -36,6 +39,9 @@ private:
 	void CreateEquipSlots(UVerticalBox* InParent, const TMap<EItemType, FString>& InItemData) const;
 	
 	void OnClickedReset();
+	
+public:
+	using UViewModelClass = UScreenInventoryVM;
 	
 private:
 	UPROPERTY(EditDefaultsOnly, Category="DungeonMenu")

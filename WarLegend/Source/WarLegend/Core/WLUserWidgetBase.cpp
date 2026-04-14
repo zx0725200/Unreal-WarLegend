@@ -116,6 +116,10 @@ FReply UWLUserWidgetBase::NativeOnKeyDown(const FGeometry& InGeometry, const FKe
 	return Super::NativeOnKeyDown(InGeometry, InKeyEvent);
 }
 
+void UWLUserWidgetBase::BindViewModel()
+{
+}
+
 void UWLUserWidgetBase::InitChildWidget(TArray<UWidget*>& Children)
 {
 	for (const auto Widget : Children)

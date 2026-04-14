@@ -22,11 +22,11 @@ void UInventoryPresenter::OpenScreenInventory()
 	
 	if (auto* ScreenInventory = UIMgr->ShowUI<UScreenInventory>(TEXT("ScreenInventory")))
 	{
-		UScreenInventoryVM* InventoryData = NewObject<UScreenInventoryVM>(ScreenInventory);
-		InventoryData->Init(InvenMgr, TableMgr);
-		InventoryData->GetOnItemInfoRequested().AddUObject(this, &UInventoryPresenter::HandleOpenItemInfo);
+		//UScreenInventoryVM* InventoryData = NewObject<UScreenInventoryVM>(ScreenInventory);
+		//InventoryData->Init(InvenMgr, TableMgr);
+		//InventoryData->GetOnItemInfoRequested().AddUObject(this, &UInventoryPresenter::HandleOpenItemInfo);
 		
-		ScreenInventory->SetViewModel(InventoryData);
+		//ScreenInventory->SetViewModel(InventoryData);
 	}
 }
 

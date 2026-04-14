@@ -23,6 +23,7 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
+	virtual void BindViewModel() override;
 	
 	void SetViewModel(const TArray<UPopupDungeonMenuVM*>& InData) { VM = InData; }
 	

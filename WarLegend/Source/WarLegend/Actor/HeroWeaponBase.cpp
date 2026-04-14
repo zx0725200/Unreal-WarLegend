@@ -1,8 +1,8 @@
-﻿#include "CharWeaponBase.h"
+﻿#include "HeroWeaponBase.h"
 
 #include "Components/BoxComponent.h"
 
-ACharWeaponBase::ACharWeaponBase()
+AHeroWeaponBase::AHeroWeaponBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	
@@ -15,17 +15,17 @@ ACharWeaponBase::ACharWeaponBase()
 	WeaponCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
-void ACharWeaponBase::SetAbilityHandleList(const TArray<FGameplayAbilitySpecHandle>& InSpecHandleList)
+void AHeroWeaponBase::SetAbilityHandleList(const TArray<FGameplayAbilitySpecHandle>& InSpecHandleList)
 {
 	AbilityHandleList = InSpecHandleList;
 }
 
-UBoxComponent* ACharWeaponBase::GetWeaponCollisionBox()
+UBoxComponent* AHeroWeaponBase::GetWeaponCollisionBox()
 {
 	return WeaponCollisionBox;
 }
 
-TArray<FGameplayAbilitySpecHandle> ACharWeaponBase::GetAbilityHandleList() const
+TArray<FGameplayAbilitySpecHandle> AHeroWeaponBase::GetAbilityHandleList() const
 {
 	return AbilityHandleList;
 }

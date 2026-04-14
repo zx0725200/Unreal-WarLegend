@@ -49,6 +49,16 @@ void UScreenInventory::Init()
 	InitInventorySlots();
 }
 
+void UScreenInventory::BindViewModel()
+{
+	Super::BindViewModel();
+	
+	auto* InventoryVM = NewObject<UScreenInventoryVM>(this);
+	InventoryVM->Init();
+	
+	SetViewModel(InventoryVM);
+}
+
 void UScreenInventory::InitEquipSlots()
 {
 	CreateEquipSlots(Vertical_Equip, VM->GetLeftItemTypes());

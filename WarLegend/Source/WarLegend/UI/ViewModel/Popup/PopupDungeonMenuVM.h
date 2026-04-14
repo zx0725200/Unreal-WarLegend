@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Core/ViewModelBase.h"
 #include "PopupDungeonMenuVM.generated.h"
 
 class UUIManagerImpl;
@@ -15,12 +16,12 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FOnNameChanged,     const FString&);
 DECLARE_MULTICAST_DELEGATE_TwoParams(FOnLevelChanged,   int32, int32); // Min, Max
 
 UCLASS()
-class WARLEGEND_API UPopupDungeonMenuVM : public UObject
+class WARLEGEND_API UPopupDungeonMenuVM : public UViewModelBase
 {
 	GENERATED_BODY()
 	
 public:
-	void Init(UDungeonManager* InDungeonMgr, UUIManagerImpl* InUIMgr);
+	virtual void Init() override;
 	
 	void SetName(const FString& InName);
 	void SetLevel(const int32 InMin, const int32 InMax);

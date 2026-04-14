@@ -37,7 +37,16 @@ public class WarLegend : ModuleRules
 			"WarLegend/Variant_TwinStick",
 			"WarLegend/Variant_TwinStick/AI",
 			"WarLegend/Variant_TwinStick/Gameplay",
-			"WarLegend/Variant_TwinStick/UI"
+			"WarLegend/Variant_TwinStick/UI",
+			"WarLegend/UI",
+			"WarLegend/UI/Hud",
+			"WarLegend/UI/Popup",
+			"WarLegend/UI/Presenter",
+			"WarLegend/UI/Screen",
+			"WarLegend/UI/Slot",
+			"WarLegend/UI/ViewModel",
+			"WarLegend/UI/Interface",
+			"WarLegend/DataManager",
 		});
 
 		// Uncomment if you are using Slate UI

@@ -2,16 +2,11 @@
 
 
 #include "DungeonPresenter.h"
-
-#include "Character/Monster.h"
-#include "Components/WidgetComponent.h"
 #include "DataManager/DungeonManager.h"
 #include "DataManager/TableManager.h"
 #include "DataManager/UIManagerImpl.h"
 #include "DataTable/DungeonTableData.h"
-#include "Hud/HudMonsterHeadUp.h"
 #include "Popup/PopupDungeonMenu.h"
-#include "ViewModel/Hud/HudMonsterHeadUpVM.h"
 #include "ViewModel/Popup/PopupDungeonMenuVM.h"
 
 
@@ -20,8 +15,6 @@ void UDungeonPresenter::Init(UUIManagerImpl* InUIMgr, UTableManager* InTableMgr,
 	UIMgr    = InUIMgr;
 	TableMgr = InTableMgr;
 	DungeonMgr = InDungeonMgr;
-	
-	DungeonMgr->GetOnMonsterSpawned().AddUObject(this, &UDungeonPresenter::HandleMonsterSpawned);
 }
 
 void UDungeonPresenter::OpenPopupDungeonMenu()
@@ -40,7 +33,7 @@ void UDungeonPresenter::OpenPopupDungeonMenu()
 	for (const auto& Data : DungeonList)
 	{
 		UPopupDungeonMenuVM* VM = NewObject<UPopupDungeonMenuVM>(DungeonPopup);
-		VM->Init(DungeonMgr, UIMgr);
+		VM->Init();
 		VM->SetID(Data->DungeonID);
 		VM->SetName(Data->DungeonName);
 		VM->SetLevel(Data->MinLevel, Data->MaxLevel);
@@ -52,27 +45,4 @@ void UDungeonPresenter::OpenPopupDungeonMenu()
 	// 이후 VM 데이터 바뀌면 Widget이 알아서 갱신
 	DungeonPopup->SetViewModel(VMList);
 	DungeonPopup->Init();
-}
-
-void UDungeonPresenter::HandleMonsterSpawned(AMonster* InMonster, int32 InAliveCount)
-{
-	if (!InMonster) 
-		return;
-	
-	auto* LapVM = NewObject<UHudMonsterHeadUpVM>(this);
-	LapVM->Init(InMonster);
-	LapVMList.Add(LapVM);
- 
-	UWidgetComponent* MonsterHeadUpComponent = InMonster->GetLapCountWidgetComp();
-	if (!MonsterHeadUpComponent) 
-		return;
-	
-	MonsterHeadUpComponent->InitWidget();
-	
-	
-	UHudMonsterHeadUp* MonsterHeadUpWidget = Cast<UHudMonsterHeadUp>(MonsterHeadUpComponent->GetWidget());
-	if (!MonsterHeadUpWidget) 
-		return;
-	
-	MonsterHeadUpWidget->SetViewModel(LapVM);
 }

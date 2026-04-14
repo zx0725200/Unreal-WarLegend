@@ -10,6 +10,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
+#include "ScreenInventory.h"
+#include "UIManager.h"
+#include "UIManagerImpl.h"
 #include "Ability/HeroAbilitySystemComponent.h"
 #include "Engine/LocalPlayer.h"
 #include "Character/WarLegendCharacter.h"
@@ -85,13 +88,10 @@ void AWarLegendPlayerController::OnInputStarted()
 
 void AWarLegendPlayerController::OnInventoryOpen()
 {
-	const auto UIPresenter = GTGetMgr(UUIFlowPresenter);
-	if (!UIPresenter)
-	{
-		return;
-	}
+	UUIManagerImpl* UIMgr = GTGetMgrImpl(UIManager);
+	VALID_RETURN(UIMgr);
 	
-	UIPresenter->OpenScreenInventory();
+	UIMgr->ShowUI<UScreenInventory>(TEXT("ScreenInventory"));
 }
 
 void AWarLegendPlayerController::OnEscClicked()

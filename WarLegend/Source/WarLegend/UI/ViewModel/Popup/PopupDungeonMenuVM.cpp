@@ -6,10 +6,9 @@
 #include "DataManager/DungeonManager.h"
 #include "DataManager/UIManagerImpl.h"
 
-void UPopupDungeonMenuVM::Init(UDungeonManager* InDungeonMgr, UUIManagerImpl* InUIMgr)
+void UPopupDungeonMenuVM::Init()
 {
-	DungeonMgr = InDungeonMgr;
-	UIMgr = InUIMgr;
+	Super::Init();
 }
 
 void UPopupDungeonMenuVM::SetName(const FString& InName)

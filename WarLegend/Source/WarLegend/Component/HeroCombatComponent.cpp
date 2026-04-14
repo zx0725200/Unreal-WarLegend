@@ -3,11 +3,11 @@
 
 #include "HeroCombatComponent.h"
 
-#include "Actor/CharWeaponBase.h"
+#include "Actor/HeroWeaponBase.h"
 #include "ETC/Define.h"
 
 
-void UHeroCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ACharWeaponBase* InWeapon, const bool bRegister)
+void UHeroCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, AHeroWeaponBase* InWeapon, const bool bRegister)
 {
 	VALID_RETURN(InWeaponTag);
 	CharacterWeaponMap.Emplace(InWeaponTag,InWeapon);
@@ -20,7 +20,7 @@ void UHeroCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, AChar
 	CurrentEquippedWeaponTag = InWeaponTag;
 }
 
-ACharWeaponBase* UHeroCombatComponent::GetCharacterCarriedWeaponByTag(const FGameplayTag InWeaponTag) const
+AHeroWeaponBase* UHeroCombatComponent::GetCharacterCarriedWeaponByTag(const FGameplayTag InWeaponTag) const
 {
 	if (const auto FoundWeapon = CharacterWeaponMap.Find(InWeaponTag))
 	{
@@ -30,7 +30,7 @@ ACharWeaponBase* UHeroCombatComponent::GetCharacterCarriedWeaponByTag(const FGam
 	return nullptr;
 }
 
-ACharWeaponBase* UHeroCombatComponent::GetCharacterCurrentEquippedWeapon() const
+AHeroWeaponBase* UHeroCombatComponent::GetCharacterCurrentEquippedWeapon() const
 {
 	if (!CurrentEquippedWeaponTag.IsValid())
 	{

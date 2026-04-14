@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/Object.h"
+#include "Core/ViewModelBase.h"
 #include "ViewModel/Slot/SlotInventoryVM.h"
 #include "ScreenInventoryVM.generated.h"
 
@@ -16,12 +16,12 @@ enum class EItemType : uint8;
  * 
  */
 UCLASS()
-class WARLEGEND_API UScreenInventoryVM : public UObject
+class WARLEGEND_API UScreenInventoryVM : public UViewModelBase
 {
 	GENERATED_BODY()
 	
 public:
-	void Init(UInventoryManager* InMgr, UTableManager* InTableMgr);
+	virtual void Init() override;
 	void RefreshItems();
 	
 	void HandleReset();
@@ -41,9 +41,6 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TMap<EItemType, FString> RightItemTypes;
-	
-	UPROPERTY()
-	TObjectPtr<UInventoryManager> InvenMgr;
 	
 	FOnItemInfoRequested OnItemInfoRequested;
 };

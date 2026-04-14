@@ -8,7 +8,7 @@
 #include "HeroCombatComponent.generated.h"
 
 
-class ACharWeaponBase;
+class AHeroWeaponBase;
 struct FGameplayTag;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -18,13 +18,13 @@ class WARLEGEND_API UHeroCombatComponent : public UPawnCombatComponentBase
 	
 public:
 	UFUNCTION(BlueprintCallable, Category = "Warrior|Combat")
-	void RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ACharWeaponBase* InWeapon, const bool bRegister = false);
+	void RegisterSpawnedWeapon(FGameplayTag InWeaponTag, AHeroWeaponBase* InWeapon, const bool bRegister = false);
 
 	UFUNCTION(BlueprintCallable, Category = "Warrior|Combat")
-	ACharWeaponBase* GetCharacterCarriedWeaponByTag(const FGameplayTag InWeaponTag) const;
+	AHeroWeaponBase* GetCharacterCarriedWeaponByTag(const FGameplayTag InWeaponTag) const;
 	
 	UFUNCTION(BlueprintCallable, Category = "Warrior|Combat")
-	ACharWeaponBase* GetCharacterCurrentEquippedWeapon() const;
+	AHeroWeaponBase* GetCharacterCurrentEquippedWeapon() const;
 
 public:
 	UPROPERTY(BlueprintReadWrite, Category = "Char|Combat")
@@ -32,5 +32,5 @@ public:
 	
 private:
 	UPROPERTY()
-	TMap<FGameplayTag, TObjectPtr<ACharWeaponBase>> CharacterWeaponMap;
+	TMap<FGameplayTag, TObjectPtr<AHeroWeaponBase>> CharacterWeaponMap;
 };
