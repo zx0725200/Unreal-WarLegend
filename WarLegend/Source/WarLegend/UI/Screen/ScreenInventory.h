@@ -25,24 +25,20 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
-	
-	void SetViewModel(UScreenInventoryVM* InData);
-	void Init();
-	
+
 protected:
 	virtual void BindViewModel() override;
 	
 private:
+	void SetViewModel(UScreenInventoryVM* InData);
+	
 	void InitEquipSlots();
 	void InitInventorySlots();
 	
 	void CreateEquipSlots(UVerticalBox* InParent, const TMap<EItemType, FString>& InItemData) const;
 	
 	void OnClickedReset();
-	
-public:
-	using UViewModelClass = UScreenInventoryVM;
-	
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category="DungeonMenu")
 	TSubclassOf<USlotEquipItem> EquipSlotClass;

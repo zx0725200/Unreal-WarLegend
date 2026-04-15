@@ -24,41 +24,33 @@ void UPopupGacha::OnDisable()
 void UPopupGacha::OnClickEvent(const FName& InChildName)
 {
 	Super::OnClickEvent(InChildName);
-	if (!VM) return;
+	VALID_RETURN(VM);
 	
 	if (InChildName == TEXT("Btn_One"))
 	{
-		OnClickedOne();
+		VM->OnGachaOne();
 	}
 	else if (InChildName == TEXT("Btn_Ten"))
 	{
-		OnClickedTen();
+		VM->OnGachaMulti(10);
 	}
 	else if (InChildName == TEXT("Btn_All"))
 	{
-		OnClickedAll();
+		VM->OnGachaMulti(30);
 	}
+}
+
+void UPopupGacha::BindViewModel()
+{
+	Super::BindViewModel();
+	
+	UPopupGachaVM* GachaVM = NewObject<UPopupGachaVM>(this);
+	GachaVM->Init();
+	
+	SetViewModel(GachaVM);
 }
 
 void UPopupGacha::SetViewModel(UPopupGachaVM* InVM)
 {
 	VM = InVM;
-}
-
-void UPopupGacha::OnClickedOne() const
-{
-	if (!VM) return;
-	VM->BroadCastOne();
-}
-
-void UPopupGacha::OnClickedTen() const
-{
-	if (!VM) return;
-	VM->BroadCastTen();
-}
-
-void UPopupGacha::OnClickedAll() const
-{
-	if (!VM) return;
-	VM->BroadCastAll();
 }

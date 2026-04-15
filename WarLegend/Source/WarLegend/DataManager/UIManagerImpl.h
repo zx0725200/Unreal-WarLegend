@@ -27,10 +27,11 @@ public:
 	virtual void Deinitialize();
 
 public:
+	UWLUserWidgetBase* ShowUI(const FName& UIName, ESlateVisibility Visible = ESlateVisibility::Visible);
+	void HideUI(const FName& UIName, ESlateVisibility Visible = ESlateVisibility::Collapsed);
+	
 	template <class TRetType>
 	TRetType* ShowUI(const FName& UIName, ESlateVisibility Visible);
-	
-	void HideUI(const FName& UIName, ESlateVisibility Visible = ESlateVisibility::Collapsed);
 	
 	template <class TRetType>
 	TRetType* CreateSlot(const FName& InName, UPanelWidget* InParent);

@@ -20,14 +20,7 @@ class WARLEGEND_API UUIFlowPresenter : public ULocalPlayerSubsystem
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void PlayerControllerChanged(APlayerController* NewPlayerController) override;
-	
-	void HandleEscClick();
-	
-#pragma region Screen
-	void OpenScreenTitle();
-	void OpenScreenInventory();
-#pragma endregion Screen
-	
+
 #pragma region Popup
 	void OpenPopupDungeonMenu() const;
 	void OpenPopupGacha() const;
@@ -38,10 +31,6 @@ public:
 #pragma region Hud
 	void GotoCity() const;
 #pragma endregion Hud
-	
-#pragma region ScreenEvent
-	void HandleTitleConfirm();
-#pragma endregion ScreenEvent
 
 private:
 	UPROPERTY()

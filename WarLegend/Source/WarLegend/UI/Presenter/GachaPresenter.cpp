@@ -41,10 +41,10 @@ void UGachaPresenter::OpenPopupGacha()
 	if (!GachaPopup) return;
 	
 	UPopupGachaVM* VM = NewObject<UPopupGachaVM>(GachaPopup);
-	VM->Init(GachaMgr, InvenMgr, TableMgr, UIMgr, GachaLogVM);
+	VM->Init();
 	VM->GetOnToastRequested().AddUObject(this, &UGachaPresenter::HandleShowToast); 
 	
-	GachaPopup->SetViewModel(VM);
+	//GachaPopup->SetViewModel(VM);
 }
 
 void UGachaPresenter::OpenPopupGachaFilter()
@@ -55,7 +55,7 @@ void UGachaPresenter::OpenPopupGachaFilter()
 	if (!FilterPopup) return;
 	
 	UPopupGachaFilterVM* VM = NewObject<UPopupGachaFilterVM>(FilterPopup);
-	VM->Init(UIMgr, SaveGameMgr, GachaMgr);
+	VM->Init();
 	
 	FilterPopup->SetViewModel(VM);
 }

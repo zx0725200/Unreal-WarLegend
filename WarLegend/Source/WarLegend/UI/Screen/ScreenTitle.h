@@ -20,9 +20,12 @@ public:
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
 	
-	void SetViewModel(UScreenTitleVM* InViewModel) { VM = InViewModel; }
-	
+protected:
+	virtual void BindViewModel() override;
+
 private:
+	void SetViewModel(UScreenTitleVM* InViewModel);
+	
 	void OnClickedConfirm();
 	
 private:

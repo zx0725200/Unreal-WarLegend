@@ -20,13 +20,10 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
+	virtual void BindViewModel() override;
 	
+private:	
 	void SetViewModel(UPopupGachaVM* InVM);
-	
-private:
-	void OnClickedOne() const;
-	void OnClickedTen() const;
-	void OnClickedAll() const;
 
 private:
 	UPROPERTY()

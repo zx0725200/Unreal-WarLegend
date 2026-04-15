@@ -3,24 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Core/ViewModelBase.h"
 #include "ScreenTitleVM.generated.h"
 
-class UUIManagerImpl;
-/**
- * 
- */
-DECLARE_MULTICAST_DELEGATE(FOnTitleConfirm);
-
 UCLASS()
-class WARLEGEND_API UScreenTitleVM : public UObject
+class WARLEGEND_API UScreenTitleVM : public UViewModelBase
 {
 	GENERATED_BODY()
 
 public:
-	void BroadCastConfirm();
+	virtual void Init() override;
 	
-	FOnTitleConfirm& GetConfirm() {return OnConfirmRequested;}
-	
-private:
-	FOnTitleConfirm OnConfirmRequested;
+	void OnConfirm() const;
 };

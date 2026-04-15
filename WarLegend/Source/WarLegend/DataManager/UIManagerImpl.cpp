@@ -32,6 +32,22 @@ void UUIManagerImpl::Deinitialize()
 	WidgetCache.Empty();
 }
 
+UWLUserWidgetBase* UUIManagerImpl::ShowUI(const FName& UIName, ESlateVisibility Visible)
+{
+	UWLUserWidgetBase* Widget = ShowUIBase(UIName, Visible);
+	if (!Widget)
+	{
+		return nullptr;
+	}
+
+	if (auto* VMWidget = Cast<IViewModelInterface>(Widget))
+	{
+		VMWidget->BindViewModel();
+	}
+	
+	return Widget;
+}
+
 void UUIManagerImpl::HideUI(const FName& UIName, ESlateVisibility Visible)
 {
 	HideUIBase(UIName, Visible);

@@ -4,12 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Core/ViewModelBase.h"
-#include "ViewModel/Slot/SlotInventoryVM.h"
 #include "ScreenInventoryVM.generated.h"
 
-class UUIManagerImpl;
-class UTableManager;
-class UInventoryManager;
+struct FMyItem;
 class USlotInventoryVM;
 enum class EItemType : uint8;
 /**
@@ -22,15 +19,15 @@ class WARLEGEND_API UScreenInventoryVM : public UViewModelBase
 	
 public:
 	virtual void Init() override;
+	
+	void OnReset();
+	
+	const TArray<TObjectPtr<USlotInventoryVM>>& GetItems() { return Items; }
+	const TMap<EItemType, FString>& GetLeftItemTypes() { return LeftItemTypes; }
+	const TMap<EItemType, FString>& GetRightItemTypes() { return RightItemTypes; }
+
+private:
 	void RefreshItems();
-	
-	void HandleReset();
-	void HandleOpenItemInfo(const FMyItem& InItem);
-	
-	const TArray<TObjectPtr<USlotInventoryVM>>& GetItems() const;
-	const TMap<EItemType, FString>& GetLeftItemTypes() const;
-	const TMap<EItemType, FString>& GetLightItemTypes() const;
-	FOnItemInfoRequested& GetOnItemInfoRequested() { return OnItemInfoRequested; }
 	
 private:
 	UPROPERTY()
@@ -41,6 +38,4 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TMap<EItemType, FString> RightItemTypes;
-	
-	FOnItemInfoRequested OnItemInfoRequested;
 };

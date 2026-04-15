@@ -3,13 +3,18 @@
 
 #include "SlotInventoryVM.h"
 
+#include "UIManagerImpl.h"
+#include "ETC/Define.h"
+
 void USlotInventoryVM::Init(const FMyItem& InData)
 {
 	MyItem = InData;
 }
 
-void USlotInventoryVM::OpenPopupItemInfo()
+void USlotInventoryVM::OnOpenItemInfo()
 {
-	OnItemInfoRequested.Broadcast(MyItem);
+	UUIManagerImpl* UIMgr = GetUIManager();
+	VALID_RETURN(UIMgr);
 	
+	UIMgr->ShowUI(TEXT("PopupItemInfo"));
 }

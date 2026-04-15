@@ -39,14 +39,6 @@ void UScreenInventory::OnClickEvent(const FName& InChildName)
 void UScreenInventory::SetViewModel(UScreenInventoryVM* InData)
 {
 	VM = InData;
-	
-	Init();
-}
-
-void UScreenInventory::Init()
-{
-	InitEquipSlots();
-	InitInventorySlots();
 }
 
 void UScreenInventory::BindViewModel()
@@ -57,12 +49,15 @@ void UScreenInventory::BindViewModel()
 	InventoryVM->Init();
 	
 	SetViewModel(InventoryVM);
+	
+	InitEquipSlots();
+	InitInventorySlots();
 }
 
 void UScreenInventory::InitEquipSlots()
 {
 	CreateEquipSlots(Vertical_Equip, VM->GetLeftItemTypes());
-	CreateEquipSlots(Vertical_Boss, VM->GetLightItemTypes());
+	CreateEquipSlots(Vertical_Boss, VM->GetRightItemTypes());
 }
 
 void UScreenInventory::InitInventorySlots()
@@ -90,11 +85,8 @@ void UScreenInventory::CreateEquipSlots(UVerticalBox* InParent, const TMap<EItem
 
 void UScreenInventory::OnClickedReset()
 {
-	if (!VM)
-	{
-		return;
-	}
+	VALID_RETURN(VM);
 	
 	TileView_Inventory->ClearListItems();
-	VM->HandleReset();
+	VM->OnReset();
 }

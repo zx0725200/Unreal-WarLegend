@@ -6,6 +6,7 @@
 #include "Core/HudWidgetBase.h"
 #include "HudLeftMenu.generated.h"
 
+class UHudLeftVM;
 /**
  * 
  */
@@ -17,10 +18,13 @@ class WARLEGEND_API UHudLeftMenu : public UHudWidgetBase
 public:
 	virtual void OnClickEvent(const FName& InChildName) override;
 	
+protected:
+	virtual void BindViewModel() override;
+
 private:
-	void OnClickedInven();
-	void OnClickedGacha();
-	void OnClickedFilter();
-	void OnClickedGachaLog();
-	void OnClickedRollBack();
+	void SetViewModel(UHudLeftVM* InVM);
+
+private:
+	UPROPERTY()
+	TObjectPtr<UHudLeftVM> VM;
 };

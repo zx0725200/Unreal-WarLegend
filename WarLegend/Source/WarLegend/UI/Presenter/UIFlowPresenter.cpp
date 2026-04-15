@@ -19,9 +19,9 @@ void UUIFlowPresenter::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 	
-	DungeonPresenter = NewObject<UDungeonPresenter>(this);
-	InventoryPresenter = NewObject<UInventoryPresenter>(this);
-	GachaPresenter = NewObject<UGachaPresenter>(this);
+	// DungeonPresenter = NewObject<UDungeonPresenter>(this);
+	// InventoryPresenter = NewObject<UInventoryPresenter>(this);
+	// GachaPresenter = NewObject<UGachaPresenter>(this);
 }
 
 void UUIFlowPresenter::PlayerControllerChanged(APlayerController* NewPlayerController)
@@ -37,35 +37,6 @@ void UUIFlowPresenter::PlayerControllerChanged(APlayerController* NewPlayerContr
 	DungeonPresenter->Init(UIMgr, TableMgr, DungeonMgr);
 	GachaPresenter->Init(UIMgr);
 	InventoryPresenter->Init(UIMgr, InvenMgr, TableMgr);
-}
-
-void UUIFlowPresenter::HandleEscClick()
-{
-	auto* UIMgr = GTGetMgrImpl(UIManager);
-	if (!UIMgr) return;
-	
-	UIMgr->HandleEscClick();
-}
-
-void UUIFlowPresenter::OpenScreenTitle()
-{
-	auto* UIMgr = GTGetMgrImpl(UIManager);
-	if (!UIMgr) return;
-	
-	if (const auto ScreenTitle = UIMgr->ShowUI<UScreenTitle>(TEXT("ScreenTitle")))
-	{
-		UScreenTitleVM* TitleData = NewObject<UScreenTitleVM>(ScreenTitle);
-		TitleData->GetConfirm().AddUObject(this, &UUIFlowPresenter::HandleTitleConfirm);
-		
-		ScreenTitle->SetViewModel(TitleData);
-	}
-}
-
-void UUIFlowPresenter::OpenScreenInventory()
-{
-	if (!InventoryPresenter) return;
-	
-	InventoryPresenter->OpenScreenInventory();
 }
 
 void UUIFlowPresenter::OpenPopupDungeonMenu() const
@@ -99,12 +70,4 @@ void UUIFlowPresenter::OpenPopupGachaLog() const
 void UUIFlowPresenter::GotoCity() const
 {
 	
-}
-
-void UUIFlowPresenter::HandleTitleConfirm()
-{
-	auto* UIMgr = GTGetMgrImpl(UIManager);
-	if (!UIMgr) return;
-	
-	UIMgr->ShowUI<UHudPlayerState>(TEXT("HudPlayerState"));
 }

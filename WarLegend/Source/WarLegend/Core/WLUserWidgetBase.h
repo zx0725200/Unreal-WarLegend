@@ -62,8 +62,6 @@ private:
 public:
 	FWLUIEventHandle UIEventHandle;
 	
-	using UViewModelClass = UScreenInventoryVM;
-	
 private:
 	EUserWidgetType WidgetType;
 };

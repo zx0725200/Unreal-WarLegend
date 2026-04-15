@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/Object.h"
+#include "Core/ViewModelBase.h"
 #include "PopupGachaVM.generated.h"
 
 struct FGachaLogData;
@@ -18,16 +18,15 @@ DECLARE_MULTICAST_DELEGATE(FOnToastRequested);
  * 
  */
 UCLASS()
-class WARLEGEND_API UPopupGachaVM : public UObject
+class WARLEGEND_API UPopupGachaVM : public UViewModelBase
 {
 	GENERATED_BODY()
 	
 public:
-	void Init(UGachaManager* InGachaMgr, UInventoryManager* InInvenMgr, UTableManager* InTableMgr, UUIManagerImpl* InUIMgr, UPopupGachaLogVM* InLogVM);
+	virtual void Init() override;
 	
-	void BroadCastOne();
-	void BroadCastTen();
-	void BroadCastAll();
+	void OnGachaOne();
+	void OnGachaMulti(const int32 InItemCount);
 
 	FOnToastRequested& GetOnToastRequested() { return OnToastRequested; }
 	
@@ -37,18 +36,6 @@ private:
 	
 private:
 	FOnToastRequested OnToastRequested;
-	
-	UPROPERTY() 
-	TObjectPtr<UGachaManager> GachaMgr;
-	
-	UPROPERTY() 
-	TObjectPtr<UInventoryManager> InvenMgr;
-	
-	UPROPERTY() 
-	TObjectPtr<UTableManager> TableMgr;
-	
-	UPROPERTY() 
-	TObjectPtr<UUIManagerImpl> UIMgr;
 	
 	UPROPERTY() 
 	TObjectPtr<UPopupGachaLogVM> LogVM;

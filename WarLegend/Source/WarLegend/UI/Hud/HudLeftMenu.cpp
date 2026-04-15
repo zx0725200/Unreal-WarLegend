@@ -3,84 +3,105 @@
 
 #include "HudLeftMenu.h"
 #include "UIFlowPresenter.h"
+#include "Hud/HudLeftVM.h"
 
 void UHudLeftMenu::OnClickEvent(const FName& InChildName)
 {
+	VALID_RETURN(VM);
 	Super::OnClickEvent(InChildName);
 	
 	if (InChildName == TEXT("Btn_Inven"))
 	{
-		OnClickedInven();
+		VM->OnClickedInven();
 	}
 	else if (InChildName == TEXT("Btn_RollBack"))
 	{
-		OnClickedRollBack();
+		VM->OnClickedRollBack();
 	}
 	else if (InChildName == TEXT("Btn_Gacha"))
 	{
-		OnClickedGacha();
+		VM->OnClickedGacha();
 	}
 	else if (InChildName == TEXT("Btn_Filter"))
 	{
-		OnClickedFilter();
+		VM->OnClickedFilter();
 	}
 	else if (InChildName == TEXT("Btn_GachaLog"))
 	{
-		OnClickedGachaLog();
+		VM->OnClickedGachaLog();
 	}
 }
 
-void UHudLeftMenu::OnClickedInven()
+void UHudLeftMenu::BindViewModel()
 {
-	const auto UIPresenter = GTUIGetMgr(UUIFlowPresenter);
-	if (!UIPresenter)
-	{
-		return;
-	}
+	Super::BindViewModel();
 	
-	UIPresenter->OpenScreenInventory();
+	auto* HudLeftVM = NewObject<UHudLeftVM>(this);
+	HudLeftVM->Init();
+	
+	SetViewModel(HudLeftVM);
 }
 
-void UHudLeftMenu::OnClickedGacha()
+void UHudLeftMenu::SetViewModel(UHudLeftVM* InVM)
 {
-	const auto UIPresenter = GTUIGetMgr(UUIFlowPresenter);
-	if (!UIPresenter)
-	{
-		return;
-	}
-	
-	UIPresenter->OpenPopupGacha();
+	VM = InVM;
 }
 
-void UHudLeftMenu::OnClickedFilter()
-{
-	const auto UIPresenter = GTUIGetMgr(UUIFlowPresenter);
-	if (!UIPresenter)
-	{
-		return;
-	}
-	
-	UIPresenter->OpenPopupGachaFilter();
-}
-
-void UHudLeftMenu::OnClickedGachaLog()
-{
-	const auto UIPresenter = GTUIGetMgr(UUIFlowPresenter);
-	if (!UIPresenter)
-	{
-		return;
-	}
-	
-	UIPresenter->OpenPopupGachaLog();
-}
-
-void UHudLeftMenu::OnClickedRollBack()
-{
-	const auto UIPresenter = GTUIGetMgr(UUIFlowPresenter);
-	if (!UIPresenter)
-	{
-		return;
-	}
-	
-	UIPresenter->GotoCity();
-}
+// void UHudLeftMenu::OnClickedInven()
+// {
+// 	VALID_RETURN(VM);
+// 	VM->OnClickedInven();
+// }
+//
+// void UHudLeftMenu::OnClickedGacha()
+// {
+// 	VALID_RETURN(VM);
+// 	VM->OnClickedGacha();
+// 	
+// 	const auto UIPresenter = GTUIGetMgr(UUIFlowPresenter);
+// 	if (!UIPresenter)
+// 	{
+// 		return;
+// 	}
+// 	
+// 	UIPresenter->OpenPopupGacha();
+// }
+//
+// void UHudLeftMenu::OnClickedFilter()
+// {
+// 	VALID_RETURN(VM);
+// 	VM->OnClickedFilter();
+// 	
+// 	const auto UIPresenter = GTUIGetMgr(UUIFlowPresenter);
+// 	if (!UIPresenter)
+// 	{
+// 		return;
+// 	}
+// 	
+// 	UIPresenter->OpenPopupGachaFilter();
+// }
+//
+// void UHudLeftMenu::OnClickedGachaLog()
+// {
+// 	VALID_RETURN(VM);
+// 	VM->OnClickedFilter();
+// 	
+// 	const auto UIPresenter = GTUIGetMgr(UUIFlowPresenter);
+// 	if (!UIPresenter)
+// 	{
+// 		return;
+// 	}
+// 	
+// 	UIPresenter->OpenPopupGachaLog();
+// }
+//
+// void UHudLeftMenu::OnClickedRollBack()
+// {
+// 	const auto UIPresenter = GTUIGetMgr(UUIFlowPresenter);
+// 	if (!UIPresenter)
+// 	{
+// 		return;
+// 	}
+// 	
+// 	UIPresenter->GotoCity();
+// }

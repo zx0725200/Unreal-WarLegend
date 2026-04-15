@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Core/ViewModelBase.h"
 #include "ETC/Struct.h"
-#include "UObject/Object.h"
 #include "PopupGachaLogVM.generated.h"
 
 /**
@@ -15,7 +15,7 @@ DECLARE_MULTICAST_DELEGATE(FOnLogUpdated);
 DECLARE_MULTICAST_DELEGATE(FOnLogCleared);
 
 UCLASS()
-class WARLEGEND_API UPopupGachaLogVM : public UObject
+class WARLEGEND_API UPopupGachaLogVM : public UViewModelBase
 {
 	GENERATED_BODY()
 	

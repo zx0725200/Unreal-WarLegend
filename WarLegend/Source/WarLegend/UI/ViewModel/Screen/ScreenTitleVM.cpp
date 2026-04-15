@@ -1,9 +1,16 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿#include "ScreenTitleVM.h"
+#include "UIManagerImpl.h"
+#include "ETC/Define.h"
 
-
-#include "ScreenTitleVM.h"
-
-void UScreenTitleVM::BroadCastConfirm()
+void UScreenTitleVM::Init()
 {
-	OnConfirmRequested.Broadcast();
+	Super::Init();
+}
+
+void UScreenTitleVM::OnConfirm() const
+{
+	UUIManagerImpl* UIMgr = GetUIManager();
+	VALID_RETURN(UIMgr);
+	
+	UIMgr->ShowUI(TEXT("HudPlayerState"));
 }

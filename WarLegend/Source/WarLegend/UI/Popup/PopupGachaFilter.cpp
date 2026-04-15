@@ -31,10 +31,21 @@ void UPopupGachaFilter::OnClickEvent(const FName& InChildName)
 	Super::OnClickEvent(InChildName);
 }
 
+void UPopupGachaFilter::BindViewModel()
+{
+	Super::BindViewModel();
+	
+	auto* GachaFilterVM = NewObject<UPopupGachaFilterVM>(this);
+	GachaFilterVM->Init();
+	
+	SetViewModel(GachaFilterVM);
+	
+	RefreshSlots();
+}
+
 void UPopupGachaFilter::SetViewModel(UPopupGachaFilterVM* InVM)
 {
 	VM = InVM;
-	RefreshSlots();
 }
 
 void UPopupGachaFilter::RefreshSlots()

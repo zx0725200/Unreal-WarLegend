@@ -47,6 +47,7 @@ public class WarLegend : ModuleRules
 			"WarLegend/UI/ViewModel",
 			"WarLegend/UI/Interface",
 			"WarLegend/DataManager",
+			"WarLegend/Core",
 		});
 
 		// Uncomment if you are using Slate UI

@@ -10,7 +10,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
-#include "ScreenInventory.h"
+#include "ScreenTitle.h"
 #include "UIManager.h"
 #include "UIManagerImpl.h"
 #include "Ability/HeroAbilitySystemComponent.h"
@@ -20,7 +20,6 @@
 #include "ETC/Define.h"
 #include "ETC/Enum.h"
 #include "ETC/GamePlayTag.h"
-#include "Presenter/UIFlowPresenter.h"
 
 AWarLegendPlayerController::AWarLegendPlayerController()
 {
@@ -91,18 +90,15 @@ void AWarLegendPlayerController::OnInventoryOpen()
 	UUIManagerImpl* UIMgr = GTGetMgrImpl(UIManager);
 	VALID_RETURN(UIMgr);
 	
-	UIMgr->ShowUI<UScreenInventory>(TEXT("ScreenInventory"));
+	UIMgr->ShowUI(TEXT("ScreenInventory"));
 }
 
 void AWarLegendPlayerController::OnEscClicked()
 {
-	const auto UIPresenter = GTGetMgr(UUIFlowPresenter);
-	if (!UIPresenter)
-	{
-		return;
-	}
+	UUIManagerImpl* UIMgr = GTGetMgrImpl(UIManager);
+	VALID_RETURN(UIMgr);
 	
-	UIPresenter->HandleEscClick();
+	UIMgr->HandleEscClick();
 }
 
 void AWarLegendPlayerController::OnBattleMove(const FInputActionValue& InActionValue)
@@ -189,13 +185,10 @@ void AWarLegendPlayerController::Init()
 
 void AWarLegendPlayerController::ShowTitle() const
 {
-	const auto UIPresenter = GTGetMgr(UUIFlowPresenter);
-	if (!UIPresenter)
-	{
-		return;
-	}
+	UUIManagerImpl* UIMgr = GTGetMgrImpl(UIManager);
+	VALID_RETURN(UIMgr);
 	
-	UIPresenter->OpenScreenTitle();
+	UIMgr->ShowUI(TEXT("ScreenTitle"));
 }
 
 void AWarLegendPlayerController::SetMouseState()

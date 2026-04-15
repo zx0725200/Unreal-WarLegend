@@ -4,25 +4,26 @@
 #include "PopupGachaVM.h"
 
 #include "PopupGachaLogVM.h"
-#include "DataManager/GachaManager.h"
-#include "DataManager/InventoryManager.h"
-#include "DataManager/TableManager.h"
-#include "DataManager/UIManagerImpl.h"
+#include "GachaManager.h"
+#include "InventoryManager.h"
+#include "TableManager.h"
+#include "UIManagerImpl.h"
 #include "DataTable/ItemTableData.h"
+#include "ETC/Define.h"
 #include "ETC/Struct.h"
 
-void UPopupGachaVM::Init(UGachaManager* InGachaMgr, UInventoryManager* InInvenMgr, UTableManager* InTableMgr, UUIManagerImpl* InUIMgr, UPopupGachaLogVM* InLogVM)
+void UPopupGachaVM::Init()
 {
-	GachaMgr = InGachaMgr;
-	InvenMgr = InInvenMgr;
-	TableMgr = InTableMgr;
-	UIMgr    = InUIMgr;
-	LogVM    = InLogVM;
+	Super::Init();
 }
 
-void UPopupGachaVM::BroadCastOne()
+void UPopupGachaVM::OnGachaOne()
 {
-	if (!GachaMgr || !InvenMgr) return;
+	UGachaManager* GachaMgr = GetGachaManager();
+	VALID_RETURN(GachaMgr);
+	
+	UInventoryManager* InvenMgr = GetInvenManager();
+	VALID_RETURN(GachaMgr);
 	
 	const int32 ItemID = GachaMgr->GetGachaItem();
 	if (ItemID == -1) return;
@@ -31,21 +32,15 @@ void UPopupGachaVM::BroadCastOne()
 	ShowToast(ItemID);
 }
 
-void UPopupGachaVM::BroadCastTen()
+void UPopupGachaVM::OnGachaMulti(const int32 InItemCount)
 {
-	if (!GachaMgr || !InvenMgr) return;
+	UGachaManager* GachaMgr = GetGachaManager();
+	VALID_RETURN(GachaMgr);
 	
-	const TArray<int32> ItemIDs = GachaMgr->GetGachaItemMultiple(10);
+	UInventoryManager* InvenMgr = GetInvenManager();
+	VALID_RETURN(GachaMgr);
 	
-	InvenMgr->AddItems(ItemIDs);
-	ShowToastMulti(ItemIDs);
-}
-
-void UPopupGachaVM::BroadCastAll()
-{
-	if (!GachaMgr || !InvenMgr) return;
-	
-	const TArray<int32> ItemIDs = GachaMgr->GetGachaItemMultiple(30);
+	const TArray<int32> ItemIDs = GachaMgr->GetGachaItemMultiple(InItemCount);
 	
 	InvenMgr->AddItems(ItemIDs);
 	ShowToastMulti(ItemIDs);
@@ -53,7 +48,13 @@ void UPopupGachaVM::BroadCastAll()
 
 void UPopupGachaVM::ShowToast(int32 InItemID)
 {
-	if (!TableMgr || !UIMgr || !LogVM) return;
+	UUIManagerImpl* UIMgr = GetUIManager();
+	VALID_RETURN(UIMgr);
+	
+	UTableManager* TableMgr = GetTableManager();
+	VALID_RETURN(TableMgr);
+	
+	if (!LogVM) return;
 	const auto* TableData = TableMgr->GetItemTableData(InItemID);
 	if (!TableData) return;
 

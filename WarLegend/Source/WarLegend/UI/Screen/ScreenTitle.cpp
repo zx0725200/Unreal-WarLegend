@@ -21,14 +21,25 @@ void UScreenTitle::OnClickEvent(const FName& InChildName)
 	}
 }
 
+void UScreenTitle::BindViewModel()
+{
+	Super::BindViewModel();
+	
+	auto* TitleVM = NewObject<UScreenTitleVM>(this);
+	TitleVM->Init();
+	
+	SetViewModel(TitleVM);
+}
+
+void UScreenTitle::SetViewModel(UScreenTitleVM* InViewModel)
+{
+	VM = InViewModel;
+}
+
 void UScreenTitle::OnClickedConfirm()
 {
 	Hide();
 	
-	if (!VM)
-	{
-		return;
-	}
-	
-	VM->BroadCastConfirm();
+	VALID_RETURN(VM);
+	VM->OnConfirm();
 }
