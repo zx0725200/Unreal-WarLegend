@@ -22,16 +22,16 @@ public:
 	
 	void OnReset();
 	
-	const TArray<TObjectPtr<USlotInventoryVM>>& GetItems() { return Items; }
+	const TArray<TObjectPtr<USlotInventoryVM>>& GetItems() { return ItemList; }
 	const TMap<EItemType, FString>& GetLeftItemTypes() { return LeftItemTypes; }
 	const TMap<EItemType, FString>& GetRightItemTypes() { return RightItemTypes; }
 
 private:
-	void RefreshItems();
+	void AddItemList();
 	
 private:
 	UPROPERTY()
-	TArray<TObjectPtr<USlotInventoryVM>> Items;
+	TArray<TObjectPtr<USlotInventoryVM>> ItemList;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TMap<EItemType, FString> LeftItemTypes;

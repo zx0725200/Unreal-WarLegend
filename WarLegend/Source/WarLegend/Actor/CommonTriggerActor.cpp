@@ -2,10 +2,12 @@
 
 
 #include "CommonTriggerActor.h"
+
+#include "UIManager.h"
+#include "UIManagerImpl.h"
 #include "Components/BoxComponent.h"
 #include "Controller/WarLegendPlayerController.h"
 #include "Kismet/GameplayStatics.h"
-#include "Presenter/UIFlowPresenter.h"
 
 
 ACommonTriggerActor::ACommonTriggerActor()
@@ -77,14 +79,14 @@ void ACommonTriggerActor::OpenDungeonMenu() const
 		return;
 	}
 	
-	const auto UIPresenter = LocalPlayer->GetSubsystem<UUIFlowPresenter>();
-	if (!UIPresenter)
+	const auto UIMgr = LocalPlayer->GetSubsystem<UIManager>()->MgrImpl;
+	if (!UIMgr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("[OpenDungeonMenu] UIMgr Null"));
 		return;
 	}
 	
-	UIPresenter->OpenPopupDungeonMenu();
+	UIMgr->ShowUI(TEXT("PopupDungeonMenu"));
 }
 
 

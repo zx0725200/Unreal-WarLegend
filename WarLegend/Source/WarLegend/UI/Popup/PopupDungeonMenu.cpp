@@ -3,6 +3,7 @@
 #include "Components/VerticalBox.h"
 #include "DataManager/UIManager.h"
 #include "DataManager/UIManagerImpl.h"
+#include "Popup/PopupDungeonMenuVM.h"
 #include "UI/Slot/SlotDungeonMenu.h"
 
 void UPopupDungeonMenu::Awake()
@@ -18,28 +19,22 @@ void UPopupDungeonMenu::OnEnable()
 void UPopupDungeonMenu::OnDisable()
 {
 	Super::OnDisable();
+	UnbindVM();
 }
 
 void UPopupDungeonMenu::OnClickEvent(const FName& InChildName)
 {
+	VALID_RETURN(VM);
 	Super::OnClickEvent(InChildName);
 	
 	if (InChildName == TEXT("Btn_Next"))
 	{
-		OnClickedNext();
+		VM->OnNextPage();
 	}
 	else if (InChildName == TEXT("Btn_Prev"))
 	{
-		OnClickedPrev();
+		VM->OnPrevPage();
 	}
-}
-
-void UPopupDungeonMenu::Init()
-{
-	CurrentPageIndex = 1;
-	
-	InitSlotPool();
-	RefreshPage();
 }
 
 void UPopupDungeonMenu::InitSlotPool()
@@ -56,7 +51,7 @@ void UPopupDungeonMenu::InitSlotPool()
 	PooledSlots.Reserve(PageSize);
 
 	const auto UIMgr = GTUIGetMgrImpl(UIManager);
-	if (!UIMgr) return;
+	VALID_RETURN(UIMgr);
 	
 	for (int32 i = 0; i < PageSize; ++i)
 	{
@@ -71,79 +66,52 @@ void UPopupDungeonMenu::InitSlotPool()
 	}
 }
 
-void UPopupDungeonMenu::BindViewModel()
+void UPopupDungeonMenu::BindVM()
 {
-	Super::BindViewModel();
+	VALID_RETURN(VM);
+	VM->GetOnPageChanged().AddUObject(this, &UPopupDungeonMenu::OnPageChanged);
 }
 
-void UPopupDungeonMenu::RefreshPage()
+void UPopupDungeonMenu::UnbindVM()
 {
-	if (!Vertical_DungeonMenu || PooledSlots.Num() <= 0)
-	{
-		return;
-	}
-	
-	constexpr int32 PageSize = 5;
-	const int32 StartIndex = (CurrentPageIndex-1) * PageSize;
+	VALID_RETURN(VM);
+	VM->GetOnPageChanged().RemoveAll(this);
+	VM = nullptr;
+}
 
-	for (int32 LocalIndex = 0; LocalIndex < PooledSlots.Num(); ++LocalIndex)
+void UPopupDungeonMenu::OnPageChanged(const TArray<USlotDungeonVM*>& InSlotList, const int32 InCurrentPage, const int32 InMaxPage)
+{
+	for (int32 i = 0; i < PooledSlots.Num(); ++i)
 	{
-		USlotDungeonMenu* DungeonMenu = PooledSlots[LocalIndex];
+		USlotDungeonMenu* DungeonMenu = PooledSlots[i];
 		if (!DungeonMenu)
 		{
 			continue;
 		}
 
-		const int32 DataIndex = StartIndex + LocalIndex;
-
-		if (VM.IsValidIndex(DataIndex) && VM[DataIndex])
+		if (InSlotList.IsValidIndex(i) && InSlotList[i])
 		{
-			DungeonMenu->SetData(VM[DataIndex]);
+			DungeonMenu->SetData(InSlotList[i]);
 			DungeonMenu->Show();
+		}
+		else
+		{
+			DungeonMenu->Hide();
 		}
 	}
 	
-	RefreshPageText();
+	Txt_Page->SetText(FText::FromString(FString::Printf(TEXT("%d/%d"), InCurrentPage, InMaxPage)));
 }
 
-void UPopupDungeonMenu::RefreshPageText() const
+void UPopupDungeonMenu::BindViewModel()
 {
-	const int32 MaxPageIndex = GetMaxPageIndex();
-	const FString PageText = FString::Printf(TEXT("%d/%d"), CurrentPageIndex, MaxPageIndex);
+	Super::BindViewModel();
 	
-	Txt_Page->SetText(FText::FromString(PageText));
-}
-
-int32 UPopupDungeonMenu::GetMaxPageIndex() const
-{
-	constexpr int32 PageSize = 5;
-	if (VM.Num() <= 0)
-	{
-		return 0;
-	}
-
-	return FMath::DivideAndRoundUp(VM.Num(), PageSize);
-}
-
-void UPopupDungeonMenu::OnClickedNext()
-{
-	const int32 MaxPageIndex = GetMaxPageIndex();
-	if (CurrentPageIndex >= MaxPageIndex)
-	{
-		return;
-	}
-
-	++CurrentPageIndex;
-	RefreshPage();
-}
-
-void UPopupDungeonMenu::OnClickedPrev()
-{
-	if (CurrentPageIndex <= 1)
-	{
-		return;
-	}
-
-	--CurrentPageIndex;
-	RefreshPage();
+	VM = NewObject<UPopupDungeonMenuVM>(this);
+	VM->Init();
+	
+	InitSlotPool();
+	
+	BindVM();
+	VM->NotifyAll();   // 처음 호출
 }

@@ -19,26 +19,14 @@ class WARLEGEND_API UUIFlowPresenter : public ULocalPlayerSubsystem
 	
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-	virtual void PlayerControllerChanged(APlayerController* NewPlayerController) override;
 
 #pragma region Popup
-	void OpenPopupDungeonMenu() const;
 	void OpenPopupGacha() const;
 	void OpenPopupGachaFilter() const;
 	void OpenPopupGachaLog() const;
 #pragma endregion Popup
-	
-#pragma region Hud
-	void GotoCity() const;
-#pragma endregion Hud
 
 private:
-	UPROPERTY()
-	TObjectPtr<UDungeonPresenter> DungeonPresenter;
-	
-	UPROPERTY()
-	TObjectPtr<UInventoryPresenter> InventoryPresenter;
-	
 	UPROPERTY()
 	TObjectPtr<UGachaPresenter> GachaPresenter;
 };

@@ -1,44 +1,82 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "PopupDungeonMenuVM.h"
-
-#include "DataManager/DungeonManager.h"
-#include "DataManager/UIManagerImpl.h"
+﻿#include "PopupDungeonMenuVM.h"
+#include "TableManager.h"
+#include "DataTable/DungeonTableData.h"
+#include "ETC/Constant.h"
+#include "ETC/Define.h"
+#include "Slot/SlotDungeonVM.h"
 
 void UPopupDungeonMenuVM::Init()
 {
 	Super::Init();
-}
-
-void UPopupDungeonMenuVM::SetName(const FString& InName)
-{
-	Name = InName;
-	OnNameChanged.Broadcast(Name);
-}
-
-void UPopupDungeonMenuVM::SetLevel(const int32 InMin, const int32 InMax)
-{
-	MinLevel = InMin;
-	MaxLevel = InMax;
-	OnLevelChanged.Broadcast(MinLevel, MaxLevel);
-}
-
-void UPopupDungeonMenuVM::SetID(const int32 InID)
-{
-	ID = InID;
-}
-
-void UPopupDungeonMenuVM::BroadCastEnterDungeon()
-{
-	if (!DungeonMgr || !UIMgr) return;
 	
-	DungeonMgr->EnterDungeon(ID);
-	UIMgr->HideUI(TEXT("PopupDungeonMenu"));
+	UTableManager* TableMgr = GetTableManager();
+	VALID_RETURN(TableMgr);
+	
+	const auto DungeonList = TableMgr->GetAllDungeonTableData();
+	if (DungeonList.IsEmpty())
+	{
+		return;
+	}
+	
+	SlotDungeonVMList.Reset();
+	SlotDungeonVMList.Reserve(DungeonList.Num());
+
+	for (const auto& Data : DungeonList)
+	{
+		USlotDungeonVM* VM = NewObject<USlotDungeonVM>(this);
+		VM->Init(*Data);
+		
+		SlotDungeonVMList.Emplace(VM);
+	}
+	
+	CurrentPageIndex = 1;
 }
 
-void UPopupDungeonMenuVM::BroadCastExitDungeon()
+void UPopupDungeonMenuVM::NotifyAll()
 {
-	if (!DungeonMgr) return;
-	DungeonMgr->ExitDungeon();
+	Super::NotifyAll();
+	
+	OnPageChanged.Broadcast(GetCurrentSlotList(), CurrentPageIndex, GetMaxPage());
+}
+
+void UPopupDungeonMenuVM::OnNextPage()
+{
+	OnChangePage(CurrentPageIndex + 1);
+}
+
+void UPopupDungeonMenuVM::OnPrevPage()
+{
+	OnChangePage(CurrentPageIndex - 1);
+}
+
+void UPopupDungeonMenuVM::OnChangePage(int32 NewPage)
+{
+	const int32 MaxPage = GetMaxPage();
+	NewPage = FMath::Clamp(NewPage, 1, MaxPage);
+
+	if (CurrentPageIndex == NewPage) return;
+
+	CurrentPageIndex = NewPage;
+	OnPageChanged.Broadcast(GetCurrentSlotList(), CurrentPageIndex, MaxPage);
+}
+
+TArray<USlotDungeonVM*> UPopupDungeonMenuVM::GetCurrentSlotList() const
+{
+	TArray<USlotDungeonVM*> SlotList;
+	const int32 Start = (CurrentPageIndex - 1) * Constant::PageSize;
+	for (int32 i = 0; i < Constant::PageSize; ++i)
+	{
+		if (SlotDungeonVMList.IsValidIndex(Start + i))
+		{
+			SlotList.Add(SlotDungeonVMList[Start + i]);
+		}
+	}
+	
+	return SlotList;
+}
+
+int32 UPopupDungeonMenuVM::GetMaxPage() const
+{
+	const int32 Raw = FMath::DivideAndRoundUp(SlotDungeonVMList.Num(), Constant::PageSize);
+	return FMath::Max(Raw, 1);
 }

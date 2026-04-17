@@ -6,9 +6,8 @@
 #include "Core/SlotWidgetBase.h"
 #include "SlotDungeonMenu.generated.h"
 
-class UPopupDungeonMenuVM;
+class USlotDungeonVM;
 class UTextBlock;
-struct FDungeonTableData;
 /**
  * 
  */
@@ -23,17 +22,15 @@ public:
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
 	
-	void SetData(UPopupDungeonMenuVM* InData);
+	void SetData(USlotDungeonVM* InData);
 	
 private:
 	void RefreshName(const FString& InName) const;
 	void RefreshLevel(const int32 InMin, const int32 InMax) const;
 	
-	void AddVmEvent();
-	
 private:
 	UPROPERTY()
-	TObjectPtr<UPopupDungeonMenuVM> VM;
+	TObjectPtr<USlotDungeonVM> VM;
 	
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> Txt_Name;

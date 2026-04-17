@@ -4,16 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "ViewModelBase.h"
-#include "UObject/Object.h"
 #include "SlotFilterVM.generated.h"
 
 enum class EItemGrade : uint8;
 
-DECLARE_MULTICAST_DELEGATE_TwoParams(FOnFilterChanged, EItemGrade, bool);
-
-/**
- * 
- */
 UCLASS()
 class WARLEGEND_API USlotFilterVM : public UViewModelBase
 {

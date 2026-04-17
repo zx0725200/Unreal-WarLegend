@@ -10,7 +10,6 @@
 #include "EnhancedInputSubsystems.h"
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
-#include "ScreenTitle.h"
 #include "UIManager.h"
 #include "UIManagerImpl.h"
 #include "Ability/HeroAbilitySystemComponent.h"

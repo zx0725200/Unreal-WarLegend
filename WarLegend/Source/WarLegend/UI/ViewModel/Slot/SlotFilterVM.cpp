@@ -1,7 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "SlotFilterVM.h"
+﻿#include "SlotFilterVM.h"
 
 #include "GachaManager.h"
 #include "SaveGameDataManager.h"

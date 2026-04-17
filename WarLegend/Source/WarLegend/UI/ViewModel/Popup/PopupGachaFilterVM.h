@@ -6,14 +6,8 @@
 #include "Core/ViewModelBase.h"
 #include "PopupGachaFilterVM.generated.h"
 
-enum class EItemGrade : uint8;
-class USaveGameDataManager;
-class UGachaManager;
-class UUIManagerImpl;
-class UWLSaveGame;
 class USlotFilterVM;
 
-DECLARE_MULTICAST_DELEGATE(FOnFilterConfirm);
 /**
  * 
  */

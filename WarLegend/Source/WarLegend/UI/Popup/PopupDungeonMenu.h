@@ -6,6 +6,7 @@
 #include "Core/PopupWidgetBase.h"
 #include "PopupDungeonMenu.generated.h"
 
+class USlotDungeonVM;
 class UTextBlock;
 class UPopupDungeonMenuVM;
 class USlotDungeonMenu;
@@ -24,31 +25,21 @@ public:
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
 	virtual void BindViewModel() override;
-	
-	void SetViewModel(const TArray<UPopupDungeonMenuVM*>& InData) { VM = InData; }
-	
-	void Init();
-	void InitSlotPool();
 
 private:
-	void RefreshPage();
-	void RefreshPageText() const;
+	void InitSlotPool();
 	
-	void OnClickedNext();
-	void OnClickedPrev();
-	
-	int32 GetMaxPageIndex() const;
+	void BindVM();
+	void UnbindVM();
+
+	void OnPageChanged(const TArray<USlotDungeonVM*>& InSlotList, const int32 InCurrentPage, const int32 InMaxPage);
 
 private:
 	UPROPERTY()
-	TArray<TObjectPtr<UPopupDungeonMenuVM>> VM;
+	TObjectPtr<UPopupDungeonMenuVM> VM;
 	
 	UPROPERTY()
 	TArray<TObjectPtr<USlotDungeonMenu>> PooledSlots;
-	
-	UPROPERTY()
-	int32 CurrentPageIndex = 1;
-	
 	
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UVerticalBox> Vertical_DungeonMenu;

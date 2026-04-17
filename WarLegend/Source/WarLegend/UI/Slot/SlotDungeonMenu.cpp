@@ -1,9 +1,6 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "SlotDungeonMenu.h"
+﻿#include "SlotDungeonMenu.h"
 #include "Components/TextBlock.h"
-#include "ViewModel/Popup/PopupDungeonMenuVM.h"
+#include "Slot/SlotDungeonVM.h"
 
 void USlotDungeonMenu::Awake()
 {
@@ -18,31 +15,29 @@ void USlotDungeonMenu::OnEnable()
 void USlotDungeonMenu::OnDisable()
 {
 	Super::OnDisable();
+	VM = nullptr;
 }
 
 void USlotDungeonMenu::OnClickEvent(const FName& InChildName)
 {
+	VALID_RETURN(VM);
 	Super::OnClickEvent(InChildName);
 	
 	if (InChildName == TEXT("Btn_Dungeon"))
 	{
-		if (!VM) return;
-		VM->BroadCastEnterDungeon();
+		VM->OnEnterDungeon();
 	}
 }
 
-void USlotDungeonMenu::SetData(UPopupDungeonMenuVM* InData)
+void USlotDungeonMenu::SetData(USlotDungeonVM* InData)
 {
-	if (!InData) return;
+	VALID_RETURN(InData);
 	
 	VM = InData;
 	
-	// 이벤트 등록
-	AddVmEvent();
-	
-	// 초기 값 설정
-	RefreshName(VM->GetDungeonName());
-	RefreshLevel(VM->GetMinLevel(), VM->GetMaxLevel());
+	const FDungeonTableData& Data = VM->GetData();
+	RefreshName(Data.DungeonName);
+	RefreshLevel(Data.MinLevel, Data.MaxLevel);
 }
 
 void USlotDungeonMenu::RefreshName(const FString& InName) const
@@ -54,15 +49,4 @@ void USlotDungeonMenu::RefreshLevel(const int32 InMin, const int32 InMax) const
 {
 	const FString LevelText = FString::Printf(TEXT("Lv.%d ~ %d"), InMin, InMax);
 	Txt_Level->SetText(FText::FromString(LevelText));
-}
-
-void USlotDungeonMenu::AddVmEvent()
-{
-	if (!VM) return;
-	
-	VM->GetOnNameChanged().RemoveAll(this);
-	VM->GetOnLevelChanged().RemoveAll(this);
-	
-	VM->GetOnNameChanged().AddUObject(this, &USlotDungeonMenu::RefreshName);
-	VM->GetOnLevelChanged().AddUObject(this, &USlotDungeonMenu::RefreshLevel);
 }

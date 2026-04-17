@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-//#include "Templates/SubclassOf.h"
 #include "GameFramework/PlayerController.h"
 #include "WarLegendPlayerController.generated.h"
 
@@ -14,8 +13,6 @@ class UNiagaraSystem;
 class UInputMappingContext;
 class UInputAction;
 class UPathFollowingComponent;
-
-DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 UCLASS(abstract)
 class AWarLegendPlayerController : public APlayerController

@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Core/HudWidgetBase.h"
-#include "HudPlayerState.generated.h"
+#include "HudMain.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class WARLEGEND_API UHudPlayerState : public UHudWidgetBase
+class WARLEGEND_API UHudMain : public UHudWidgetBase
 {
 	GENERATED_BODY()
 	
@@ -18,4 +18,5 @@ public:
 	virtual void Awake() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
+	virtual void BindViewModel() override;
 };

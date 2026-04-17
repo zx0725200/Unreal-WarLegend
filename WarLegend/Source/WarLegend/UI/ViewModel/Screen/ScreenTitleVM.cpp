@@ -12,5 +12,5 @@ void UScreenTitleVM::OnConfirm() const
 	UUIManagerImpl* UIMgr = GetUIManager();
 	VALID_RETURN(UIMgr);
 	
-	UIMgr->ShowUI(TEXT("HudPlayerState"));
+	UIMgr->ShowUI(TEXT("HudMain"));
 }

@@ -6,15 +6,14 @@
 #include "Core/ViewModelBase.h"
 #include "PopupDungeonMenuVM.generated.h"
 
-class UUIManagerImpl;
-class UDungeonManager;
+class USlotDungeonVM;
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnPageChanged,
+	const TArray<USlotDungeonVM*>& /*SlotList*/,
+	int32 /*CurrentPage*/,
+	int32 /*MaxPage*/);
 /**
  * 
  */
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnConfirmRequested, int32);
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnNameChanged,     const FString&);
-DECLARE_MULTICAST_DELEGATE_TwoParams(FOnLevelChanged,   int32, int32); // Min, Max
-
 UCLASS()
 class WARLEGEND_API UPopupDungeonMenuVM : public UViewModelBase
 {
@@ -22,41 +21,23 @@ class WARLEGEND_API UPopupDungeonMenuVM : public UViewModelBase
 	
 public:
 	virtual void Init() override;
+	virtual void NotifyAll() override;
 	
-	void SetName(const FString& InName);
-	void SetLevel(const int32 InMin, const int32 InMax);
-	void SetID(const int32 InID);
-	
-	void BroadCastEnterDungeon();    // 던전 입장
-	void BroadCastExitDungeon();     // 던전 퇴장
-	
-	int32          GetID()				const { return ID; }
-	const FString& GetDungeonName()     const { return Name; }
-	int32          GetMinLevel()		const { return MinLevel; }
-	int32          GetMaxLevel()		const { return MaxLevel; }
-	
-	FOnNameChanged&			GetOnNameChanged() { return OnNameChanged; }
-	FOnLevelChanged&		GetOnLevelChanged() { return OnLevelChanged; }
+	void OnNextPage();
+	void OnPrevPage();
+	void OnChangePage(int32 NewPage);
 
+	FOnPageChanged& GetOnPageChanged() { return OnPageChanged; }
+	
 private:
-	FOnNameChanged      OnNameChanged;
-	FOnLevelChanged     OnLevelChanged;
+	TArray<USlotDungeonVM*> GetCurrentSlotList() const;
+	int32 GetMaxPage() const;
 	
+private:
 	UPROPERTY()
-	int32 ID = 0;
-
-	UPROPERTY()
-	FString Name;
-
-	UPROPERTY()
-	int32 MinLevel = 0;
-
-	UPROPERTY()
-	int32 MaxLevel = 0;
+	TArray<TObjectPtr<USlotDungeonVM>> SlotDungeonVMList;
 	
-	UPROPERTY()
-	TObjectPtr<UDungeonManager> DungeonMgr;
+	int32 CurrentPageIndex = 1;
 	
-	UPROPERTY()
-	TObjectPtr<UUIManagerImpl> UIMgr;
+	FOnPageChanged OnPageChanged;
 };

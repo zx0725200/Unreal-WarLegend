@@ -6,6 +6,7 @@
 #include "UIManager.h"
 #include "GachaManager.h"
 #include "SaveGameDataManager.h"
+#include "DungeonManager.h"
 #include "InventoryManager.h"
 
 void UViewModelBase::Init()
@@ -114,4 +115,15 @@ USaveGameDataManager* UViewModelBase::GetSaveGameDataManager() const
 	}
 	
 	return GameInstance->GetSubsystem<USaveGameDataManager>();
+}
+
+UDungeonManager* UViewModelBase::GetDungeonManager() const
+{
+	const UGameInstance* GameInstance = GetGameInstance();
+	if (!GameInstance)
+	{
+		return nullptr;
+	}
+	
+	return GameInstance->GetSubsystem<UDungeonManager>();
 }

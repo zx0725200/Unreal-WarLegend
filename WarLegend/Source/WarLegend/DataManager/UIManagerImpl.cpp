@@ -39,7 +39,7 @@ UWLUserWidgetBase* UUIManagerImpl::ShowUI(const FName& UIName, ESlateVisibility 
 	{
 		return nullptr;
 	}
-
+	
 	if (auto* VMWidget = Cast<IViewModelInterface>(Widget))
 	{
 		VMWidget->BindViewModel();

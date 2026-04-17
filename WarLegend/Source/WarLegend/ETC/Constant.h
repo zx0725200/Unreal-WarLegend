@@ -26,4 +26,5 @@ namespace Constant
 	
 	constexpr float DungeonExitTime = 0.5f;
 	constexpr float MapSize = 1800.0f;
+	constexpr int32 PageSize = 5;
 }

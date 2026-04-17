@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "ViewModelBase.generated.h"
 
+class UDungeonManager;
 class USaveGameDataManager;
 class UGachaManager;
 class UUIManagerImpl;
@@ -21,12 +22,15 @@ class WARLEGEND_API UViewModelBase : public UObject
 	
 protected:
 	virtual void Init();
+	virtual void NotifyAll() {}
+	virtual void ClearBinding() {}
 	
 	UTableManager* GetTableManager() const;
 	UInventoryManager* GetInvenManager() const;
 	UUIManagerImpl* GetUIManager() const;
 	UGachaManager* GetGachaManager() const;
 	USaveGameDataManager* GetSaveGameDataManager() const;
+	UDungeonManager* GetDungeonManager() const;
 	
 private:
 	UWorld* GetMyWorld() const;

@@ -1,12 +1,14 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "SlotInventoryVM.h"
+﻿#include "SlotInventoryVM.h"
 
 #include "UIManagerImpl.h"
 #include "ETC/Define.h"
 
-void USlotInventoryVM::Init(const FMyItem& InData)
+void USlotInventoryVM::Init()
+{
+	Super::Init();
+}
+
+void USlotInventoryVM::SetData(const FMyItem& InData)
 {
 	MyItem = InData;
 }
