@@ -1,12 +1,10 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "PopupGachaLog.h"
+﻿#include "PopupGachaLog.h"
 
 #include "Components/ScrollBox.h"
 #include "Core/UMyButton.h"
 #include "DataManager/UIManager.h"
 #include "DataManager/UIManagerImpl.h"
+#include "ETC/Define.h"
 #include "Slot/SlotGachaLog.h"
 #include "ViewModel/Popup/PopupGachaLogVM.h"
 
@@ -18,84 +16,94 @@ void UPopupGachaLog::Awake()
 void UPopupGachaLog::OnEnable()
 {
 	Super::OnEnable();
-	
-	Btn_Exit->SetVisibility(ESlateVisibility::Visible);
 }
 
 void UPopupGachaLog::OnDisable()
 {
 	Super::OnDisable();
+	UnbindVM();
 }
 
 void UPopupGachaLog::OnClickEvent(const FName& InChildName)
 {
 	Super::OnClickEvent(InChildName);
-	
+
 	if (InChildName == TEXT("Btn_Clear"))
 	{
 		OnClickedClear();
 	}
 }
 
-void UPopupGachaLog::StartHide()
+void UPopupGachaLog::BindViewModel()
 {
-	Super::Hide();
+	Super::BindViewModel();
+
+	VM = NewObject<UPopupGachaLogVM>(this);
+	VM->Init();
+
+	BindVM();
+	RebuildLogs();
 }
 
-void UPopupGachaLog::SetViewModel(UPopupGachaLogVM* InVM)
+void UPopupGachaLog::BindVM()
 {
-	VM = InVM;
+	VALID_RETURN(VM);
+	VM->GetOnLogAdded().AddUObject(this, &UPopupGachaLog::HandleLogAdded);
+	VM->GetOnLogCleared().AddUObject(this, &UPopupGachaLog::HandleLogCleared);
 }
 
-void UPopupGachaLog::ShowAsToast()
+void UPopupGachaLog::UnbindVM()
 {
-	if (!VM) return;
-	
-	CreateLogSlot();
-	ApplyDisplayMode(EGachaLogDisplayMode::Toast);
-}
-
-void UPopupGachaLog::ShowAsFull()
-{
-	if (!VM) return;
-	
-	ApplyDisplayMode(EGachaLogDisplayMode::Full);
-}
-
-void UPopupGachaLog::StartHideTimer()
-{
-	GetWorld()->GetTimerManager().ClearTimer(HideTimerHandle);
-	GetWorld()->GetTimerManager().SetTimer(HideTimerHandle, this, &UPopupGachaLog::StartHide, 3.0f, false);
-}
-
-void UPopupGachaLog::ApplyDisplayMode(const EGachaLogDisplayMode InMode)
-{
-	const bool bToast = (InMode == EGachaLogDisplayMode::Toast);
-	
-	SB_Log->ScrollToEnd();
-	
-	Btn_Exit->SetVisibility(bToast ? ESlateVisibility::Collapsed : ESlateVisibility::Visible);
-	
-	GetWorld()->GetTimerManager().ClearTimer(HideTimerHandle);
-	
-	if (!bToast)
+	if (VM)
 	{
-		return;
+		VM->GetOnLogAdded().RemoveAll(this);
+		VM->GetOnLogCleared().RemoveAll(this);
+		VM->ClearBinding();
 	}
-	
-	StartHideTimer();
+	VM = nullptr;
 }
 
-void UPopupGachaLog::CreateLogSlot() const
+void UPopupGachaLog::RebuildLogs()
 {
-	const auto& LogList = VM->GetLogList();
-	const auto& LastData = LogList.Last();
-	
+	VALID_RETURN(VM, SB_Log);
+
+	SB_Log->ClearChildren();
+
+	for (const FGachaLogData& Data : VM->GetLogList())
+	{
+		CreateLogSlot(Data);
+	}
+
+	SB_Log->ScrollToEnd();
+}
+
+void UPopupGachaLog::CreateLogSlot(const FGachaLogData& InData)
+{
 	const auto UIMgr = GTUIGetMgrImpl(UIManager);
 	if (!UIMgr) return;
 
 	auto* LogSlot = UIMgr->CreateSlot<USlotGachaLog>(TEXT("SlotGachaLog"), SB_Log);
-	LogSlot->Init(LastData);
+	if (LogSlot)
+	{
+		LogSlot->Init(InData);
+	}
+}
+
+void UPopupGachaLog::HandleLogAdded(const FGachaLogData& InData)
+{
+	CreateLogSlot(InData);
+	if (SB_Log)
+	{
+		SB_Log->ScrollToEnd();
+	}
+}
+
+void UPopupGachaLog::HandleLogCleared()
+{
+	if (SB_Log)
+	{
+		SB_Log->ClearChildren();
+	}
 }
 
 void UPopupGachaLog::OnClickedClear()
@@ -104,6 +112,7 @@ void UPopupGachaLog::OnClickedClear()
 	{
 		return;
 	}
-	
+
 	VM->ClearAll();
 }
+

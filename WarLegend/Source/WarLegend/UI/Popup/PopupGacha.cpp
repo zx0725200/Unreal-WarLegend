@@ -3,6 +3,7 @@
 
 #include "PopupGacha.h"
 
+#include "ETC/Define.h"
 #include "ViewModel/Popup/PopupGachaVM.h"
 
 void UPopupGacha::Awake()
@@ -18,6 +19,11 @@ void UPopupGacha::OnEnable()
 void UPopupGacha::OnDisable()
 {
 	Super::OnDisable();
+
+	if (VM)
+	{
+		VM->ClearBinding();
+	}
 	VM = nullptr;
 }
 
@@ -25,7 +31,7 @@ void UPopupGacha::OnClickEvent(const FName& InChildName)
 {
 	Super::OnClickEvent(InChildName);
 	VALID_RETURN(VM);
-	
+
 	if (InChildName == TEXT("Btn_One"))
 	{
 		VM->OnGachaOne();
@@ -43,14 +49,7 @@ void UPopupGacha::OnClickEvent(const FName& InChildName)
 void UPopupGacha::BindViewModel()
 {
 	Super::BindViewModel();
-	
-	UPopupGachaVM* GachaVM = NewObject<UPopupGachaVM>(this);
-	GachaVM->Init();
-	
-	SetViewModel(GachaVM);
-}
 
-void UPopupGacha::SetViewModel(UPopupGachaVM* InVM)
-{
-	VM = InVM;
+	VM = NewObject<UPopupGachaVM>(this);
+	VM->Init();
 }

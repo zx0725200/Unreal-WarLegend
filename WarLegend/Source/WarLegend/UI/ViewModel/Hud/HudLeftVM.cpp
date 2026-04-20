@@ -29,12 +29,16 @@ void UHudLeftVM::OnClickedGacha()
 
 void UHudLeftVM::OnClickedFilter()
 {
+	UUIManagerImpl* UIMgr = GetUIManager();
+	VALID_RETURN(UIMgr);
+	
+	UIMgr->ShowUI(TEXT("PopupGachaFilter"));
 }
 
 void UHudLeftVM::OnClickedGachaLog()
 {
-}
-
-void UHudLeftVM::OnClickedRollBack()
-{
+	UUIManagerImpl* UIMgr = GetUIManager();
+	VALID_RETURN(UIMgr);
+	
+	UIMgr->ShowUI(TEXT("PopupGachaLog"));
 }

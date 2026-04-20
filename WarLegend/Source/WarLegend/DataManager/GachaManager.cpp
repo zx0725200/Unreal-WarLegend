@@ -40,6 +40,18 @@ TArray<int32> UGachaManager::GetGachaItemMultiple(const int32 InCount) const
 	return GachaItemIdList;
 }
 
+void UGachaManager::AddLog(const FGachaLogData& InData)
+{
+	LogList.Emplace(InData);
+	OnLogAdded.Broadcast(LogList.Last());
+}
+
+void UGachaManager::ClearLogs()
+{
+	LogList.Empty();
+	OnLogCleared.Broadcast();
+}
+
 void UGachaManager::ApplyFilter()
 {
 	auto* SaveGameMgr = GetGameInstance()->GetSubsystem<USaveGameDataManager>();
@@ -137,4 +149,3 @@ float UGachaManager::GetTotalWeight() const
 	
 	return TempTotalWeight;
 }
-	

@@ -20,7 +20,7 @@ class WARLEGEND_API UViewModelBase : public UObject
 {
 	GENERATED_BODY()
 	
-protected:
+public:
 	virtual void Init();
 	virtual void NotifyAll() {}
 	virtual void ClearBinding() {}

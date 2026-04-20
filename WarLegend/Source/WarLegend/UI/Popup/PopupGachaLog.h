@@ -11,50 +11,39 @@ class USlotGachaLog;
 struct FGachaLogData;
 class UPopupGachaLogVM;
 class UScrollBox;
-/**
- * 
- */
-UENUM()
-enum class EGachaLogDisplayMode : uint8
-{
-	Toast,
-	Full,
-};
 
 UCLASS()
 class WARLEGEND_API UPopupGachaLog : public UPopupWidgetBase
 {
 	GENERATED_BODY()
-	
+
 public:
 	virtual void Awake() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
-	
-	void SetViewModel(UPopupGachaLogVM* InVM);
-	void ShowAsToast();
-	void ShowAsFull();
+	virtual void BindViewModel() override;
 
 private:
-	UFUNCTION()
-	void StartHide();
-	void StartHideTimer();
-	
-	void CreateLogSlot() const;
-	void ApplyDisplayMode(EGachaLogDisplayMode InMode);
-	
+	void BindVM();
+	void UnbindVM();
+
+	void RebuildLogs();
+	void CreateLogSlot(const FGachaLogData& InData);
+
+	void HandleLogAdded(const FGachaLogData& InData);
+	void HandleLogCleared();
+
 	void OnClickedClear();
 
 private:
 	UPROPERTY()
 	TObjectPtr<UPopupGachaLogVM> VM;
-	
+
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UScrollBox> SB_Log;
-	
+
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UUMyButton> Btn_Exit;
-	
-	FTimerHandle HideTimerHandle;
 };
+

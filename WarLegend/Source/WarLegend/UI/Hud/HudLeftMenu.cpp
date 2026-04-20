@@ -14,10 +14,6 @@ void UHudLeftMenu::OnClickEvent(const FName& InChildName)
 	{
 		VM->OnClickedInven();
 	}
-	else if (InChildName == TEXT("Btn_RollBack"))
-	{
-		VM->OnClickedRollBack();
-	}
 	else if (InChildName == TEXT("Btn_Gacha"))
 	{
 		VM->OnClickedGacha();

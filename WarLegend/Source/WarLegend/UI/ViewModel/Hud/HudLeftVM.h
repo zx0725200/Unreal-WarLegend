@@ -21,5 +21,4 @@ public:
 	void OnClickedGacha();
 	void OnClickedFilter();
 	void OnClickedGachaLog();
-	void OnClickedRollBack();
 };

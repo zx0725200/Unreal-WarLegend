@@ -3,7 +3,6 @@
 
 #include "PopupGachaVM.h"
 
-#include "PopupGachaLogVM.h"
 #include "GachaManager.h"
 #include "InventoryManager.h"
 #include "TableManager.h"
@@ -21,56 +20,57 @@ void UPopupGachaVM::OnGachaOne()
 {
 	UGachaManager* GachaMgr = GetGachaManager();
 	VALID_RETURN(GachaMgr);
-	
+
 	UInventoryManager* InvenMgr = GetInvenManager();
-	VALID_RETURN(GachaMgr);
-	
+	VALID_RETURN(InvenMgr);
+
 	const int32 ItemID = GachaMgr->GetGachaItem();
 	if (ItemID == -1) return;
-	
+
 	InvenMgr->AddItem(ItemID);
-	ShowToast(ItemID);
+	AddGachaLog(ItemID);
+
+	OnGachaCompleted.Broadcast();
 }
 
 void UPopupGachaVM::OnGachaMulti(const int32 InItemCount)
 {
 	UGachaManager* GachaMgr = GetGachaManager();
 	VALID_RETURN(GachaMgr);
-	
+
 	UInventoryManager* InvenMgr = GetInvenManager();
-	VALID_RETURN(GachaMgr);
-	
+	VALID_RETURN(InvenMgr);
+
 	const TArray<int32> ItemIDs = GachaMgr->GetGachaItemMultiple(InItemCount);
-	
+	if (ItemIDs.IsEmpty()) return;
+
 	InvenMgr->AddItems(ItemIDs);
-	ShowToastMulti(ItemIDs);
+	for (const int32 ID : ItemIDs)
+	{
+		AddGachaLog(ID);
+	}
+
+	OnGachaCompleted.Broadcast();
 }
 
-void UPopupGachaVM::ShowToast(int32 InItemID)
+void UPopupGachaVM::AddGachaLog(const int32 InItemID)
 {
-	UUIManagerImpl* UIMgr = GetUIManager();
-	VALID_RETURN(UIMgr);
-	
+	UGachaManager* GachaMgr = GetGachaManager();
+	VALID_RETURN(GachaMgr);
+
 	UTableManager* TableMgr = GetTableManager();
 	VALID_RETURN(TableMgr);
-	
-	if (!LogVM) return;
-	const auto* TableData = TableMgr->GetItemTableData(InItemID);
+
+	UUIManagerImpl* UIMgr = GetUIManager();
+	VALID_RETURN(UIMgr);
+
+	const FItemTableData* TableData = TableMgr->GetItemTableData(InItemID);
 	if (!TableData) return;
 
 	FGachaLogData Data;
 	Data.ItemName   = TableData->ItemName;
 	Data.GradeColor = UIMgr->GetItemColor(TableData->ItemGrade);
 	Data.Time       = FDateTime::Now().ToString(TEXT("%H:%M:%S"));
-	LogVM->AddLog(Data);
-	
-	OnToastRequested.Broadcast();
-}
 
-void UPopupGachaVM::ShowToastMulti(const TArray<int32>& InItemIDs)
-{
-	for (const int32 ID : InItemIDs)
-	{
-		ShowToast(ID);
-	}
+	GachaMgr->AddLog(Data);
 }

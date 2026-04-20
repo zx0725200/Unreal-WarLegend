@@ -18,32 +18,32 @@
 
 void UGachaPresenter::Init(UUIManagerImpl* InUIMgr)
 {
-	UIMgr    = InUIMgr;
-	
-	UGameInstance* GI = UGameplayStatics::GetGameInstance(UIMgr);
-	GachaMgr    = GI->GetSubsystem<UGachaManager>();
-	SaveGameMgr = GI->GetSubsystem<USaveGameDataManager>();
-	TableMgr	= GI->GetSubsystem<UTableManager>();
-	
-	ULocalPlayer* LP = GI->GetFirstGamePlayer();
-	InvenMgr = LP->GetSubsystem<UInventoryManager>();
-	
-	GachaLogVM = NewObject<UPopupGachaLogVM>(this);
-	
-	GachaMgr->ApplyFilter();
+	// UIMgr    = InUIMgr;
+	//
+	// UGameInstance* GI = UGameplayStatics::GetGameInstance(UIMgr);
+	// GachaMgr    = GI->GetSubsystem<UGachaManager>();
+	// SaveGameMgr = GI->GetSubsystem<USaveGameDataManager>();
+	// TableMgr	= GI->GetSubsystem<UTableManager>();
+	//
+	// ULocalPlayer* LP = GI->GetFirstGamePlayer();
+	// InvenMgr = LP->GetSubsystem<UInventoryManager>();
+	//
+	// GachaLogVM = NewObject<UPopupGachaLogVM>(this);
+	//
+	// GachaMgr->ApplyFilter();
 }
 
 void UGachaPresenter::OpenPopupGacha()
 {
-	if (!UIMgr || !GachaMgr || !InvenMgr || !TableMgr) return;
-	
-	auto* GachaPopup = UIMgr->ShowUI<UPopupGacha>(TEXT("PopupGacha"));
-	if (!GachaPopup) return;
-	
-	UPopupGachaVM* VM = NewObject<UPopupGachaVM>(GachaPopup);
-	VM->Init();
-	VM->GetOnToastRequested().AddUObject(this, &UGachaPresenter::HandleShowToast); 
-	
+	// if (!UIMgr || !GachaMgr || !InvenMgr || !TableMgr) return;
+	//
+	// auto* GachaPopup = UIMgr->ShowUI<UPopupGacha>(TEXT("PopupGacha"));
+	// if (!GachaPopup) return;
+	//
+	// UPopupGachaVM* VM = NewObject<UPopupGachaVM>(GachaPopup);
+	// VM->Init();
+	// VM->GetOnToastRequested().AddUObject(this, &UGachaPresenter::HandleShowToast); 
+	//
 	//GachaPopup->SetViewModel(VM);
 }
 
@@ -62,20 +62,20 @@ void UGachaPresenter::OpenPopupGachaFilter()
 
 void UGachaPresenter::OpenPopupGachaLog()
 {
-	if (!UIMgr) return;
-	
-	auto* PopupGachaLog = UIMgr->ShowUI<UPopupGachaLog>(TEXT("PopupGachaLog"),ESlateVisibility::SelfHitTestInvisible);
-	if (!PopupGachaLog) return;
-	
-	PopupGachaLog->SetViewModel(GachaLogVM);
-	PopupGachaLog->ShowAsFull();
+	// if (!UIMgr) return;
+	//
+	// auto* PopupGachaLog = UIMgr->ShowUI<UPopupGachaLog>(TEXT("PopupGachaLog"),ESlateVisibility::SelfHitTestInvisible);
+	// if (!PopupGachaLog) return;
+	//
+	// PopupGachaLog->SetViewModel(GachaLogVM);
+	// PopupGachaLog->ShowAsFull();
 }
 
 void UGachaPresenter::HandleShowToast()
 {
-	auto* PopupLog = UIMgr->ShowUI<UPopupGachaLog>(TEXT("PopupGachaLog"),ESlateVisibility::SelfHitTestInvisible);
-	if (!PopupLog) return;
-	
-	PopupLog->SetViewModel(GachaLogVM);
-	PopupLog->ShowAsToast();
+	// auto* PopupLog = UIMgr->ShowUI<UPopupGachaLog>(TEXT("PopupGachaLog"),ESlateVisibility::SelfHitTestInvisible);
+	// if (!PopupLog) return;
+	//
+	// PopupLog->SetViewModel(GachaLogVM);
+	// PopupLog->ShowAsToast();
 }
