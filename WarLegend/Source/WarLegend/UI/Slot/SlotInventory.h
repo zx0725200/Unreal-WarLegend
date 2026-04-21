@@ -9,11 +9,10 @@
 
 class UTextBlock;
 class UImage;
-struct FMyItem;
-
 class USlotInventoryVM;
+
+struct FMyItem;
 struct FGameplayTag;
-struct FTestStruct;
 /**
  * 
  */

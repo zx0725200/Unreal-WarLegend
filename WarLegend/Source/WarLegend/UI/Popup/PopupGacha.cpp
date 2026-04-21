@@ -1,8 +1,6 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿#include "PopupGacha.h"
 
-
-#include "PopupGacha.h"
-
+#include "ETC/Constant.h"
 #include "ETC/Define.h"
 #include "ViewModel/Popup/PopupGachaVM.h"
 
@@ -19,30 +17,28 @@ void UPopupGacha::OnEnable()
 void UPopupGacha::OnDisable()
 {
 	Super::OnDisable();
-
-	if (VM)
-	{
-		VM->ClearBinding();
-	}
+	VALID_RETURN(VM);
+	
+	VM->ClearBinding();
 	VM = nullptr;
 }
 
 void UPopupGacha::OnClickEvent(const FName& InChildName)
 {
-	Super::OnClickEvent(InChildName);
 	VALID_RETURN(VM);
+	Super::OnClickEvent(InChildName);
 
 	if (InChildName == TEXT("Btn_One"))
 	{
-		VM->OnGachaOne();
+		VM->OnGacha(Constant::One);
 	}
 	else if (InChildName == TEXT("Btn_Ten"))
 	{
-		VM->OnGachaMulti(10);
+		VM->OnGacha(Constant::Ten);
 	}
 	else if (InChildName == TEXT("Btn_All"))
 	{
-		VM->OnGachaMulti(30);
+		VM->OnGacha(Constant::All);
 	}
 }
 

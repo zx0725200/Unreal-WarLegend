@@ -38,7 +38,7 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 
 	void ApplyFilter();
-	void AddLog(const FGachaLogData& InData);
+	void AddLog(const int32 ItemID);
 	void ClearLogs();
 	
 	int32 GetGachaItem() const;

@@ -1,7 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "ScreenInventory.h"
+﻿#include "ScreenInventory.h"
 
 #include "Components/TileView.h"
 #include "Components/VerticalBox.h"
@@ -56,12 +53,14 @@ void UScreenInventory::BindViewModel()
 
 void UScreenInventory::InitEquipSlots()
 {
+	VALID_RETURN(VM);
 	CreateEquipSlots(Vertical_Equip, VM->GetLeftItemTypes());
 	CreateEquipSlots(Vertical_Boss, VM->GetRightItemTypes());
 }
 
 void UScreenInventory::InitInventorySlots()
 {
+	VALID_RETURN(VM);
 	TileView_Inventory->ClearListItems();
 	for (const auto& HavingItem : VM->GetItems())
 	{

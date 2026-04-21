@@ -26,11 +26,12 @@ void UPopupGachaLog::OnDisable()
 
 void UPopupGachaLog::OnClickEvent(const FName& InChildName)
 {
+	VALID_RETURN(VM);
 	Super::OnClickEvent(InChildName);
 
 	if (InChildName == TEXT("Btn_Clear"))
 	{
-		OnClickedClear();
+		VM->ClearAll();
 	}
 }
 
@@ -54,18 +55,18 @@ void UPopupGachaLog::BindVM()
 
 void UPopupGachaLog::UnbindVM()
 {
-	if (VM)
-	{
-		VM->GetOnLogAdded().RemoveAll(this);
-		VM->GetOnLogCleared().RemoveAll(this);
-		VM->ClearBinding();
-	}
+	VALID_RETURN(VM);
+	
+	VM->GetOnLogAdded().RemoveAll(this);
+	VM->GetOnLogCleared().RemoveAll(this);
+	VM->ClearBinding();
+	
 	VM = nullptr;
 }
 
 void UPopupGachaLog::RebuildLogs()
 {
-	VALID_RETURN(VM, SB_Log);
+	VALID_RETURN(VM);
 
 	SB_Log->ClearChildren();
 
@@ -80,39 +81,23 @@ void UPopupGachaLog::RebuildLogs()
 void UPopupGachaLog::CreateLogSlot(const FGachaLogData& InData)
 {
 	const auto UIMgr = GTUIGetMgrImpl(UIManager);
-	if (!UIMgr) return;
+	VALID_RETURN(UIMgr);
 
 	auto* LogSlot = UIMgr->CreateSlot<USlotGachaLog>(TEXT("SlotGachaLog"), SB_Log);
-	if (LogSlot)
-	{
-		LogSlot->Init(InData);
-	}
+	VALID_RETURN(LogSlot);
+	
+	LogSlot->Init(InData);
 }
 
 void UPopupGachaLog::HandleLogAdded(const FGachaLogData& InData)
 {
 	CreateLogSlot(InData);
-	if (SB_Log)
-	{
-		SB_Log->ScrollToEnd();
-	}
+	
+	SB_Log->ScrollToEnd();
 }
 
 void UPopupGachaLog::HandleLogCleared()
 {
-	if (SB_Log)
-	{
-		SB_Log->ClearChildren();
-	}
-}
-
-void UPopupGachaLog::OnClickedClear()
-{
-	if (!VM)
-	{
-		return;
-	}
-
-	VM->ClearAll();
+	SB_Log->ClearChildren();
 }
 

@@ -1,7 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "SlotInventory.h"
+﻿#include "SlotInventory.h"
 
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
@@ -13,10 +10,7 @@ void USlotInventory::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
 	IUserObjectListEntry::NativeOnListItemObjectSet(ListItemObject);
 	VM = Cast<USlotInventoryVM>(ListItemObject);
-	if (!VM)
-	{
-		return;
-	}
+	VALID_RETURN(VM);
 	
 	SetNormalState();
 	SetData();
@@ -56,6 +50,7 @@ void USlotInventory::SetData() const
 
 void USlotInventory::OnClickedSlot()
 {
+	VALID_RETURN(VM);
 	auto MyItem = VM->GetMyItem();
 	MyItem.EventName = TEXT("SelectItem");
 	
@@ -64,6 +59,8 @@ void USlotInventory::OnClickedSlot()
 
 void USlotInventory::SetSelectedState()
 {
+	VALID_RETURN(VM);
+	
 	Img_Select->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	Img_NotSelect->SetVisibility(ESlateVisibility::Collapsed);
 	

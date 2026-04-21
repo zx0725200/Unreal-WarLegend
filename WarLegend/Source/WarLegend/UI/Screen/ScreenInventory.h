@@ -6,7 +6,6 @@
 #include "Core/ScreenWidgetBase.h"
 #include "ScreenInventory.generated.h"
 
-enum class EItemEquipType : uint8;
 enum class EItemType : uint8;
 class USlotEquipItem;
 class UVerticalBox;

@@ -1,7 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "PopupGachaFilter.h"
+﻿#include "PopupGachaFilter.h"
 
 #include "Components/VerticalBox.h"
 #include "DataManager/UIManager.h"
@@ -50,12 +47,12 @@ void UPopupGachaFilter::SetViewModel(UPopupGachaFilterVM* InVM)
 
 void UPopupGachaFilter::RefreshSlots()
 {
-	if (!VM) return;
-
+	VALID_RETURN(VM);
+	
 	VBox_Filter->ClearChildren();
 
 	const auto UIMgr = GTUIGetMgrImpl(UIManager);
-	if (!UIMgr) return;
+	VALID_RETURN(UIMgr);
 	
 	const auto SlotList = VM->GetSlotVMList();
 	if (SlotList.IsEmpty()) return;

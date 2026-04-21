@@ -5,8 +5,11 @@
 
 #include "SaveGameDataManager.h"
 #include "TableManager.h"
+#include "UIManager.h"
+#include "UIManagerImpl.h"
 #include "DataAsset/WLSaveGame.h"
 #include "DataTable/ItemTableData.h"
+#include "ETC/Define.h"
 
 void UGachaManager::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -40,12 +43,6 @@ TArray<int32> UGachaManager::GetGachaItemMultiple(const int32 InCount) const
 	return GachaItemIdList;
 }
 
-void UGachaManager::AddLog(const FGachaLogData& InData)
-{
-	LogList.Emplace(InData);
-	OnLogAdded.Broadcast(LogList.Last());
-}
-
 void UGachaManager::ClearLogs()
 {
 	LogList.Empty();
@@ -65,6 +62,26 @@ void UGachaManager::ApplyFilter()
 		AllowedGrades.Emplace(Grade);
 	}
 	SetFilter(AllowedGrades);
+}
+
+void UGachaManager::AddLog(const int32 ItemID)
+{
+	UTableManager* TableMgr = GetGameInstance()->GetSubsystem<UTableManager>();
+	VALID_RETURN(TableMgr);
+
+	UUIManagerImpl* UIMgr = GetGameInstance()->GetSubsystem<UIManager>()->MgrImpl;
+	VALID_RETURN(UIMgr);
+
+	const FItemTableData* TableData = TableMgr->GetItemTableData(ItemID);
+	VALID_RETURN(TableData);
+	
+	FGachaLogData Data;
+	Data.ItemName   = TableData->ItemName;
+	Data.GradeColor = UIMgr->GetItemColor(TableData->ItemGrade);
+	Data.Time       = FDateTime::Now().ToString(TEXT("%H:%M:%S"));
+	
+	LogList.Emplace(Data);
+	OnLogAdded.Broadcast(LogList.Last());
 }
 
 void UGachaManager::SetFilter(const TArray<EItemGrade>& InAllowedGrades)

@@ -1,8 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "HudMain.h"
-
+﻿#include "HudMain.h"
 #include "Hud/HudMainVM.h"
 
 void UHudMain::Awake()

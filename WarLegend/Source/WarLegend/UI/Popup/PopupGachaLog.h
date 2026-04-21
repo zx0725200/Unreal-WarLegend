@@ -1,13 +1,10 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "Core/PopupWidgetBase.h"
 #include "PopupGachaLog.generated.h"
 
 class UUMyButton;
-class USlotGachaLog;
 struct FGachaLogData;
 class UPopupGachaLogVM;
 class UScrollBox;
@@ -33,8 +30,6 @@ private:
 
 	void HandleLogAdded(const FGachaLogData& InData);
 	void HandleLogCleared();
-
-	void OnClickedClear();
 
 private:
 	UPROPERTY()

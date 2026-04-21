@@ -38,7 +38,7 @@ void USlotFilter::SetViewModel(USlotFilterVM* InVM)
 
 void USlotFilter::SetData()
 {
-	if (!VM) return;
+	VALID_RETURN(VM);
 	
 	const FText GradeName = FText::FromString(VM->GetGradeName());
 	const auto GradeColor = VM->GetGradeColor();
@@ -51,7 +51,7 @@ void USlotFilter::SetData()
 
 void USlotFilter::OnCheckBoxChanged(const bool bIsChecked)
 {
-	if (!VM) return;
+	VALID_RETURN(VM);
 	
 	VM->SetChecked(bIsChecked);
 }

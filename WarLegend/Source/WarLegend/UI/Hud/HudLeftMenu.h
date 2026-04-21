@@ -16,6 +16,7 @@ class WARLEGEND_API UHudLeftMenu : public UHudWidgetBase
 	GENERATED_BODY()
 	
 public:
+	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
 	
 protected:

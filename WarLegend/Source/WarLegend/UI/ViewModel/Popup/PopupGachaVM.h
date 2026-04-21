@@ -15,9 +15,8 @@ class WARLEGEND_API UPopupGachaVM : public UViewModelBase
 
 public:
 	virtual void Init() override;
-
-	void OnGachaOne();
-	void OnGachaMulti(const int32 InItemCount);
+	
+	void OnGacha(const int32 InItemCount);
 
 	FOnGachaCompleted& GetOnGachaCompleted() { return OnGachaCompleted; }
 
