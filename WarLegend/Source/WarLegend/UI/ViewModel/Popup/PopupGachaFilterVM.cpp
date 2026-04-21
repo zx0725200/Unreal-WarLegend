@@ -15,7 +15,7 @@ void UPopupGachaFilterVM::Init()
 	VALID_RETURN(SaveGameDataMgr);
 	
 	UUIManagerImpl* UIMgr  = GetUIManager();
-	VALID_RETURN(SaveGameDataMgr);
+	VALID_RETURN(UIMgr);
 	
 	UWLSaveGame* SaveData = SaveGameDataMgr->GetSaveGame();
 	VALID_RETURN(SaveData);

@@ -23,16 +23,8 @@ void UPopupGachaVM::OnGacha(const int32 InItemCount)
 	InvenMgr->AddItems(ItemIDs);
 	for (const int32 ID : ItemIDs)
 	{
-		AddGachaLog(ID);
+		GachaMgr->AddLog(ID);
 	}
 
 	OnGachaCompleted.Broadcast();
-}
-
-void UPopupGachaVM::AddGachaLog(const int32 InItemID)
-{
-	UGachaManager* GachaMgr = GetGachaManager();
-	VALID_RETURN(GachaMgr);
-	
-	GachaMgr->AddLog(InItemID);
 }

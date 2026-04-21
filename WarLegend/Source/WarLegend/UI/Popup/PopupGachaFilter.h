@@ -22,10 +22,10 @@ public:
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
 	virtual void BindViewModel() override;
-	
-	void SetViewModel(UPopupGachaFilterVM* InVM);
 
 private:
+	void SetViewModel(UPopupGachaFilterVM* InVM);
+	
 	void RefreshSlots();
 
 private:

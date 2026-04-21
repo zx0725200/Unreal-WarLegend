@@ -21,8 +21,5 @@ public:
 	FOnGachaCompleted& GetOnGachaCompleted() { return OnGachaCompleted; }
 
 private:
-	void AddGachaLog(int32 InItemID);
-
-private:
 	FOnGachaCompleted OnGachaCompleted;
 };

@@ -30,7 +30,7 @@ public:
 	FOnPageChanged& GetOnPageChanged() { return OnPageChanged; }
 	
 private:
-	TArray<USlotDungeonVM*> GetCurrentSlotList() const;
+	const TArray<USlotDungeonVM*>& GetCurrentSlotList() const;
 	int32 GetMaxPage() const;
 	
 private:

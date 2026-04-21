@@ -4,7 +4,6 @@
 #include "Core/PopupWidgetBase.h"
 #include "PopupGachaLog.generated.h"
 
-class UUMyButton;
 struct FGachaLogData;
 class UPopupGachaLogVM;
 class UScrollBox;
@@ -37,8 +36,5 @@ private:
 
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UScrollBox> SB_Log;
-
-	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<UUMyButton> Btn_Exit;
 };
 
