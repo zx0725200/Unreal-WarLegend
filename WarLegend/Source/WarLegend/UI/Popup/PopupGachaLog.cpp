@@ -43,7 +43,7 @@ void UPopupGachaLog::BindViewModel()
 	VM->Init();
 
 	BindVM();
-	RebuildLogs();
+	VM->NotifyAll();
 }
 
 void UPopupGachaLog::BindVM()
@@ -62,20 +62,6 @@ void UPopupGachaLog::UnbindVM()
 	VM->ClearBinding();
 	
 	VM = nullptr;
-}
-
-void UPopupGachaLog::RebuildLogs()
-{
-	VALID_RETURN(VM);
-
-	SB_Log->ClearChildren();
-
-	for (const FGachaLogData& Data : VM->GetLogList())
-	{
-		CreateLogSlot(Data);
-	}
-
-	SB_Log->ScrollToEnd();
 }
 
 void UPopupGachaLog::CreateLogSlot(const FGachaLogData& InData)
@@ -100,4 +86,5 @@ void UPopupGachaLog::HandleLogCleared()
 {
 	SB_Log->ClearChildren();
 }
+
 

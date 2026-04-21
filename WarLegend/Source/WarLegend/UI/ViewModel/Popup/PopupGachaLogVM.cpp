@@ -1,7 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "PopupGachaLogVM.h"
+﻿#include "PopupGachaLogVM.h"
 
 #include "GachaManager.h"
 #include "ETC/Define.h"
@@ -20,6 +17,8 @@ void UPopupGachaLogVM::Init()
 void UPopupGachaLogVM::NotifyAll()
 {
 	Super::NotifyAll();
+
+	OnLogCleared.Broadcast();
 
 	for (const FGachaLogData& Data : GetLogList())
 	{
@@ -48,7 +47,7 @@ void UPopupGachaLogVM::ClearAll()
 
 const TArray<FGachaLogData>& UPopupGachaLogVM::GetLogList() const
 {
-	static const TArray<FGachaLogData> Empty;
+	const TArray<FGachaLogData> Empty;
 
 	const UGachaManager* GachaMgr = GetGachaManager();
 	return GachaMgr ? GachaMgr->GetLogList() : Empty;

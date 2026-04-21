@@ -24,7 +24,6 @@ private:
 	void BindVM();
 	void UnbindVM();
 
-	void RebuildLogs();
 	void CreateLogSlot(const FGachaLogData& InData);
 
 	void HandleLogAdded(const FGachaLogData& InData);

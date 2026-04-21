@@ -8,14 +8,15 @@
 
 class UVerticalBox;
 class UPopupGachaFilterVM;
+class USlotFilterVM;
 /**
- * 
+ *
  */
 UCLASS()
 class WARLEGEND_API UPopupGachaFilter : public UPopupWidgetBase
 {
 	GENERATED_BODY()
-	
+
 public:
 	virtual void Awake() override;
 	virtual void OnEnable() override;
@@ -24,9 +25,10 @@ public:
 	virtual void BindViewModel() override;
 
 private:
-	void SetViewModel(UPopupGachaFilterVM* InVM);
-	
-	void RefreshSlots();
+	void BindVM();
+	void UnbindVM();
+
+	void HandleSlotListChanged(const TArray<TObjectPtr<USlotFilterVM>>& InSlotList);
 
 private:
 	UPROPERTY(meta = (BindWidget))
@@ -35,3 +37,4 @@ private:
 	UPROPERTY()
 	TObjectPtr<UPopupGachaFilterVM> VM;
 };
+

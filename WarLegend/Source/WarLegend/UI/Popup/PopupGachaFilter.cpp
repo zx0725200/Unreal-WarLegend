@@ -20,7 +20,7 @@ void UPopupGachaFilter::OnEnable()
 void UPopupGachaFilter::OnDisable()
 {
 	Super::OnDisable();
-	VM = nullptr;
+	UnbindVM();
 }
 
 void UPopupGachaFilter::OnClickEvent(const FName& InChildName)
@@ -31,33 +31,35 @@ void UPopupGachaFilter::OnClickEvent(const FName& InChildName)
 void UPopupGachaFilter::BindViewModel()
 {
 	Super::BindViewModel();
-	
-	auto* GachaFilterVM = NewObject<UPopupGachaFilterVM>(this);
-	GachaFilterVM->Init();
-	
-	SetViewModel(GachaFilterVM);
-	
-	RefreshSlots();
+
+	VM = NewObject<UPopupGachaFilterVM>(this);
+	VM->Init();
+
+	BindVM();
+	VM->NotifyAll();
 }
 
-void UPopupGachaFilter::SetViewModel(UPopupGachaFilterVM* InVM)
-{
-	VM = InVM;
-}
-
-void UPopupGachaFilter::RefreshSlots()
+void UPopupGachaFilter::BindVM()
 {
 	VALID_RETURN(VM);
-	
+	VM->GetOnSlotListChanged().AddUObject(this, &UPopupGachaFilter::HandleSlotListChanged);
+}
+
+void UPopupGachaFilter::UnbindVM()
+{
+	VALID_RETURN(VM);
+	VM->GetOnSlotListChanged().RemoveAll(this);
+	VM = nullptr;
+}
+
+void UPopupGachaFilter::HandleSlotListChanged(const TArray<TObjectPtr<USlotFilterVM>>& InSlotList)
+{
 	VBox_Filter->ClearChildren();
 
 	const auto UIMgr = GTUIGetMgrImpl(UIManager);
 	VALID_RETURN(UIMgr);
-	
-	const auto SlotList = VM->GetSlotVMList();
-	if (SlotList.IsEmpty()) return;
-	
-	for (USlotFilterVM* SlotVM : SlotList)
+
+	for (USlotFilterVM* SlotVM : InSlotList)
 	{
 		if (!SlotVM) continue;
 
@@ -65,3 +67,4 @@ void UPopupGachaFilter::RefreshSlots()
 		SlotWidget->SetViewModel(SlotVM);
 	}
 }
+

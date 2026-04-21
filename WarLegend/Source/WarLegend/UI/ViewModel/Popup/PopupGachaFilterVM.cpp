@@ -33,9 +33,17 @@ void UPopupGachaFilterVM::Init()
 		USlotFilterVM* SlotVM = NewObject<USlotFilterVM>(this);
 		const auto ItemColor = UIMgr->GetItemColor(Grade);
 		const auto bItemChecked = SaveData->GachaFilter.FindRef(Grade);
-		
+
 		SlotVM->Init(Grade, Name, ItemColor, bItemChecked);
-		
+
 		SlotVMList.Emplace(SlotVM);
 	}
 }
+
+void UPopupGachaFilterVM::NotifyAll()
+{
+	Super::NotifyAll();
+
+	OnSlotListChanged.Broadcast(SlotVMList);
+}
+
