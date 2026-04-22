@@ -61,9 +61,8 @@ void UPopupDungeonMenuVM::OnChangePage(int32 NewPage)
 }
 
 
-const TArray<USlotDungeonVM*>& UPopupDungeonMenuVM::GetCurrentSlotList() const
+const TArray<USlotDungeonVM*>& UPopupDungeonMenuVM::GetCurrentSlotList()
 {
-	TArray<USlotDungeonVM*> SlotList;
 	const int32 Start = (CurrentPageIndex - 1) * Constant::PageSize;
 	for (int32 i = 0; i < Constant::PageSize; ++i)
 	{

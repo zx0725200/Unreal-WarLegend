@@ -69,7 +69,10 @@ void UGachaManager::AddLog(const int32 ItemID)
 	UTableManager* TableMgr = GetGameInstance()->GetSubsystem<UTableManager>();
 	VALID_RETURN(TableMgr);
 
-	UUIManagerImpl* UIMgr = GetGameInstance()->GetSubsystem<UIManager>()->MgrImpl;
+	ULocalPlayer* LocalPlayer = GetGameInstance()->GetFirstGamePlayer();
+	VALID_RETURN(LocalPlayer);
+	
+	UUIManagerImpl* UIMgr = LocalPlayer->GetSubsystem<UIManager>()->MgrImpl;
 	VALID_RETURN(UIMgr);
 
 	const FItemTableData* TableData = TableMgr->GetItemTableData(ItemID);

@@ -30,12 +30,15 @@ public:
 	FOnPageChanged& GetOnPageChanged() { return OnPageChanged; }
 	
 private:
-	const TArray<USlotDungeonVM*>& GetCurrentSlotList() const;
+	const TArray<USlotDungeonVM*>& GetCurrentSlotList();
 	int32 GetMaxPage() const;
 	
 private:
 	UPROPERTY()
 	TArray<TObjectPtr<USlotDungeonVM>> SlotDungeonVMList;
+	
+	UPROPERTY()
+	TArray<USlotDungeonVM*> SlotList;
 	
 	int32 CurrentPageIndex = 1;
 	

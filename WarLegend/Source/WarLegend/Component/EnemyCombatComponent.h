@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "PawnCombatComponentBase.h"
-#include "BossCombatComponent.generated.h"
+#include "EnemyCombatComponent.generated.h"
 
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class WARLEGEND_API UBossCombatComponent : public UPawnCombatComponentBase
+class WARLEGEND_API UEnemyCombatComponent : public UPawnCombatComponentBase
 {
 	GENERATED_BODY()
 	

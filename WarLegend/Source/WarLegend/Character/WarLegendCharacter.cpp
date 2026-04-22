@@ -85,30 +85,30 @@ void AWarLegendCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void AWarLegendCharacter::LoadBattleMode()
 {
-	if (CharDataConfig.IsNull())
+	if (DataConfig.IsNull())
 	{
 		return;
 	}
 	
-	if (CharDataConfig.Get())
+	if (DataConfig.Get())
 	{
 		ApplyBattleMode();
 		return;
 	}
 	
 	FStreamableManager& Streamable = UAssetManager::GetStreamableManager();
-	DataLoadHandle = Streamable.RequestAsyncLoad(CharDataConfig.ToSoftObjectPath(), FStreamableDelegate::CreateUObject(this, &AWarLegendCharacter::ApplyBattleMode));
+	DataLoadHandle = Streamable.RequestAsyncLoad(DataConfig.ToSoftObjectPath(), FStreamableDelegate::CreateUObject(this, &AWarLegendCharacter::ApplyBattleMode));
 }
 
 void AWarLegendCharacter::ApplyBattleMode()
 {
-	UCommonAbilityConfigBase* LoadedData = CharDataConfig.Get();
-	if (!LoadedData || !CharAbilitySystemComponent)
+	UCommonAbilityConfigBase* LoadedData = DataConfig.Get();
+	if (!LoadedData || !HeroAbilitySystemComponent)
 	{
 		return;
 	}
 
-	LoadedData->GiveAbilityToComponent(CharAbilitySystemComponent);
+	LoadedData->GiveAbilityToComponent(HeroAbilitySystemComponent);
 	
 	SetBattleCamera();
 	ApplyBattleMovement();

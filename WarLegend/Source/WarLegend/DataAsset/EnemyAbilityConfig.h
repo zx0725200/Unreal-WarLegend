@@ -4,22 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "CommonAbilityConfigBase.h"
-#include "HeroAbilityConfig.generated.h"
+#include "EnemyAbilityConfig.generated.h"
 
-struct FHeroAbilitySet;
-
+class UEnemyAbility;
 /**
  * 
  */
 UCLASS()
-class WARLEGEND_API UHeroAbilityConfig : public UCommonAbilityConfigBase
+class WARLEGEND_API UEnemyAbilityConfig : public UCommonAbilityConfigBase
 {
 	GENERATED_BODY()
 	
 public:
 	virtual void GiveAbilityToComponent(UHeroAbilitySystemComponent* InAbilityComponent) override;
-
+	
 private:
-	UPROPERTY(EditDefaultsOnly, Category = "Ability", meta = (TitleProperty = "BattleTag"))
-	TArray<FHeroAbilitySet> WarriorAbilityList;
+	UPROPERTY(EditDefaultsOnly, Category = "Enemy")
+	TArray<TSubclassOf<UEnemyAbility>> EnemyAbilityList;
 };

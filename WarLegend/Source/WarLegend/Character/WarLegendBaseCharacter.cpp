@@ -13,8 +13,8 @@ AWarLegendBaseCharacter::AWarLegendBaseCharacter()
 	
 	GetMesh()->bReceivesDecals = false;
 	
-	CharAbilitySystemComponent = CreateDefaultSubobject<UHeroAbilitySystemComponent>(TEXT("CharAbilitySystemComponent"));
-	CharAttributeSet = CreateDefaultSubobject<UHeroAttributeSet>(TEXT("CharAttributeSet"));
+	HeroAbilitySystemComponent = CreateDefaultSubobject<UHeroAbilitySystemComponent>(TEXT("CharAbilitySystemComponent"));
+	HeroAttributeSet = CreateDefaultSubobject<UHeroAttributeSet>(TEXT("HeroAttributeSet"));
 }
 
 UAbilitySystemComponent* AWarLegendBaseCharacter::GetAbilitySystemComponent() const
@@ -26,10 +26,10 @@ void AWarLegendBaseCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	
-	if (!CharAbilitySystemComponent)
+	if (!HeroAbilitySystemComponent)
 	{
 		return;
 	}
 	
-	CharAbilitySystemComponent->InitAbilityActorInfo(this,this);
+	HeroAbilitySystemComponent->InitAbilityActorInfo(this,this);
 }

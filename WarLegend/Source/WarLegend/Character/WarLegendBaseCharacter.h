@@ -21,19 +21,19 @@ public:
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
-	UHeroAbilitySystemComponent* GetWarriorAbilitySystemComponent() const { return CharAbilitySystemComponent; }
-	UHeroAttributeSet* GetWarriorAttributeSet() const { return CharAttributeSet; }
+	UHeroAbilitySystemComponent* GetWarriorAbilitySystemComponent() const { return HeroAbilitySystemComponent; }
+	UHeroAttributeSet* GetWarriorAttributeSet() const { return HeroAttributeSet; }
 	
 protected:
 	virtual void PossessedBy(AController* NewController) override;
 	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
-	TObjectPtr<UHeroAbilitySystemComponent> CharAbilitySystemComponent;
+	TObjectPtr<UHeroAbilitySystemComponent> HeroAbilitySystemComponent;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
-	TObjectPtr<UHeroAttributeSet> CharAttributeSet;
+	TObjectPtr<UHeroAttributeSet> HeroAttributeSet;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharData")
-	TSoftObjectPtr<UCommonAbilityConfigBase> CharDataConfig;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Data")
+	TSoftObjectPtr<UCommonAbilityConfigBase> DataConfig;
 };
