@@ -6,6 +6,7 @@
 #include "Engine/DataAsset.h"
 #include "CommonAbilityConfigBase.generated.h"
 
+class UGameplayEffect;
 enum class EAbilityGiveMode : uint8;
 class UGameplayAbility;
 class UHeroAbilitySystemComponent;
@@ -29,4 +30,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "HeroData")
 	TArray<TSubclassOf<UGameplayAbility>> ReactiveAbilities;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "HeroData")
+	TArray<TSubclassOf<UGameplayEffect>> HeroGamePlayEffects;
 };

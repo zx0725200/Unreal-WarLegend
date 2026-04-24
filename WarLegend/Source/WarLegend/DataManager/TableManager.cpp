@@ -8,13 +8,13 @@
 
 UTableManager::UTableManager()
 {
-	static ConstructorHelpers::FObjectFinder<UDataTable> DungeonTableFinder(TEXT("/Script/Engine.DataTable'/Game/Table/DataDungeon_Dummy.DataDungeon_Dummy'"));
+	static ConstructorHelpers::FObjectFinder<UDataTable> DungeonTableFinder(TEXT("/Script/Engine.DataTable'/Game/UMG/Table/DataDungeon_Dummy.DataDungeon_Dummy'"));
 	if (DungeonTableFinder.Succeeded())
 	{
 		DungeonTableAsset = DungeonTableFinder.Object;
 	}
 	
-	static ConstructorHelpers::FObjectFinder<UDataTable> ItemTableFinder(TEXT("/Script/Engine.DataTable'/Game/Table/DataItem.DataItem'"));
+	static ConstructorHelpers::FObjectFinder<UDataTable> ItemTableFinder(TEXT("/Script/Engine.DataTable'/Game/UMG/Table/DataItem.DataItem'"));
 	if (ItemTableFinder.Succeeded())
 	{
 		ItemTableAsset = ItemTableFinder.Object;

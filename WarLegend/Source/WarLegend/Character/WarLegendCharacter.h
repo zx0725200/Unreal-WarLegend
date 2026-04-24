@@ -26,11 +26,12 @@ public:
 
 	void ChangeCamera(EPlayerLocType InMode);
 	
-	UHeroCombatComponent* GetCharCombatComponent();
+	UHeroCombatComponent* GetHeroCombatComponent();
 
 protected:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual UPawnCombatComponentBase* GetPawnCombatComponent() const override;
 	
 private:
 	void LoadBattleMode();
@@ -55,7 +56,7 @@ private:
 	TObjectPtr<UCameraComponent> TopDownCamera;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UHeroCombatComponent> CharCombatComponent;
+	TObjectPtr<UHeroCombatComponent> HeroCombatComponent;
 	
 	TSharedPtr<FStreamableHandle> DataLoadHandle;
 };

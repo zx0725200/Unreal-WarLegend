@@ -22,6 +22,7 @@ class WARLEGEND_API UHeroAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 	
 public:
+	// GamePlayEffect 테이블 속성용.
 	UHeroAttributeSet();
 	
 	UPROPERTY(BlueprintReadOnly, Category = "HP")

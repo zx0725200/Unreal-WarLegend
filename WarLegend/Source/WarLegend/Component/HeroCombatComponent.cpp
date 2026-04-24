@@ -4,14 +4,26 @@
 #include "HeroCombatComponent.h"
 
 #include "Actor/HeroWeaponBase.h"
+#include "Components/BoxComponent.h"
 #include "ETC/Define.h"
 
+
+void UHeroCombatComponent::OnHitTargetActor(AActor* HitActor)
+{
+}
+
+void UHeroCombatComponent::OnWeaponPulledFromTargetActor(AActor* InteractedActor)
+{
+}
 
 void UHeroCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, AHeroWeaponBase* InWeapon, const bool bRegister)
 {
 	VALID_RETURN(InWeaponTag);
 	CharacterWeaponMap.Emplace(InWeaponTag,InWeapon);
 
+	InWeapon->OnWeaponHitTarget.BindUObject(this,&ThisClass::OnHitTargetActor);
+	InWeapon->OnWeaponPulledFromTarget.BindUObject(this,&ThisClass::OnWeaponPulledFromTargetActor);
+	
 	if (!bRegister)
 	{
 		return;
@@ -38,4 +50,14 @@ AHeroWeaponBase* UHeroCombatComponent::GetCharacterCurrentEquippedWeapon() const
 	}
 
 	return GetCharacterCarriedWeaponByTag(CurrentEquippedWeaponTag);
+}
+
+void UHeroCombatComponent::ToggleWeaponCollision(const bool bEnable)
+{
+	auto* HeroWeapon = GetCharacterCurrentEquippedWeapon();
+	VALID_RETURN(HeroWeapon);
+	
+	ECollisionEnabled::Type CollisionType = bEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision;
+	
+	HeroWeapon->GetWeaponCollisionBox()->SetCollisionEnabled(CollisionType);
 }

@@ -7,6 +7,7 @@
 #include "EnemyCharacter.generated.h"
 
 class UEnemyCombatComponent;
+class UPawnCombatComponentBase;
 
 UCLASS()
 class WARLEGEND_API AEnemyCharacter : public AWarLegendBaseCharacter
@@ -20,6 +21,7 @@ public:
 	
 protected:
 	virtual void PossessedBy(AController* NewController) override;
+	virtual UPawnCombatComponentBase* GetPawnCombatComponent() const override;
 	
 private:
 	void Init();

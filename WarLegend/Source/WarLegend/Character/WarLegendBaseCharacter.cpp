@@ -22,6 +22,11 @@ UAbilitySystemComponent* AWarLegendBaseCharacter::GetAbilitySystemComponent() co
 	return GetWarriorAbilitySystemComponent();
 }
 
+UPawnCombatComponentBase* AWarLegendBaseCharacter::GetPawnCombatComponent() const
+{
+	return nullptr;
+}
+
 void AWarLegendBaseCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);

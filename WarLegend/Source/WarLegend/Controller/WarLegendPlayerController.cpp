@@ -133,11 +133,6 @@ void AWarLegendPlayerController::OnBattleLook(const FInputActionValue& InActionV
 	{
 		MyCharacter->AddControllerYawInput(MoveVector.X);
 	}
-	
-	if (MoveVector.Y != 0.f)
-	{
-		MyCharacter->AddControllerPitchInput(MoveVector.Y);
-	}
 }
 
 void AWarLegendPlayerController::OnAbilityInputPressed(const FGameplayTag InTag)

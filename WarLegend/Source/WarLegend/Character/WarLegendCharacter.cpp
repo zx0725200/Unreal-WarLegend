@@ -46,7 +46,7 @@ AWarLegendCharacter::AWarLegendCharacter()
 	TopDownCamera->SetupAttachment(TopDownCameraArm, USpringArmComponent::SocketName);
 	TopDownCamera->bUsePawnControlRotation = false;
 	
-	CharCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("CharCombatComponent"));
+	HeroCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("CharCombatComponent"));
 }
 
 void AWarLegendCharacter::ChangeCamera(const EPlayerLocType InMode)
@@ -62,9 +62,9 @@ void AWarLegendCharacter::ChangeCamera(const EPlayerLocType InMode)
 	}
 }
 
-UHeroCombatComponent* AWarLegendCharacter::GetCharCombatComponent()
+UHeroCombatComponent* AWarLegendCharacter::GetHeroCombatComponent()
 {
-	return CharCombatComponent;
+	return HeroCombatComponent;
 }
 
 void AWarLegendCharacter::PossessedBy(AController* NewController)
@@ -81,6 +81,11 @@ void AWarLegendCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	}
 	
 	Super::EndPlay(EndPlayReason);
+}
+
+UPawnCombatComponentBase* AWarLegendCharacter::GetPawnCombatComponent() const
+{
+	return HeroCombatComponent;
 }
 
 void AWarLegendCharacter::LoadBattleMode()

@@ -33,6 +33,11 @@ void AEnemyCharacter::PossessedBy(AController* NewController)
 	Init();
 }
 
+UPawnCombatComponentBase* AEnemyCharacter::GetPawnCombatComponent() const
+{
+	return EnemyCombatComponent;
+}
+
 void AEnemyCharacter::Init()
 {
 	if (DataConfig.IsNull())

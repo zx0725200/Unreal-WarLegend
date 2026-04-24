@@ -5,15 +5,30 @@
 
 #include "Abilities/GameplayAbility.h"
 #include "Ability/HeroAbilitySystemComponent.h"
+#include "ETC/Define.h"
 
 #include "ETC/Enum.h"
 
 void UCommonAbilityConfigBase::GiveAbilityToComponent(UHeroAbilitySystemComponent* InAbilityComponent)
 {
-	if (!InAbilityComponent) return;
+	VALID_RETURN(InAbilityComponent);
     
 	Internal_GiveAbility(ActivateOnGivenAbilities, InAbilityComponent, EAbilityGiveMode::GiveAndActivateOnce);
 	Internal_GiveAbility(ReactiveAbilities, InAbilityComponent, EAbilityGiveMode::GiveOnly);
+	
+	if (HeroGamePlayEffects.IsEmpty())
+	{
+		return;
+	}
+	
+	for (const auto& Effect : HeroGamePlayEffects)
+	{
+		if (!Effect) continue;
+
+		const UGameplayEffect* EffectCDO = Effect->GetDefaultObject<UGameplayEffect>();
+		
+		InAbilityComponent->ApplyGameplayEffectToSelf(EffectCDO, 1, InAbilityComponent->MakeEffectContext());
+	}
 }
 
 void UCommonAbilityConfigBase::Internal_GiveAbility(const TArray<TSubclassOf<UGameplayAbility>>& InAbilities, UHeroAbilitySystemComponent* InAbilityComponent, EAbilityGiveMode InMode)

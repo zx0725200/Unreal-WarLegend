@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "ETC/HeroCombatInterface.h"
 #include "GameFramework/Character.h"
 #include "WarLegendBaseCharacter.generated.h"
 
@@ -12,7 +13,7 @@ class UHeroAttributeSet;
 class UHeroAbilitySystemComponent;
 
 UCLASS()
-class WARLEGEND_API AWarLegendBaseCharacter : public ACharacter, public IAbilitySystemInterface
+class WARLEGEND_API AWarLegendBaseCharacter : public ACharacter, public IAbilitySystemInterface, public IHeroCombatInterface
 {
 	GENERATED_BODY()
 
@@ -20,6 +21,7 @@ public:
 	AWarLegendBaseCharacter();
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual UPawnCombatComponentBase* GetPawnCombatComponent() const override;
 	
 	UHeroAbilitySystemComponent* GetWarriorAbilitySystemComponent() const { return HeroAbilitySystemComponent; }
 	UHeroAttributeSet* GetWarriorAttributeSet() const { return HeroAttributeSet; }
