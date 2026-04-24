@@ -16,7 +16,7 @@ View → ViewModel → Manager (단방향 의존)
 
 ### View
 
-- 자신의 VM을 생성 · 소유 (Base코드를 상속받아서 BindViewModel라는 공통 함수를 만들고 `NewObject`로 VM 생성 후 주입)
+- 자신의 VM을 생성 · 소유 (Base코드를 상속받아서 BindViewModel라는 공통 함수를 만들고 VM 생성 후 주입)
 - VM 델리게이트를 구독하여 UMG 렌더링만 담당
 
 | 분류 | 설명 |
