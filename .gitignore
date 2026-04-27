@@ -4,9 +4,8 @@ WarLegend/Binaries/Win64/UnrealEditor-WarLegend.patch_4.exe
 /WarLegend/Plugins
 /WarLegend/Intermediate
 /WarLegend/Source
-/WarLegend/Content
-/WarLegend/Content
 /WarLegend/.idea
 /WarLegend/DerivedDataCache
 /WarLegend/Config
 /WarLegend/.claude
+/WarLegend/Content

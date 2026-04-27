@@ -3,61 +3,58 @@
 
 #include "HeroCombatComponent.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "Actor/HeroWeapon.h"
 #include "Actor/HeroWeaponBase.h"
-#include "Components/BoxComponent.h"
-#include "ETC/Define.h"
+#include "ETC/GamePlayTag.h"
 
 
-void UHeroCombatComponent::OnHitTargetActor(AActor* HitActor)
+UHeroCombatComponent::UHeroCombatComponent()
 {
+	UE_LOG(LogTemp,Warning,TEXT("Test Gener"));
 }
 
-void UHeroCombatComponent::OnWeaponPulledFromTargetActor(AActor* InteractedActor)
+void UHeroCombatComponent::OnHitTargetActor(AActor* InHitActor)
 {
-}
-
-void UHeroCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, AHeroWeaponBase* InWeapon, const bool bRegister)
-{
-	VALID_RETURN(InWeaponTag);
-	CharacterWeaponMap.Emplace(InWeaponTag,InWeapon);
-
-	InWeapon->OnWeaponHitTarget.BindUObject(this,&ThisClass::OnHitTargetActor);
-	InWeapon->OnWeaponPulledFromTarget.BindUObject(this,&ThisClass::OnWeaponPulledFromTargetActor);
-	
-	if (!bRegister)
+	if (OverlappedActorList.Contains(InHitActor))
 	{
 		return;
 	}
 	
-	CurrentEquippedWeaponTag = InWeaponTag;
-}
-
-AHeroWeaponBase* UHeroCombatComponent::GetCharacterCarriedWeaponByTag(const FGameplayTag InWeaponTag) const
-{
-	if (const auto FoundWeapon = CharacterWeaponMap.Find(InWeaponTag))
+	OverlappedActorList.AddUnique(InHitActor);
+	
+	APawn* OwningPawn = Cast<APawn>(GetOwner());
+	if (!OwningPawn)
 	{
-		return *FoundWeapon;
+		return;
 	}
 	
-	return nullptr;
+	FGameplayEventData Data;
+	Data.Instigator = OwningPawn;
+	Data.Target = InHitActor;
+
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+		OwningPawn,
+		GamePlayTag::Shared_Event_MeleeHit,
+		Data
+	);
 }
 
-AHeroWeaponBase* UHeroCombatComponent::GetCharacterCurrentEquippedWeapon() const
+void UHeroCombatComponent::OnWeaponPulledFromTargetActor(AActor* InInteractedActor)
 {
-	if (!CurrentEquippedWeaponTag.IsValid())
-	{
-		return nullptr;
-	}
-
-	return GetCharacterCarriedWeaponByTag(CurrentEquippedWeaponTag);
 }
 
-void UHeroCombatComponent::ToggleWeaponCollision(const bool bEnable)
+AHeroWeaponBase* UHeroCombatComponent::GetHeroCarriedWeaponByTag(const FGameplayTag InWeaponTag) const
 {
-	auto* HeroWeapon = GetCharacterCurrentEquippedWeapon();
-	VALID_RETURN(HeroWeapon);
-	
-	ECollisionEnabled::Type CollisionType = bEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision;
-	
-	HeroWeapon->GetWeaponCollisionBox()->SetCollisionEnabled(CollisionType);
+	return Cast<AHeroWeaponBase>(GetCarriedWeaponByTag(InWeaponTag));
+}
+
+AHeroWeaponBase* UHeroCombatComponent::GetHeroCurrentEquippedWeapon() const
+{
+	return Cast<AHeroWeaponBase>(GetCurrentEquippedWeapon());
+}
+
+float UHeroCombatComponent::GetHeroDamage() const
+{
+	return GetHeroCurrentEquippedWeapon()->HeroWeaponData.WeaponBaseDamage.GetValueAtLevel(1);
 }

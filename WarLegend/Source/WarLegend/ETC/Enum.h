@@ -46,8 +46,16 @@ enum class ECharAbilityApplyType : uint8
 	OnGiven
 };
 
+UENUM()
 enum class EAbilityGiveMode : uint8
 {
 	GiveOnly,
 	GiveAndActivateOnce
+};
+
+UENUM()
+enum class EConfirmType : uint8
+{
+	Successful = 0,
+	Failed
 };

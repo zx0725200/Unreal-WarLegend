@@ -38,6 +38,9 @@ private:
 public:
 	FOnTargetInteractedDelegate OnWeaponHitTarget;
 	FOnTargetInteractedDelegate OnWeaponPulledFromTarget;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponData")
+	FHeroWeaponData HeroWeaponData;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapons")
@@ -45,10 +48,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapons")
 	TObjectPtr<UBoxComponent> WeaponCollisionBox;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponData")
-	FWarriorHeroWeaponData HeroWeaponData;
-	
+
 private:
 	TArray<FGameplayAbilitySpecHandle> AbilityHandleList;
 };

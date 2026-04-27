@@ -19,7 +19,11 @@ void UCharacterAnimInstance::NativeInitializeAnimation()
 
 void UCharacterAnimInstance::NativeThreadSafeUpdateAnimation(const float DeltaSeconds)
 {
-	VALID_RETURN(MyCharacter, MyMovementComponent);
+	if (!MyCharacter || !MyMovementComponent)
+	{
+		return;
+	}
+	
 	Super::NativeThreadSafeUpdateAnimation(DeltaSeconds);
 	
 	GroundSpeed = MyCharacter->GetVelocity().Size2D();

@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "GameplayTagContainer.h"
+#include "ScalableFloat.h"
 
 #include "Struct.generated.h"
 
@@ -81,7 +82,7 @@ struct FHeroAbilitySet
 };
 
 USTRUCT(BlueprintType)
-struct FWarriorHeroWeaponData
+struct FHeroWeaponData
 {
 	GENERATED_BODY()
 
@@ -93,4 +94,7 @@ struct FWarriorHeroWeaponData
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "Battle"))
 	TArray<FHeroAbilitySet> DefaultWeaponAbilities;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FScalableFloat WeaponBaseDamage;
 };

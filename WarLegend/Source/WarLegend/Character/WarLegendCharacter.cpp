@@ -46,7 +46,7 @@ AWarLegendCharacter::AWarLegendCharacter()
 	TopDownCamera->SetupAttachment(TopDownCameraArm, USpringArmComponent::SocketName);
 	TopDownCamera->bUsePawnControlRotation = false;
 	
-	HeroCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("CharCombatComponent"));
+	HeroCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("HeroCombatComponent"));
 }
 
 void AWarLegendCharacter::ChangeCamera(const EPlayerLocType InMode)
