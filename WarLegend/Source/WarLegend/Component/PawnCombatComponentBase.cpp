@@ -9,7 +9,7 @@
 #include "ETC/Define.h"
 
 
-void UPawnCombatComponentBase::OnHitTargetActor(AActor* HitActor)
+void UPawnCombatComponentBase::OnHitTargetActor(AActor* HitActor, const FHitResult& InHitResult)
 {
 	
 }
@@ -23,7 +23,7 @@ void UPawnCombatComponentBase::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, A
 	VALID_RETURN(InWeaponTag);
 	CharacterWeaponMap.Emplace(InWeaponTag,InWeapon);
 
-	InWeapon->OnWeaponHitTarget.BindUObject(this,&ThisClass::OnHitTargetActor);
+	InWeapon->OnWeaponHitTarget.BindUObject(this, &ThisClass::OnHitTargetActor);
 	InWeapon->OnWeaponPulledFromTarget.BindUObject(this,&ThisClass::OnWeaponPulledFromTargetActor);
 	
 	if (!bRegister)

@@ -22,6 +22,8 @@ class WARLEGEND_API UHeroAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 	
 public:
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+	
 	// GamePlayEffect 테이블 속성용.
 	UHeroAttributeSet();
 	

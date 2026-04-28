@@ -42,13 +42,12 @@ void AHeroWeaponBase::OnCollisionBoxBeginOverlap(UPrimitiveComponent* Overlapped
 	{
 		if (WeaponOwningPawn != HitPawn)
 		{
-			OnWeaponHitTarget.ExecuteIfBound(OtherActor);
+			OnWeaponHitTarget.ExecuteIfBound(OtherActor, SweepResult);
 		}
 	}
 }
 
-void AHeroWeaponBase::OnCollisionBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void AHeroWeaponBase::OnCollisionBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	APawn* WeaponOwningPawn = GetInstigator<APawn>();
 	VALID_RETURN(WeaponOwningPawn);

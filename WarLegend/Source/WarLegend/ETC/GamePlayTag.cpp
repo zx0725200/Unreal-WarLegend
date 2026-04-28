@@ -21,6 +21,8 @@ namespace GamePlayTag
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Unequip_Axe,"Player.Ability.Unequip.Axe");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Attack_Light_Axe,"Player.Ability.Attack.Light.Axe");
 	
+	UE_DEFINE_GAMEPLAY_TAG(GamePlayCue_Melee_Hit,"GameplayCue.Melee.Hit");
+	
 	UE_DEFINE_GAMEPLAY_TAG(Shared_Event_MeleeHit,"Shared.Event.MeleeHit");
 	UE_DEFINE_GAMEPLAY_TAG(Shared_Event_BaseDamage,"Shared.Event.BaseDamage");
 }

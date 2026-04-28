@@ -10,7 +10,8 @@
 
 class UBoxComponent;
 
-DECLARE_DELEGATE_OneParam(FOnTargetInteractedDelegate,AActor*)
+DECLARE_DELEGATE_TwoParams(FOnTargetInteractedDelegate, AActor*, const FHitResult&)
+DECLARE_DELEGATE_OneParam(FOnTargetPulledDelegate, AActor*)
 
 UCLASS()
 class WARLEGEND_API AHeroWeaponBase : public AActor
@@ -37,7 +38,7 @@ private:
 	
 public:
 	FOnTargetInteractedDelegate OnWeaponHitTarget;
-	FOnTargetInteractedDelegate OnWeaponPulledFromTarget;
+	FOnTargetPulledDelegate OnWeaponPulledFromTarget;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponData")
 	FHeroWeaponData HeroWeaponData;

@@ -17,7 +17,7 @@ class WARLEGEND_API UPawnCombatComponentBase : public UPawnExtensionComponentBas
 	GENERATED_BODY()
 	
 public:
-	virtual void OnHitTargetActor(AActor* HitActor);
+	virtual void OnHitTargetActor(AActor* HitActor, const FHitResult& InHitResult);
 	virtual void OnWeaponPulledFromTargetActor(AActor* InteractedActor);
 	
 	void ToggleWeaponCollision(const ECollisionEnabled::Type InCollisionType);

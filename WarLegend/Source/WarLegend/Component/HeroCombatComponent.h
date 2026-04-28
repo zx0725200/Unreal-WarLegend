@@ -19,7 +19,7 @@ class WARLEGEND_API UHeroCombatComponent : public UPawnCombatComponentBase
 public:
 	UHeroCombatComponent();
 	
-	virtual void OnHitTargetActor(AActor* HitActor) override;
+	virtual void OnHitTargetActor(AActor* InHitActor, const FHitResult& InHitResult) override;
 	virtual void OnWeaponPulledFromTargetActor(AActor* InteractedActor) override;
 	
 	UFUNCTION(BlueprintCallable, Category = "Hero|Combat")

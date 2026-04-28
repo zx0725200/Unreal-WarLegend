@@ -4,8 +4,10 @@
 #include "HeroCombatComponent.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "Actor/HeroWeapon.h"
 #include "Actor/HeroWeaponBase.h"
+#include "ETC/Define.h"
 #include "ETC/GamePlayTag.h"
 
 
@@ -14,7 +16,7 @@ UHeroCombatComponent::UHeroCombatComponent()
 	UE_LOG(LogTemp,Warning,TEXT("Test Gener"));
 }
 
-void UHeroCombatComponent::OnHitTargetActor(AActor* InHitActor)
+void UHeroCombatComponent::OnHitTargetActor(AActor* InHitActor, const FHitResult& InHitResult)
 {
 	if (OverlappedActorList.Contains(InHitActor))
 	{
@@ -24,10 +26,13 @@ void UHeroCombatComponent::OnHitTargetActor(AActor* InHitActor)
 	OverlappedActorList.AddUnique(InHitActor);
 	
 	APawn* OwningPawn = Cast<APawn>(GetOwner());
-	if (!OwningPawn)
-	{
-		return;
-	}
+	VALID_RETURN(OwningPawn);
+	
+	UAbilitySystemComponent* AbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwningPawn);
+	VALID_RETURN(AbilitySystemComponent);
+	
+	FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
+	ContextHandle.AddHitResult(InHitResult);
 	
 	FGameplayEventData Data;
 	Data.Instigator = OwningPawn;
