@@ -34,19 +34,18 @@ void UPawnCombatComponentBase::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, A
 	CurrentEquippedWeaponTag = InWeaponTag;
 }
 
-void UPawnCombatComponentBase::ToggleWeaponCollision(const bool bEnable)
+void UPawnCombatComponentBase::ToggleWeaponCollision(const ECollisionEnabled::Type InCollisionType)
 {
 	auto* HeroWeapon = GetCurrentEquippedWeapon();
 	VALID_RETURN(HeroWeapon);
 	
-	if (!bEnable)
+	const bool bUnEquip = InCollisionType == ECollisionEnabled::NoCollision;
+	if (bUnEquip)
 	{
 		OverlappedActorList.Empty();
 	}
 	
-	ECollisionEnabled::Type CollisionType = bEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision;
-	
-	HeroWeapon->GetWeaponCollisionBox()->SetCollisionEnabled(CollisionType);
+	HeroWeapon->GetWeaponCollisionBox()->SetCollisionEnabled(InCollisionType);
 }
 
 AHeroWeaponBase* UPawnCombatComponentBase::GetCarriedWeaponByTag(const FGameplayTag InWeaponTag) const

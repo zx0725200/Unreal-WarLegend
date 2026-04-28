@@ -40,7 +40,10 @@ void AHeroWeaponBase::OnCollisionBoxBeginOverlap(UPrimitiveComponent* Overlapped
 
 	if (APawn* HitPawn = Cast<APawn>(OtherActor))
 	{
-		
+		if (WeaponOwningPawn != HitPawn)
+		{
+			OnWeaponHitTarget.ExecuteIfBound(OtherActor);
+		}
 	}
 }
 
@@ -52,7 +55,10 @@ void AHeroWeaponBase::OnCollisionBoxEndOverlap(UPrimitiveComponent* OverlappedCo
 	
 	if (APawn* HitPawn = Cast<APawn>(OtherActor))
 	{
-		
+		if (WeaponOwningPawn != HitPawn)
+		{
+			OnWeaponPulledFromTarget.ExecuteIfBound(OtherActor);
+		}
 	}
 }
 

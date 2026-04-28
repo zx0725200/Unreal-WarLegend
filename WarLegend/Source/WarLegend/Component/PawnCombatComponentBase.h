@@ -20,6 +20,8 @@ public:
 	virtual void OnHitTargetActor(AActor* HitActor);
 	virtual void OnWeaponPulledFromTargetActor(AActor* InteractedActor);
 	
+	void ToggleWeaponCollision(const ECollisionEnabled::Type InCollisionType);
+	
 	UFUNCTION(BlueprintCallable, Category = "Hero|Combat")
 	AHeroWeaponBase* GetCarriedWeaponByTag(const FGameplayTag InWeaponTag) const;
 	
@@ -28,10 +30,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Hero|Combat")
 	void RegisterSpawnedWeapon(FGameplayTag InWeaponTag, AHeroWeaponBase* InWeapon, const bool bRegister = false);
-	
-	UFUNCTION(BlueprintCallable, Category = "Hero|Combat")
-	void ToggleWeaponCollision(const bool bEnable);
-	
+
 private:
 	FGameplayTag CurrentEquippedWeaponTag;
 	
