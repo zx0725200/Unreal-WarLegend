@@ -172,7 +172,7 @@ bool AWarLegendPlayerController::IsUpdateCachedDestination()
 
 void AWarLegendPlayerController::Init()
 {
-	ChangeCity();
+	ChangeBattle();
 	SetMouseState();
 	ShowTitle();
 }

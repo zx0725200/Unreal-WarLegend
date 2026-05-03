@@ -31,12 +31,17 @@ void UHeroCombatComponent::OnHitTargetActor(AActor* InHitActor, const FHitResult
 	UAbilitySystemComponent* AbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwningPawn);
 	VALID_RETURN(AbilitySystemComponent);
 	
+	FHitResult ModifiedHitResult = InHitResult;
+	ModifiedHitResult.ImpactPoint.Z += 100.f;
+	ModifiedHitResult.Location.Z += 100.f;
+	
 	FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
-	ContextHandle.AddHitResult(InHitResult);
+	ContextHandle.AddHitResult(ModifiedHitResult);
 	
 	FGameplayEventData Data;
 	Data.Instigator = OwningPawn;
 	Data.Target = InHitActor;
+	Data.ContextHandle = ContextHandle;
 
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
 		OwningPawn,

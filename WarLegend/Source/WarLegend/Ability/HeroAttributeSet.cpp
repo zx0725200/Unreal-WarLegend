@@ -30,6 +30,8 @@ void UHeroAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 		
 		// UI에 전달
 		
+		
+		
 		// 죽음
 		if (NewCurrentHealth == 0.f)
 		{

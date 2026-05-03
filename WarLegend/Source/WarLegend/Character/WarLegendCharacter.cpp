@@ -51,15 +51,17 @@ AWarLegendCharacter::AWarLegendCharacter()
 
 void AWarLegendCharacter::ChangeCamera(const EPlayerLocType InMode)
 {
-	if (InMode == EPlayerLocType::City)
-	{
-		SetCityCamera();
-		ApplyCityMovement();
-	}
-	else if (InMode == EPlayerLocType::Battle)
-	{
-		LoadBattleMode();
-	}
+	LoadBattleMode();
+	
+	// if (InMode == EPlayerLocType::City)
+	// {
+	// 	SetCityCamera();
+	// 	ApplyCityMovement();
+	// }
+	// else if (InMode == EPlayerLocType::Battle)
+	// {
+	// 	LoadBattleMode();
+	// }
 }
 
 UHeroCombatComponent* AWarLegendCharacter::GetHeroCombatComponent()

@@ -32,6 +32,8 @@ AWarLegendPlayerController* UHeroAbility::GetHeroControllerFromActorInfo()
 
 FGameplayEffectSpecHandle UHeroAbility::MakeHeroDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> InEffectClass, float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InCurrentComboCount)
 {
+	// TODO : 이펙트 위치 여기서 바꿔줘야함.
+	
 	check(InEffectClass);
 
 	FGameplayEffectContextHandle ContextHandle = GetHeroAbilityComponentFromActorInfo()->MakeEffectContext();

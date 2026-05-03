@@ -13,4 +13,5 @@ void UScreenTitleVM::OnConfirm() const
 	VALID_RETURN(UIMgr);
 	
 	UIMgr->ShowUI(TEXT("HudMain"));
+	UIMgr->ShowUI(TEXT("HudBossHp"));
 }
