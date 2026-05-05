@@ -15,20 +15,19 @@ void UHudBossHp::SetViewModel(UHudBossHpVM* InViewModel)
 	BindVM();
 }
 
-void UHudBossHp::OnHpRatioChanged(float NewRatio)
+void UHudBossHp::OnHpRatioChanged(const float InNewRatio)
 {
-	HpProgressBar->SetPercent(NewRatio);
+	HpProgressBar->SetPercent(InNewRatio);
 }
 
-void UHudBossHp::NativeDestruct()
+void UHudBossHp::OnDisable()
 {
-	if (VM)
-	{
-		VM->OnHpRatioChanged.RemoveDynamic(this, &UHudBossHp::OnHpRatioChanged);
-		VM->ClearBinding();
-	}
-
-	Super::NativeDestruct();
+	VALID_RETURN(VM);
+	
+	VM->GetOnHpChanged().RemoveDynamic(this, &UHudBossHp::OnHpRatioChanged);
+	VM->ClearBinding();
+	
+	Super::OnDisable();
 }
 
 void UHudBossHp::BindViewModel()
@@ -42,17 +41,15 @@ void UHudBossHp::BindViewModel()
 
 void UHudBossHp::BindVM()
 {
-	if (VM)
-	{
-		VM->OnHpRatioChanged.AddDynamic(this, &UHudBossHp::OnHpRatioChanged);
-		OnHpRatioChanged(VM->GetHpRatio()); // 초기값 즉시 반영
-	}
+	VALID_RETURN(VM);
+	
+	VM->GetOnHpChanged().AddDynamic(this, &UHudBossHp::OnHpRatioChanged);
+	OnHpRatioChanged(VM->GetHpRatio()); 
 }
 
 void UHudBossHp::UnbindVM()
 {
-	if (VM)
-	{
-		VM->OnHpRatioChanged.RemoveDynamic(this, &UHudBossHp::OnHpRatioChanged);
-	}
+	VALID_RETURN(VM);
+	
+	VM->GetOnHpChanged().RemoveDynamic(this, &UHudBossHp::OnHpRatioChanged);
 }

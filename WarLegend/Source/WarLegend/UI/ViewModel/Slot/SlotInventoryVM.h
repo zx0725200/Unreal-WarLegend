@@ -14,7 +14,7 @@ public:
 	virtual void Init() override;
 	
 	void SetData(const FMyItem& InData);
-	void OnOpenItemInfo();
+	void OnOpenItemInfo(const FMyItem& InData);
 	
 	const FMyItem& GetMyItem() { return MyItem; }
 

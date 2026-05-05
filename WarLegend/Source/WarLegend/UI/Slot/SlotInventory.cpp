@@ -64,7 +64,7 @@ void USlotInventory::SetSelectedState()
 	Img_Select->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	Img_NotSelect->SetVisibility(ESlateVisibility::Collapsed);
 	
-	VM->OnOpenItemInfo();
+	VM->OnOpenItemInfo(VM->GetMyItem());
 }
 
 void USlotInventory::SetNormalState()

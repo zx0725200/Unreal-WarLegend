@@ -20,6 +20,17 @@ void UInventoryManager::Initialize(FSubsystemCollectionBase& Collection)
 	LoadData();
 }
 
+FMyItem UInventoryManager::GetSelectedItemData()
+{
+	const FMyItem* Found = InventoryItemData.FindByPredicate([this](const FMyItem& Item)
+	{
+	   return Item.ID == SelectedItemID;
+	});
+
+	return Found ? *Found : FMyItem();
+}
+
+
 void UInventoryManager::AddItem(const int32 InItemID)
 {
 	Internal_AddItem(InItemID);
@@ -44,6 +55,13 @@ void UInventoryManager::ResetItem()
 	if (!SaveGameMgr) return;
 	
 	SaveGameMgr->ClearInvenData();
+}
+
+void UInventoryManager::SetSelectedItem(const int32 InItemID)
+{
+	if (SelectedItemID == InItemID) return;
+
+	SelectedItemID = InItemID;
 }
 
 void UInventoryManager::Internal_AddItem(const int32 InItemID)

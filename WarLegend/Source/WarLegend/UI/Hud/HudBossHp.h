@@ -17,7 +17,7 @@ class WARLEGEND_API UHudBossHp : public UHudWidgetBase
 	GENERATED_BODY()
 	
 public:
-	virtual void NativeDestruct() override;
+	virtual void OnDisable() override;
 	virtual void BindViewModel() override;
 	
 private:
@@ -27,7 +27,7 @@ private:
 	void SetViewModel(UHudBossHpVM* InViewModel);
 	
 	UFUNCTION()
-	void OnHpRatioChanged(float NewRatio);
+	void OnHpRatioChanged(const float InNewRatio);
 
 private:
 	UPROPERTY()

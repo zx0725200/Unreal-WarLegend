@@ -6,6 +6,7 @@
 #include "Core/PopupWidgetBase.h"
 #include "PopupItemInfo.generated.h"
 
+class UPopupItemInfoVM;
 /**
  * 
  */
@@ -13,4 +14,15 @@ UCLASS()
 class WARLEGEND_API UPopupItemInfo : public UPopupWidgetBase
 {
 	GENERATED_BODY()
+
+public:
+	virtual void OnDisable() override;
+	virtual void BindViewModel() override;
+	
+private:
+	void SetViewModel(UPopupItemInfoVM* InVM);
+
+private:
+	UPROPERTY()
+	TObjectPtr<UPopupItemInfoVM> VM;
 };

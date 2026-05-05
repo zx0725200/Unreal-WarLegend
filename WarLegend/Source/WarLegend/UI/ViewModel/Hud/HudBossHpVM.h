@@ -25,29 +25,23 @@ public:
 	float GetCurrentHp() const { return CurrentHp; }
 	float GetMaxHp() const { return MaxHp; }
 	float GetHpRatio() const { return HpRatio; }
+	FOnValueChanged& GetOnHpChanged() { return OnHpRatioChanged; }
 
 private:
-	void SetCurrentHp(float InValue);
-	void SetMaxHp(float InValue);
-	void SetHpRatio(float InValue);
+	void SetCurrentHp(const float InValue);
+	void SetMaxHp(const float InValue);
+	void SetHpRatio(const float InValue);
 
 	void HandleCurrentHpChanged(const FOnAttributeChangeData& Data);
 	void HandleMaxHpChanged(const FOnAttributeChangeData& Data);
 
-public:
-	UPROPERTY(BlueprintAssignable)
-	FOnValueChanged OnCurrentHpChange;
-
-	UPROPERTY(BlueprintAssignable)
-	FOnValueChanged OnMaxHpChange;
-
-	UPROPERTY(BlueprintAssignable)
-	FOnValueChanged OnHpRatioChanged;
-
 private:
 	UPROPERTY()
 	TWeakObjectPtr<UAbilitySystemComponent> CachedASC;
-
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnValueChanged OnHpRatioChanged;
+	
 	float CurrentHp = 0.f;
 	float MaxHp = 1.f;
 	float HpRatio = 0.f;

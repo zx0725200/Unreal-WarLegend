@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "Ability/HeroAttributeSet.h"
 #include "Character/EnemyCharacter.h"
+#include "ETC/Define.h"
 #include "Kismet/GameplayStatics.h"
 
 void UHudBossHpVM::Init()
@@ -13,13 +14,13 @@ void UHudBossHpVM::Init()
 	Super::Init();
 
 	UWorld* World = GetOuter() ? GetOuter()->GetWorld() : nullptr;
-	if (!World) return;
+	VALID_RETURN(World);
 
 	AEnemyCharacter* Boss = Cast<AEnemyCharacter>(UGameplayStatics::GetActorOfClass(World, AEnemyCharacter::StaticClass()));
-	if (!Boss) return;
+	VALID_RETURN(Boss);
 
 	UAbilitySystemComponent* BossASC = Boss->GetAbilitySystemComponent();
-	if (!BossASC) return;
+	VALID_RETURN(BossASC);
 
 	CachedASC = BossASC;
 
@@ -35,34 +36,34 @@ void UHudBossHpVM::Init()
 
 void UHudBossHpVM::ClearBinding()
 {
-	if (CachedASC.IsValid())
-	{
-		CachedASC->GetGameplayAttributeValueChangeDelegate(UHeroAttributeSet::GetCurrentHpAttribute()).Remove(CurrentHpHandle);
-		CachedASC->GetGameplayAttributeValueChangeDelegate(UHeroAttributeSet::GetMaxHpAttribute()).Remove(MaxHpHandle);
-	}
+	VALID_RETURN(CachedASC);
 
+	CachedASC->GetGameplayAttributeValueChangeDelegate(UHeroAttributeSet::GetCurrentHpAttribute()).Remove(CurrentHpHandle);
+	CachedASC->GetGameplayAttributeValueChangeDelegate(UHeroAttributeSet::GetMaxHpAttribute()).Remove(MaxHpHandle);
+	
 	CachedASC.Reset();
 }
 
 void UHudBossHpVM::SetCurrentHp(float InValue)
 {
 	if (FMath::IsNearlyEqual(CurrentHp, InValue)) return;
+	
 	CurrentHp = InValue;
-	OnCurrentHpChange.Broadcast(CurrentHp);
 	SetHpRatio(MaxHp > 0.f ? CurrentHp / MaxHp : 0.f);
 }
 
 void UHudBossHpVM::SetMaxHp(float InValue)
 {
 	if (FMath::IsNearlyEqual(MaxHp, InValue)) return;
+	
 	MaxHp = InValue;
-	OnMaxHpChange.Broadcast(MaxHp);
 	SetHpRatio(MaxHp > 0.f ? CurrentHp / MaxHp : 0.f);
 }
 
 void UHudBossHpVM::SetHpRatio(float InValue)
 {
 	if (FMath::IsNearlyEqual(HpRatio, InValue)) return;
+	
 	HpRatio = InValue;
 	OnHpRatioChanged.Broadcast(HpRatio);
 }
