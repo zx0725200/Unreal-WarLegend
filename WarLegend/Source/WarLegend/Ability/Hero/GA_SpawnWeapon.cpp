@@ -20,7 +20,5 @@ void UGA_SpawnWeapon::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	UWorld * world = GetWorld();
 	world->SpawnActor(AHeroWeaponBase::StaticClass(), nullptr, nullptr, SpawnParameters);
 	
-	GetAvatarActorFromActorInfo()->spawnac
-	
 	
 }
