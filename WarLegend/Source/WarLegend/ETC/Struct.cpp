@@ -1,7 +1,7 @@
 ﻿
 #include "Struct.h"
 
-#include "Ability/HeroAbility.h"
+#include "Ability/Base/HeroAbility.h"
 #include "DataTable/ItemTableData.h"
 
 void FMyItem::Init(const FItemTableData* InTableData, const FLinearColor& InGradeColor, const int32 InUniqueID)

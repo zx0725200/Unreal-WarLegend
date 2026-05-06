@@ -50,6 +50,7 @@ void AEnemyAIController::OnUnPossess()
 	Super::OnUnPossess();
 }
 
+// 생성자에서 OnTargetPerceptionUpdated에 바인딩 - AI Perception이 감지/소실 이벤트 발생할 때마다 자동 호출
 void AEnemyAIController::OnTargetPerceptionUpdated(AActor* InActor, FAIStimulus InStimulus)
 {
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);

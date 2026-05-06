@@ -3,6 +3,7 @@
 
 #include "CommonTriggerActor.h"
 
+#include "ETC/Define.h"
 #include "UIManager.h"
 #include "UIManagerImpl.h"
 #include "Components/BoxComponent.h"
@@ -30,12 +31,9 @@ ACommonTriggerActor::ACommonTriggerActor()
 void ACommonTriggerActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	if (!Trigger)
-	{
-		return;
-	}
-	
+
+	// 생성자에서 BoxComponent만 만들고 BeginPlay에서 오버랩 콜백 연결
+	VALID_RETURN(Trigger);
 	Trigger->OnComponentBeginOverlap.AddDynamic(this, &ACommonTriggerActor::OnTriggerBegin);
 }
 

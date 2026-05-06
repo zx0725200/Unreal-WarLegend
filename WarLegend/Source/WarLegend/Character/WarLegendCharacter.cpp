@@ -14,6 +14,7 @@
 #include "Materials/Material.h"
 #include "Engine/World.h"
 #include "ETC/Constant.h"
+#include "ETC/Define.h"
 #include "ETC/Enum.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Perception/AISense_Sight.h"
@@ -113,13 +114,11 @@ void AWarLegendCharacter::LoadBattleMode()
 	DataLoadHandle = Streamable.RequestAsyncLoad(DataConfig.ToSoftObjectPath(), FStreamableDelegate::CreateUObject(this, &AWarLegendCharacter::ApplyBattleMode));
 }
 
+// LoadBattleMode에서 RequestAsyncLoad 완료 콜백으로 호출됨
 void AWarLegendCharacter::ApplyBattleMode()
 {
 	UCommonAbilityConfigBase* LoadedData = DataConfig.Get();
-	if (!LoadedData || !HeroAbilitySystemComponent)
-	{
-		return;
-	}
+	VALID_RETURN(LoadedData, HeroAbilitySystemComponent);
 
 	LoadedData->GiveAbilityToComponent(HeroAbilitySystemComponent);
 	

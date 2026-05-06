@@ -4,7 +4,7 @@
 #include "HudBossHpVM.h"
 
 #include "AbilitySystemComponent.h"
-#include "Ability/HeroAttributeSet.h"
+#include "Ability/Attribute/HeroAttributeSet.h"
 #include "Character/EnemyCharacter.h"
 #include "ETC/Define.h"
 #include "Kismet/GameplayStatics.h"

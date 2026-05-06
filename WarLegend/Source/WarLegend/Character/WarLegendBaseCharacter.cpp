@@ -4,7 +4,8 @@
 #include "Character/WarLegendBaseCharacter.h"
 
 #include "Ability/HeroAbilitySystemComponent.h"
-#include "Ability/HeroAttributeSet.h"
+#include "Ability/Attribute/HeroAttributeSet.h"
+#include "ETC/Define.h"
 
 AWarLegendBaseCharacter::AWarLegendBaseCharacter()
 {
@@ -19,7 +20,7 @@ AWarLegendBaseCharacter::AWarLegendBaseCharacter()
 
 UAbilitySystemComponent* AWarLegendBaseCharacter::GetAbilitySystemComponent() const
 {
-	return GetWarriorAbilitySystemComponent();
+	return GetHeroAbilitySystemComponent();
 }
 
 UPawnCombatComponentBase* AWarLegendBaseCharacter::GetPawnCombatComponent() const
@@ -31,10 +32,7 @@ void AWarLegendBaseCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	
-	if (!HeroAbilitySystemComponent)
-	{
-		return;
-	}
-	
+	VALID_RETURN(HeroAbilitySystemComponent);
+
 	HeroAbilitySystemComponent->InitAbilityActorInfo(this,this);
 }

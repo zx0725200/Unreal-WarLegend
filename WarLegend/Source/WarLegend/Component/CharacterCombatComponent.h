@@ -16,6 +16,6 @@ class WARLEGEND_API UCharacterCombatComponent : public UHeroCombatComponent
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintCallable, Category = "Warrior|Combat")
+	UFUNCTION(BlueprintCallable, Category = "Hero|Combat")
 	AHeroWeaponBase* GetCharWeaponByTag(FGameplayTag InWeaponTag) const;
 };

@@ -15,11 +15,11 @@ UPawnCombatComponentBase* UHeroFunctionLibrary::NativeGetPawnCombatComponentFrom
 	return nullptr;
 }
 
-UPawnCombatComponentBase* UHeroFunctionLibrary::BP_GetPawnCombatComponentFromActor(AActor* InActor, EWarriorConfirmType& OutConfirmType)
+UPawnCombatComponentBase* UHeroFunctionLibrary::BP_GetPawnCombatComponentFromActor(AActor* InActor, EHeroConfirmType& OutConfirmType)
 {
 	UPawnCombatComponentBase* CombatComponent = NativeGetPawnCombatComponentFromActor(InActor);
-	
-	OutConfirmType = CombatComponent? EWarriorConfirmType::Yes : EWarriorConfirmType::No;
+
+	OutConfirmType = CombatComponent? EHeroConfirmType::Yes : EHeroConfirmType::No;
 	
 	return CombatComponent;
 }

@@ -31,10 +31,11 @@ UAbilitySystemComponent* AEnemyCharacter::GetAbilitySystemComponent() const
 	return Super::GetAbilitySystemComponent();
 }
 
+// AI 컨트롤러가 빙의할 때 엔진이 호출 - Super에서 ASC 초기화 후 Init으로 어빌리티 세팅 시작
 void AEnemyCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-	
+
 	Init();
 }
 
@@ -43,6 +44,7 @@ UPawnCombatComponentBase* AEnemyCharacter::GetPawnCombatComponent() const
 	return EnemyCombatComponent;
 }
 
+// DataConfig 비동기 로드 후 어빌리티 부여 - 로드 완료 전까지 ASC에 어빌리티 없음
 void AEnemyCharacter::Init()
 {
 	if (DataConfig.IsNull())

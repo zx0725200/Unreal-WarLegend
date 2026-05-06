@@ -21,5 +21,5 @@ public:
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Ability", meta = (TitleProperty = "BattleTag"))
-	TArray<FHeroAbilitySet> WarriorAbilityList;
+	TArray<FHeroAbilitySet> HeroAbilityList;
 };

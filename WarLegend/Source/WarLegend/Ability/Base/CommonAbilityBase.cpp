@@ -3,7 +3,7 @@
 
 #include "CommonAbilityBase.h"
 #include "AbilitySystemComponent.h"
-#include "HeroAbilitySystemComponent.h"
+#include "Ability/HeroAbilitySystemComponent.h"
 #include "Component/HeroCombatComponent.h"
 
 UHeroCombatComponent* UCommonAbilityBase::GetHeroCombatComponentFromActorInfo() const

@@ -53,7 +53,7 @@ void UGachaManager::ApplyFilter()
 {
 	auto* SaveGameMgr = GetGameInstance()->GetSubsystem<USaveGameDataManager>();
 	UWLSaveGame* Save = SaveGameMgr->GetSaveGame();
-	if (!Save) return;
+	VALID_RETURN(Save);
 
 	TArray<EItemGrade> AllowedGrades;
 	for (const auto& [Grade, bChecked] : Save->GachaFilter)
@@ -107,11 +107,7 @@ void UGachaManager::BuildCache()
 	TotalWeight = GetTotalWeight();
 	
 	UTableManager* TableMgr = GetGameInstance()->GetSubsystem<UTableManager>();
-	if (!TableMgr)
-	{
-		UE_LOG(LogTemp, Error, TEXT("[GachaManager] TableManager를 찾을 수 없습니다."));
-		return;
-	}
+	VALID_RETURN(TableMgr);
 
 	TArray<FItemTableData*> AllItems = TableMgr->GetAllItemTableData();
 	for (const FItemTableData* Item : AllItems)

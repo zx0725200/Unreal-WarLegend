@@ -14,7 +14,7 @@ class UHeroAbilitySystemComponent;
  * 
  */
 UENUM()
-enum class EWarriorConfirmType : uint8
+enum class EHeroConfirmType : uint8
 {
 	Yes,
 	No
@@ -24,12 +24,12 @@ UCLASS()
 class WARLEGEND_API UHeroFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
-	
+
 public:
 	static UPawnCombatComponentBase* NativeGetPawnCombatComponentFromActor(AActor* InActor);
 
-	UFUNCTION(BlueprintCallable, Category = "Warrior|FunctionLibrary", meta = (DisplayName = "Get Pawn Combat Component From Actor", ExpandEnumAsExecs = "OutConfirmType"))
-	static UPawnCombatComponentBase* BP_GetPawnCombatComponentFromActor(AActor* InActor, EWarriorConfirmType& OutConfirmType);
+	UFUNCTION(BlueprintCallable, Category = "Hero|FunctionLibrary", meta = (DisplayName = "Get Pawn Combat Component From Actor", ExpandEnumAsExecs = "OutConfirmType"))
+	static UPawnCombatComponentBase* BP_GetPawnCombatComponentFromActor(AActor* InActor, EHeroConfirmType& OutConfirmType);
 	
 	UFUNCTION()
 	static UPawnCombatComponentBase* GetPawnCombatComponentFromActor(AActor* InActor);

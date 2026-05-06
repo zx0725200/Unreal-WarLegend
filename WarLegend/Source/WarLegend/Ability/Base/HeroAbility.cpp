@@ -4,7 +4,7 @@
 #include "HeroAbility.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
-#include "HeroAbilitySystemComponent.h"
+#include "Ability/HeroAbilitySystemComponent.h"
 #include "Character/WarLegendCharacter.h"
 #include "Controller/WarLegendPlayerController.h"
 #include "ETC/Enum.h"

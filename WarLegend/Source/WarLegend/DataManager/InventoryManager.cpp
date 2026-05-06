@@ -52,8 +52,8 @@ void UInventoryManager::ResetItem()
 	InventoryItemData.Reset();
 	
 	USaveGameDataManager* SaveGameMgr = GetLocalPlayer()->GetGameInstance()->GetSubsystem<USaveGameDataManager>();
-	if (!SaveGameMgr) return;
-	
+	VALID_RETURN(SaveGameMgr);
+
 	SaveGameMgr->ClearInvenData();
 }
 
@@ -73,17 +73,10 @@ void UInventoryManager::Internal_AddItem(const int32 InItemID)
 	}
 
 	UTableManager* TableMgr = GetLocalPlayer()->GetGameInstance()->GetSubsystem<UTableManager>();
-	if (!TableMgr)
-	{
-		UE_LOG(LogTemp, Error, TEXT("[GachaManager] TableManager를 찾을 수 없습니다."));
-		return;
-	}
+	VALID_RETURN(TableMgr);
 	
 	const auto ItemTableData = TableMgr->GetItemTableData(InItemID);
-	if (!ItemTableData)
-	{
-		return;
-	}
+	VALID_RETURN(ItemTableData);
 	
 	const auto ItemGradeColor = GTGetMgrImpl(UIManager)->GetItemColor(ItemTableData->ItemGrade);
 	
@@ -92,29 +85,26 @@ void UInventoryManager::Internal_AddItem(const int32 InItemID)
 	InventoryItemData.Emplace(ItemData);
 	
 	USaveGameDataManager* SaveGameMgr = GetLocalPlayer()->GetGameInstance()->GetSubsystem<USaveGameDataManager>();
-	if (!SaveGameMgr)
-	{
-		return;
-	}
-	
+	VALID_RETURN(SaveGameMgr);
+
 	SaveGameMgr->AddInvenData(ItemData);
 }
 
 void UInventoryManager::SaveData() const
 {
 	USaveGameDataManager* SaveGameMgr = GetLocalPlayer()->GetGameInstance()->GetSubsystem<USaveGameDataManager>();
-	if (!SaveGameMgr) return;
-	
+	VALID_RETURN(SaveGameMgr);
+
 	SaveGameMgr->SaveGame(Constant::SaveData);
 }
 
 void UInventoryManager::LoadData()
 {
 	USaveGameDataManager* SaveGameMgr = GetLocalPlayer()->GetGameInstance()->GetSubsystem<USaveGameDataManager>();
-	if (!SaveGameMgr) return;
+	VALID_RETURN(SaveGameMgr);
 
 	UWLSaveGame* SaveData = SaveGameMgr->GetSaveGame();
-	if (!SaveData) return;
+	VALID_RETURN(SaveData);
 
 	InventoryItemData = SaveData->InvenItemData;
 	

@@ -3,7 +3,7 @@
 
 #include "EnemyAbilityConfig.h"
 
-#include "Ability/EnemyAbility.h"
+#include "Ability/Base/EnemyAbility.h"
 #include "Ability/HeroAbilitySystemComponent.h"
 
 void UEnemyAbilityConfig::GiveAbilityToComponent(UHeroAbilitySystemComponent* InAbilityComponent)

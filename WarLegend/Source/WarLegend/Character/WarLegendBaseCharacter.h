@@ -24,8 +24,8 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual UPawnCombatComponentBase* GetPawnCombatComponent() const override;
 	
-	UHeroAbilitySystemComponent* GetWarriorAbilitySystemComponent() const { return HeroAbilitySystemComponent; }
-	UHeroAttributeSet* GetWarriorAttributeSet() const { return HeroAttributeSet; }
+	UHeroAbilitySystemComponent* GetHeroAbilitySystemComponent() const { return HeroAbilitySystemComponent; }
+	UHeroAttributeSet* GetHeroAttributeSet() const { return HeroAttributeSet; }
 	
 protected:
 	virtual void PossessedBy(AController* NewController) override;

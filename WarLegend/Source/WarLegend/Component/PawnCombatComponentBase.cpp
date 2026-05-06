@@ -18,6 +18,7 @@ void UPawnCombatComponentBase::OnWeaponPulledFromTargetActor(AActor* InteractedA
 {
 }
 
+// BP에서 무기 스폰 후 직접 호출 - bRegister=true면 현재 장착 무기로 즉시 등록
 void UPawnCombatComponentBase::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, AHeroWeaponBase* InWeapon, const bool bRegister)
 {
 	VALID_RETURN(InWeaponTag);

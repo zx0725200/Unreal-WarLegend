@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CommonAbilityBase.h"
+#include "GameplayEffectTypes.h"
 #include "HeroAbility.generated.h"
 
 enum class EConfirmType : uint8;
@@ -24,12 +25,12 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Hero|Ability")
 	AWarLegendPlayerController* GetHeroControllerFromActorInfo();
 	
-	UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
+	UFUNCTION(BlueprintPure, Category = "Hero|Ability")
 	FGameplayEffectSpecHandle MakeHeroDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> InEffectClass, float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InCurrentComboCount);
 
 	FActiveGameplayEffectHandle NativeApplyEffectSpecHandleToTarget(AActor* TargetActor,const FGameplayEffectSpecHandle& InSpecHandle);
 
-	UFUNCTION(BlueprintCallable, Category = "Warrior|Ability", meta = (DisplayName = "Apply Gameplay Effect Spec Handle To Target Actor", ExpandEnumAsExecs = "OutSuccessType"))
+	UFUNCTION(BlueprintCallable, Category = "Hero|Ability", meta = (DisplayName = "Apply Gameplay Effect Spec Handle To Target Actor", ExpandEnumAsExecs = "OutSuccessType"))
 	FActiveGameplayEffectHandle BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle, EConfirmType& OutSuccessType);
 	
 private:

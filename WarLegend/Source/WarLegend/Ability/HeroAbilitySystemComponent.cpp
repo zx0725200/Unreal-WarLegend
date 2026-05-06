@@ -2,7 +2,7 @@
 
 
 #include "Ability/HeroAbilitySystemComponent.h"
-#include "Ability/HeroAbility.h"
+#include "Base/HeroAbility.h"
 #include "ETC/Struct.h"
 
 void UHeroAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInputTag)

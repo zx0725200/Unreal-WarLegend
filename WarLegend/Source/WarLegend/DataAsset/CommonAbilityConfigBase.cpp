@@ -9,6 +9,7 @@
 
 #include "ETC/Enum.h"
 
+// DataConfig 에셋 로드 완료 후 PossessedBy 흐름에서 호출 (Hero: ApplyBattleMode, Enemy: Init 람다)
 void UCommonAbilityConfigBase::GiveAbilityToComponent(UHeroAbilitySystemComponent* InAbilityComponent)
 {
 	VALID_RETURN(InAbilityComponent);

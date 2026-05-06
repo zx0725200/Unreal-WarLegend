@@ -57,7 +57,7 @@ void AWarLegendPlayerController::SetupInputComponent()
 	BattleInput->BindNativeInputAction(InputBattleDataAsset, GamePlayTag::Battle_Move, ETriggerEvent::Triggered, this, &AWarLegendPlayerController::OnBattleMove);
 	BattleInput->BindNativeInputAction(InputBattleDataAsset, GamePlayTag::Battle_Look, ETriggerEvent::Triggered, this, &AWarLegendPlayerController::OnBattleLook);
 	
-	BattleInput->BindAbilityInputAction(InputBattleDataAsset, this, &ThisClass::OnAbilityInputPressed, & ThisClass::OnAbilityInputReleased);
+	BattleInput->BindAbilityInputAction(InputBattleDataAsset, this, &ThisClass::OnAbilityInputPressed, &ThisClass::OnAbilityInputReleased);
 
 	// City/공통 바인딩
 	BattleInput->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnInputStarted);
@@ -140,7 +140,7 @@ void AWarLegendPlayerController::OnAbilityInputPressed(const FGameplayTag InTag)
 	AWarLegendCharacter* MyCharacter = Cast<AWarLegendCharacter>(GetPawn());
 	VALID_RETURN(MyCharacter);
 	
-	MyCharacter->GetWarriorAbilitySystemComponent()->OnAbilityInputPressed(InTag);
+	MyCharacter->GetHeroAbilitySystemComponent()->OnAbilityInputPressed(InTag);
 }
 
 void AWarLegendPlayerController::OnAbilityInputReleased(FGameplayTag InTag)
@@ -170,6 +170,7 @@ bool AWarLegendPlayerController::IsUpdateCachedDestination()
 	return false;
 }
 
+// BeginPlay에서 호출 - SetupInputComponent가 먼저 끝난 뒤 진입, 카메라/타이틀 초기화 담당
 void AWarLegendPlayerController::Init()
 {
 	ChangeBattle();
