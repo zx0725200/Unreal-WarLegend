@@ -17,11 +17,14 @@ class WARLEGEND_API AEnemyCharacter : public AWarLegendBaseCharacter
 public:
 	AEnemyCharacter();
 	
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual FGenericTeamId GetGenericTeamId() const override { return FGenericTeamId(1); }
 	FORCEINLINE UEnemyCombatComponent* GetEnemyCombatComponent() const { return EnemyCombatComponent;}
 	
 protected:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual UPawnCombatComponentBase* GetPawnCombatComponent() const override;
+
 	
 private:
 	void Init();

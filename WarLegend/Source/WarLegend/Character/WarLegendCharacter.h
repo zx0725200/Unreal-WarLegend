@@ -6,6 +6,7 @@
 #include "WarLegendBaseCharacter.h"
 #include "WarLegendCharacter.generated.h"
 
+class UAIPerceptionStimuliSourceComponent;
 class UHeroCombatComponent;
 struct FStreamableHandle;
 class UCommonAbilityConfigBase;
@@ -32,6 +33,7 @@ protected:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual UPawnCombatComponentBase* GetPawnCombatComponent() const override;
+	virtual FGenericTeamId GetGenericTeamId() const override { return FGenericTeamId(0); }
 	
 private:
 	void LoadBattleMode();
@@ -57,6 +59,9 @@ private:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UHeroCombatComponent> HeroCombatComponent;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AIPerception", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAIPerceptionStimuliSourceComponent> StimuliSource;
 	
 	TSharedPtr<FStreamableHandle> DataLoadHandle;
 };

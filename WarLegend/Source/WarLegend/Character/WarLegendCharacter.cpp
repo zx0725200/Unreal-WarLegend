@@ -15,6 +15,8 @@
 #include "Engine/World.h"
 #include "ETC/Constant.h"
 #include "ETC/Enum.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AISense_Sight.h"
 
 AWarLegendCharacter::AWarLegendCharacter()
 {
@@ -47,6 +49,10 @@ AWarLegendCharacter::AWarLegendCharacter()
 	TopDownCamera->bUsePawnControlRotation = false;
 	
 	HeroCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("HeroCombatComponent"));
+	
+	StimuliSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>("StimuliSource");
+	StimuliSource->bAutoRegister = true;
+	StimuliSource->RegisterForSense(UAISense_Sight::StaticClass());
 }
 
 void AWarLegendCharacter::ChangeCamera(const EPlayerLocType InMode)

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "GenericTeamAgentInterface.h"
 #include "ETC/HeroCombatInterface.h"
 #include "GameFramework/Character.h"
 #include "WarLegendBaseCharacter.generated.h"
@@ -13,7 +14,7 @@ class UHeroAttributeSet;
 class UHeroAbilitySystemComponent;
 
 UCLASS()
-class WARLEGEND_API AWarLegendBaseCharacter : public ACharacter, public IAbilitySystemInterface, public IHeroCombatInterface
+class WARLEGEND_API AWarLegendBaseCharacter : public ACharacter, public IAbilitySystemInterface, public IHeroCombatInterface, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
