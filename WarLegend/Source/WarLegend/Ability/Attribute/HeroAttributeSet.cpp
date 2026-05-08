@@ -4,6 +4,9 @@
 #include "HeroAttributeSet.h"
 #include "GameplayEffectExtension.h"
 
+// ? ExecutionCalculation을 상속받는 UGE_DamageToken 에서 게임플레이 이펙트가 실행되고 실행
+// ? Instant를 통해 Attribute가 변경됐을 때
+// ? Periodic tick마다 적용됐을때.
 void UHeroAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);

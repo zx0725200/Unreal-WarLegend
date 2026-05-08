@@ -6,8 +6,8 @@
 #include "CharacterAnimInstanceBase.h"
 #include "CharacterAnimInstance.generated.h"
 
+class AWarLegendBaseCharacter;
 class UCharacterMovementComponent;
-class AWarLegendCharacter;
 /**
  * 
  */
@@ -22,7 +22,7 @@ public:
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|Refrences")
-	TObjectPtr<AWarLegendCharacter> MyCharacter;
+	TObjectPtr<AWarLegendBaseCharacter> MyCharacter;
 	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|Refrences")
 	TObjectPtr<UCharacterMovementComponent> MyMovementComponent;

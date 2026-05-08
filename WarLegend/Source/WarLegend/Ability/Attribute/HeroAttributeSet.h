@@ -22,6 +22,7 @@ class WARLEGEND_API UHeroAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 	
 public:
+	// ? cpp에 설명 
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 	
 	// GamePlayEffect 테이블 속성용.

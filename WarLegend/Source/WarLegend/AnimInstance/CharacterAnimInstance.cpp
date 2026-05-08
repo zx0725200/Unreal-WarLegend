@@ -11,7 +11,7 @@ void UCharacterAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
 	
-	MyCharacter = Cast<AWarLegendCharacter>(TryGetPawnOwner());
+	MyCharacter = Cast<AWarLegendBaseCharacter>(TryGetPawnOwner());
 	VALID_RETURN(MyCharacter);
 	
 	MyMovementComponent = MyCharacter->GetCharacterMovement();
@@ -19,12 +19,12 @@ void UCharacterAnimInstance::NativeInitializeAnimation()
 
 void UCharacterAnimInstance::NativeThreadSafeUpdateAnimation(const float DeltaSeconds)
 {
+	Super::NativeThreadSafeUpdateAnimation(DeltaSeconds);
+	
 	if (!MyCharacter || !MyMovementComponent)
 	{
 		return;
 	}
-	
-	Super::NativeThreadSafeUpdateAnimation(DeltaSeconds);
 	
 	GroundSpeed = MyCharacter->GetVelocity().Size2D();
 	bAcceleration = MyMovementComponent->GetCurrentAcceleration().SizeSquared2D() > 0.f;

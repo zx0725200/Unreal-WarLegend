@@ -48,6 +48,11 @@ void UBTService_UpdateAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp, u
 	const bool bInRange = DistSq <= FMath::Square(Range);
 
 	BlackboardComponent->SetValue<UBlackboardKeyType_Bool>(InRangeKey.GetSelectedKeyID(), bInRange);
+	
+	if (AI->GetFocusActor() != Target)
+	{
+		AI->SetFocus(Target);
+	}
 }
 
 void UBTService_UpdateAttackRange::OnBecomeRelevant(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
