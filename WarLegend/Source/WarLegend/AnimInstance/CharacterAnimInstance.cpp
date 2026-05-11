@@ -3,6 +3,7 @@
 
 #include "CharacterAnimInstance.h"
 
+#include "Character/EnemyCharacter.h"
 #include "Character/WarLegendCharacter.h"
 #include "ETC/Define.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -27,7 +28,7 @@ void UCharacterAnimInstance::NativeThreadSafeUpdateAnimation(const float DeltaSe
 	}
 	
 	GroundSpeed = MyCharacter->GetVelocity().Size2D();
-	bAcceleration = MyMovementComponent->GetCurrentAcceleration().SizeSquared2D() > 0.f;
+	bAcceleration = MyMovementComponent->GetCurrentAcceleration().SizeSquared2D() > 0.f || GroundSpeed > 0.f;
 	
 	if (bAcceleration)
 	{

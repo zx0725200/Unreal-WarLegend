@@ -24,6 +24,7 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
+	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override; 
 
 protected:
 	virtual void BindViewModel() override;

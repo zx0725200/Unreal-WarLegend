@@ -6,6 +6,7 @@
 #include "WarLegendBaseCharacter.h"
 #include "EnemyCharacter.generated.h"
 
+class UEnemyAbilityConfig;
 class UEnemyCombatComponent;
 class UPawnCombatComponentBase;
 
@@ -30,6 +31,9 @@ private:
 	void Init();
 	
 protected:
+	UPROPERTY(EditDefaultsOnly, Instanced, Category="Abilities")
+	TObjectPtr<UEnemyAbilityConfig> EnemyAbilityConfig;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	UEnemyCombatComponent* EnemyCombatComponent;
 	

@@ -17,3 +17,8 @@ void UScreenWidgetBase::OnDisable()
 {
 	Super::OnDisable();
 }
+
+FReply UScreenWidgetBase::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
+{
+	return Super::NativeOnKeyDown(InGeometry, InKeyEvent);
+}
