@@ -52,16 +52,11 @@ void AEnemyCharacter::Init()
 		return;
 	}
 	
-	UAssetManager::GetStreamableManager().RequestAsyncLoad(DataConfig.ToSoftObjectPath(), 
-		FStreamableDelegate::CreateLambda(
-		[this]()
-			{
-				if (auto Data = DataConfig.Get())
-				{
-					Data->GiveAbilityToComponent(HeroAbilitySystemComponent);
-				}
-			}
-		));
+	auto Data = DataConfig.LoadSynchronous();
+	if (Data)
+	{
+		Data->GiveAbilityToComponent(HeroAbilitySystemComponent);
+	}
 }
 
 

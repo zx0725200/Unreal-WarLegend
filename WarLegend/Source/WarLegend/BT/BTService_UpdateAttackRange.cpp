@@ -22,6 +22,7 @@ UBTService_UpdateAttackRange::UBTService_UpdateAttackRange()
 	TargetKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTService_UpdateAttackRange, TargetKey), AActor::StaticClass());
 	InRangeKey.AddBoolFilter(this, GET_MEMBER_NAME_CHECKED(UBTService_UpdateAttackRange, InRangeKey));
 	RangeKey.AddFloatFilter(this, GET_MEMBER_NAME_CHECKED(UBTService_UpdateAttackRange, RangeKey));
+	LastKnownLocationKey.AddVectorFilter(this, GET_MEMBER_NAME_CHECKED(UBTService_UpdateAttackRange, LastKnownLocationKey));
 }
 
 void UBTService_UpdateAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
@@ -33,21 +34,17 @@ void UBTService_UpdateAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp, u
 	APawn* SelfPawn = AI ? AI->GetPawn() : nullptr;
 	if (!BlackboardComponent || !SelfPawn) return;
 
-	AActor* Target = Cast<AActor>(BlackboardComponent->GetValue<UBlackboardKeyType_Object>(TargetKey.GetSelectedKeyID()));
-	if (!Target)
-	{
-		BlackboardComponent->SetValue<UBlackboardKeyType_Bool>(InRangeKey.GetSelectedKeyID(), false);
-		return;
-	}
-
+	AActor* Target = Cast<AActor>(BlackboardComponent->GetValueAsObject(TargetKey.SelectedKeyName));
+	if (!Target) return;
+	
 	const float Range = (RangeKey.SelectedKeyName != NAME_None)
-		? BlackboardComponent->GetValue<UBlackboardKeyType_Float>(RangeKey.GetSelectedKeyID())
+		? BlackboardComponent->GetValueAsFloat(RangeKey.SelectedKeyName)
 		: DefaultRange;
-
-	const float DistSq = FVector::DistSquared(SelfPawn->GetActorLocation(), Target->GetActorLocation());
+	
+	const float DistSq = FVector::DistSquared2D(SelfPawn->GetActorLocation(), Target->GetActorLocation());
 	const bool bInRange = DistSq <= FMath::Square(Range);
 
-	BlackboardComponent->SetValue<UBlackboardKeyType_Bool>(InRangeKey.GetSelectedKeyID(), bInRange);
+	BlackboardComponent->SetValueAsBool(InRangeKey.SelectedKeyName, bInRange);
 	
 	if (AI->GetFocusActor() != Target)
 	{

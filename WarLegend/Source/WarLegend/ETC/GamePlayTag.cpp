@@ -25,6 +25,10 @@ namespace GamePlayTag
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_Ability_Attack_Magic, "Enemy.Ability.Attack.Magic");
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_Ability_Attack_Combo, "Enemy.Ability.Attack.Combo");
 	
+	UE_DEFINE_GAMEPLAY_TAG(Enemy_State_Attacking, "Enemy.State.Attacking");
+	UE_DEFINE_GAMEPLAY_TAG(Enemy_State_Moving, "Enemy.State.Moving");
+	UE_DEFINE_GAMEPLAY_TAG(Enemy_State_Dead, "Enemy.State.Attacking");
+	
 	UE_DEFINE_GAMEPLAY_TAG(GamePlayCue_Melee_Hit,"GameplayCue.Melee.Hit");
 	
 	UE_DEFINE_GAMEPLAY_TAG(Shared_Event_PlayerHit,"Shared.Event.PlayerHit");

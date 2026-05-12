@@ -18,8 +18,9 @@ public:
 	UBTDeco_BossRandomAttack();
 	
 protected:
+	virtual bool CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const override;
+	
+protected:
 	UPROPERTY(EditAnywhere, Category="Random", meta=(ClampMin="0.0", ClampMax="1.0"))
 	float Rate = 0.5f;
-
-	virtual bool CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const override;
 };
