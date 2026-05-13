@@ -16,7 +16,7 @@ class WARLEGEND_API UHeroAnimNotify : public UAnimNotify
 	GENERATED_BODY()
 	
 public:
-	// Anim 에서 Notify 올때 호출.
+	// ? Anim 에서 Notify 올때 호출.
 	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
 
 public:

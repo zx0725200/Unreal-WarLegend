@@ -12,6 +12,7 @@ AWarLegendBaseCharacter::AWarLegendBaseCharacter()
 	PrimaryActorTick.bCanEverTick = false;
 	PrimaryActorTick.bStartWithTickEnabled = false;
 	
+	// ? Decal 끄기
 	GetMesh()->bReceivesDecals = false;
 	
 	HeroAbilitySystemComponent = CreateDefaultSubobject<UHeroAbilitySystemComponent>(TEXT("CharAbilitySystemComponent"));
@@ -34,5 +35,7 @@ void AWarLegendBaseCharacter::PossessedBy(AController* NewController)
 	
 	VALID_RETURN(HeroAbilitySystemComponent);
 
+	// ? ability가 어디에 적용되고 누가 발동하는지 설정. 
+	// ? GiveAbility() 호출하기 전에 반드시 해야 함.
 	HeroAbilitySystemComponent->InitAbilityActorInfo(this,this);
 }

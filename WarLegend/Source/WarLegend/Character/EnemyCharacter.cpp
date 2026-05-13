@@ -5,7 +5,6 @@
 
 #include "Component/EnemyCombatComponent.h"
 #include "DataAsset/CommonAbilityConfigBase.h"
-#include "Engine/AssetManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 
@@ -44,7 +43,6 @@ UPawnCombatComponentBase* AEnemyCharacter::GetPawnCombatComponent() const
 	return EnemyCombatComponent;
 }
 
-// DataConfig 비동기 로드 후 어빌리티 부여 - 로드 완료 전까지 ASC에 어빌리티 없음
 void AEnemyCharacter::Init()
 {
 	if (DataConfig.IsNull())

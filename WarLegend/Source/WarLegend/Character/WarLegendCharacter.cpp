@@ -23,6 +23,7 @@ AWarLegendCharacter::AWarLegendCharacter()
 {
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 	
+	// ? 회전 불가능하게.
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
@@ -30,8 +31,8 @@ AWarLegendCharacter::AWarLegendCharacter()
 	BattleCameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("BattleCameraArm"));
 	BattleCameraArm->SetupAttachment(RootComponent);
 	BattleCameraArm->TargetArmLength = Constant::BattleArmLength;
-	BattleCameraArm->bUsePawnControlRotation = true;
-	BattleCameraArm->bEnableCameraLag = true;
+	BattleCameraArm->bUsePawnControlRotation = true;	// ? 입력 따라 회전
+	BattleCameraArm->bEnableCameraLag = true;			// ? 카메라가 부드럽게 따라오도록.
 	BattleCameraArm->CameraLagMaxTimeStep = 0.005f;
 	
 	BattleCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("BattleCamera"));
@@ -43,7 +44,7 @@ AWarLegendCharacter::AWarLegendCharacter()
 	TopDownCameraArm->SetUsingAbsoluteRotation(true);
 	TopDownCameraArm->TargetArmLength = Constant::TopDownArmLength;
 	TopDownCameraArm->SetRelativeRotation(Constant::TopDownArmRotation);
-	TopDownCameraArm->bDoCollisionTest = false;
+	TopDownCameraArm->bDoCollisionTest = false;			// ? 벽이랑 부딪혀도 줌 안하게 
 	
 	TopDownCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
 	TopDownCamera->SetupAttachment(TopDownCameraArm, USpringArmComponent::SocketName);
@@ -51,9 +52,10 @@ AWarLegendCharacter::AWarLegendCharacter()
 	
 	HeroCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("HeroCombatComponent"));
 	
+	// ? AI가 이 액터를 감지 할 수 있게 만들어주는 Component
 	StimuliSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>("StimuliSource");
 	StimuliSource->bAutoRegister = true;
-	StimuliSource->RegisterForSense(UAISense_Sight::StaticClass());
+	StimuliSource->RegisterForSense(UAISense_Sight::StaticClass());	// ? 보스가 플레이어를 볼수있게 시야 설정.
 }
 
 void AWarLegendCharacter::ChangeCamera(const EPlayerLocType InMode)
@@ -114,7 +116,7 @@ void AWarLegendCharacter::LoadBattleMode()
 	DataLoadHandle = Streamable.RequestAsyncLoad(DataConfig.ToSoftObjectPath(), FStreamableDelegate::CreateUObject(this, &AWarLegendCharacter::ApplyBattleMode));
 }
 
-// LoadBattleMode에서 RequestAsyncLoad 완료 콜백으로 호출됨
+// ? LoadBattleMode에서 RequestAsyncLoad 완료 콜백으로 호출됨
 void AWarLegendCharacter::ApplyBattleMode()
 {
 	UCommonAbilityConfigBase* LoadedData = DataConfig.Get();
@@ -141,10 +143,10 @@ void AWarLegendCharacter::SetCityCamera()
 void AWarLegendCharacter::ApplyCityMovement()
 {
 	UCharacterMovementComponent* MoveComp = GetCharacterMovement();
-	MoveComp->bOrientRotationToMovement = true;
+	MoveComp->bOrientRotationToMovement = true;	// ? 캐릭터가 이동방향으로 자동 회전
 	MoveComp->RotationRate = FRotator(0.f, Constant::CityRotationYawRate, 0.f);
-	MoveComp->bConstrainToPlane = true;
-	MoveComp->bSnapToPlaneAtStart = true;
+	MoveComp->bConstrainToPlane = true;			// ? z축 이동 제한
+	MoveComp->bSnapToPlaneAtStart = true;		// ? 스폰 될때 자동으로 지형에 붙기
 }
 
 void AWarLegendCharacter::ApplyBattleMovement()
@@ -153,5 +155,5 @@ void AWarLegendCharacter::ApplyBattleMovement()
 	MoveComp->bOrientRotationToMovement = true;
 	MoveComp->RotationRate = FRotator(0.f, Constant::BattleRotationYawRate, 0.f);
 	MoveComp->MaxWalkSpeed = Constant::BattleMaxWalkSpeed;
-	MoveComp->BrakingDecelerationWalking = Constant::BattleBrakingDeceleration;
+	MoveComp->BrakingDecelerationWalking = Constant::BattleBrakingDeceleration;	// ? 이동 입력을 멈췄을때 정지 하는 마찰력 느낌. 클수록 빠르게 멈춤.
 }

@@ -11,8 +11,8 @@ UBTTask_BossAttack::UBTTask_BossAttack()
 {
 	NodeName = "Boss Attack";
 
-	// 멤버 변수(CachedASC, OnAbilityEndedHandle 등)를 사용하므로
-	// 인스턴스화 필수. 안 켜면 BT 노드가 공유 상태가 돼서 보스 여러 마리일 때 박살남.
+	// ? 멤버 변수(CachedASC, OnAbilityEndedHandle 등)를 사용하므로
+	// ? 인스턴스화 필수. 안 켜면 BT 노드가 공유 상태가 돼서 보스 여러 마리일 때 박살남.
 	bCreateNodeInstance = true;
 
 	bNotifyTick = false;
