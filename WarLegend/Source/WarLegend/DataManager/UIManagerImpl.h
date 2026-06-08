@@ -38,8 +38,10 @@ public:
 	
 public:
 	void HandleEscClick();
+	void RemoveUIStack(const FName& UIName);
 
 	FLinearColor GetItemColor(const EItemGrade InItemGrade) const;
+	bool IsEmptyStack() const;
 	
 private:
 	void HideUIBase(const FName& InName, ESlateVisibility InVisibility = ESlateVisibility::Collapsed);

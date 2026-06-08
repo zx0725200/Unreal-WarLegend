@@ -8,10 +8,13 @@
 
 void USlotGachaLog::Init(const FGachaLogData& InData)
 {
+	const auto ItemGradeName = FText::FromString(InData.ItemGradeName);
 	const auto ItemName = FText::FromString(InData.ItemName);
 	const auto ItemColor = InData.GradeColor;
 	const auto ItemTime = FText::FromString(InData.Time);
 	
+	Txt_Grade->SetText(ItemGradeName);
+	Txt_Grade->SetColorAndOpacity(ItemColor);
 	Txt_ItemName->SetText(ItemName);
 	Txt_ItemName->SetColorAndOpacity(ItemColor);
 	

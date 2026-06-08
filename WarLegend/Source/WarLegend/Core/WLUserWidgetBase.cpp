@@ -13,20 +13,32 @@ void UWLUserWidgetBase::Awake()
 
 void UWLUserWidgetBase::OnEnable()
 {
-	const bool bLockInput = GetUIType() == EUserWidgetType::Popup || GetUIType() == EUserWidgetType::Screen;
-	if (bLockInput)
+	if (!IsBlockUI())
 	{
-		SetIsFocusable(true);  
-		LockPlayerInput();
+		return;
 	}
+	
+	SetIsFocusable(true);  
+	LockPlayerInput();
 }
 
 void UWLUserWidgetBase::OnDisable()
 {
-	const bool bUnLockInput = GetUIType() == EUserWidgetType::Popup || GetUIType() == EUserWidgetType::Screen;
-	if (bUnLockInput)
+	if (!IsBlockUI())
+	{
+		return;
+	}
+	
+	if (IsEmptyUI())
 	{
 		UnlockPlayerInput();
+		return;
+	}
+	
+	TSharedPtr<SWidget> Prev = CachedFocusedWidget.Pin();
+	if (Prev.IsValid())
+	{
+		FSlateApplication::Get().SetUserFocus(0, Prev, EFocusCause::SetDirectly);
 	}
 }
 
@@ -64,6 +76,9 @@ void UWLUserWidgetBase::Show(const ESlateVisibility InVisible)
 
 void UWLUserWidgetBase::Hide(const ESlateVisibility InVisible)
 {
+	auto* UIMgr = GTUIGetMgrImpl(UIManager);
+	VALID_RETURN(UIMgr);
+	
 	const ESlateVisibility CurrentVisibility = GetVisibility();
 	
 	// 이미 숨겨진 상태라면 중복 호출 방지
@@ -72,6 +87,8 @@ void UWLUserWidgetBase::Hide(const ESlateVisibility InVisible)
 		return;
 	}
 
+	UIMgr->RemoveUIStack(RegisteredName);
+	
 	SetVisibility(InVisible);
 	
 	OnDisable();
@@ -147,6 +164,8 @@ void UWLUserWidgetBase::LockPlayerInput()
 		return;
 	}
 	
+	CachedFocusedWidget = FSlateApplication::Get().GetUserFocusedWidget(0);
+	
 	FInputModeUIOnly UIOnlyGameMode;
 	PlayerController->SetInputMode(UIOnlyGameMode);
 	
@@ -163,4 +182,20 @@ void UWLUserWidgetBase::UnlockPlayerInput() const
 	
 	FInputModeGameAndUI InputGameMode;
 	PlayerController->SetInputMode(InputGameMode);
+}
+
+bool UWLUserWidgetBase::IsBlockUI() const
+{
+	return GetUIType() == EUserWidgetType::Popup || GetUIType() == EUserWidgetType::Screen;
+}
+
+bool UWLUserWidgetBase::IsEmptyUI() const
+{
+	auto* UIMgr = GTUIGetMgrImpl(UIManager);
+	if (!UIMgr)
+	{
+		return true;
+	}
+	
+	return IsBlockUI() && UIMgr->IsEmptyStack();
 }

@@ -58,10 +58,18 @@ private:
 	
 	void LockPlayerInput();
 	void UnlockPlayerInput() const;
+	
+	bool IsBlockUI() const;
+	bool IsEmptyUI() const;
 
 public:
 	FWLUIEventHandle UIEventHandle;
 	
+	UPROPERTY()
+	FName RegisteredName;
+	
 private:
 	EUserWidgetType WidgetType;
+	
+	TWeakPtr<SWidget> CachedFocusedWidget;
 };

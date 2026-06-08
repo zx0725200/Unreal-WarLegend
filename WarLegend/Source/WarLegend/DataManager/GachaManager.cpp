@@ -16,13 +16,21 @@ void UGachaManager::Initialize(FSubsystemCollectionBase& Collection)
 	Super::Initialize(Collection);
 	
 	Collection.InitializeDependency<UTableManager>(); // TableManager 먼저 보장
+	Collection.InitializeDependency<USaveGameDataManager>();
 	
 	BuildCache();
+	
+	ApplyFilter();
 }
 
 int32 UGachaManager::GetGachaItem() const
 {
 	const EItemGrade SelectedGrade = GetSelectedGrade();
+	if (SelectedGrade == EItemGrade::None)
+	{
+		return -1; // 필터에 걸림 → 분해 처리(결과에서 "분해"로 표시)
+	}
+
 	return GetSelectedItemByGrade(SelectedGrade);
 }
 
@@ -33,11 +41,8 @@ TArray<int32> UGachaManager::GetGachaItemMultiple(const int32 InCount) const
 
 	for (int32 i = 0; i < InCount; i++)
 	{
-		int32 ItemID = GetGachaItem();
-		if (ItemID != -1)
-		{
-			GachaItemIdList.Emplace(ItemID);
-		}
+		// -1(분해)도 그대로 담아 항상 뽑은 개수만큼 결과를 보여준다.
+		GachaItemIdList.Emplace(GetGachaItem());
 	}
 
 	return GachaItemIdList;
@@ -66,25 +71,53 @@ void UGachaManager::ApplyFilter()
 
 void UGachaManager::AddLog(const int32 ItemID)
 {
+	LogList.Emplace(MakeLogData(ItemID));
+	OnLogAdded.Broadcast(LogList.Last());
+}
+
+void UGachaManager::RecordResults(const TArray<int32>& InItemIDs)
+{
+	LastResultList.Reset();
+	LastResultList.Reserve(InItemIDs.Num());
+
+	for (const int32 ItemID : InItemIDs)
+	{
+		LastResultList.Emplace(MakeLogData(ItemID));
+	}
+}
+
+FGachaLogData UGachaManager::MakeLogData(const int32 ItemID) const
+{
+	FGachaLogData Data;
+
+	// 필터에 걸린 결과(-1)는 "분해"로 표시한다.
+	if (ItemID == -1)
+	{
+		Data.ItemGradeName = TEXT("분해");
+		Data.ItemName      = TEXT("분해");
+		Data.GradeColor    = FLinearColor::Gray;
+		Data.Time          = FDateTime::Now().ToString(TEXT("%H:%M:%S"));
+		return Data;
+	}
+
 	UTableManager* TableMgr = GetGameInstance()->GetSubsystem<UTableManager>();
-	VALID_RETURN(TableMgr);
+	if (!TableMgr) return Data;
 
 	ULocalPlayer* LocalPlayer = GetGameInstance()->GetFirstGamePlayer();
-	VALID_RETURN(LocalPlayer);
-	
+	if (!LocalPlayer) return Data;
+
 	UUIManagerImpl* UIMgr = LocalPlayer->GetSubsystem<UIManager>()->MgrImpl;
-	VALID_RETURN(UIMgr);
+	if (!UIMgr) return Data;
 
 	const FItemTableData* TableData = TableMgr->GetItemTableData(ItemID);
-	VALID_RETURN(TableData);
-	
-	FGachaLogData Data;
+	if (!TableData) return Data;
+
+	Data.ItemGradeName = StaticEnum<EItemGrade>()->GetNameStringByValue(static_cast<int64>(TableData->ItemGrade));
 	Data.ItemName   = TableData->ItemName;
 	Data.GradeColor = UIMgr->GetItemColor(TableData->ItemGrade);
 	Data.Time       = FDateTime::Now().ToString(TEXT("%H:%M:%S"));
-	
-	LogList.Emplace(Data);
-	OnLogAdded.Broadcast(LogList.Last());
+
+	return Data;
 }
 
 void UGachaManager::SetFilter(const TArray<EItemGrade>& InAllowedGrades)

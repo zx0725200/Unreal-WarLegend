@@ -1,5 +1,7 @@
 ﻿#include "PopupGacha.h"
 
+#include "DataManager/UIManager.h"
+#include "DataManager/UIManagerImpl.h"
 #include "ETC/Constant.h"
 #include "ETC/Define.h"
 #include "ViewModel/Popup/PopupGachaVM.h"
@@ -18,7 +20,8 @@ void UPopupGacha::OnDisable()
 {
 	Super::OnDisable();
 	VALID_RETURN(VM);
-	
+
+	VM->GetOnGachaCompleted().RemoveAll(this);
 	VM->ClearBinding();
 	VM = nullptr;
 }
@@ -48,4 +51,14 @@ void UPopupGacha::BindViewModel()
 
 	VM = NewObject<UPopupGachaVM>(this);
 	VM->Init();
+
+	VM->GetOnGachaCompleted().AddUObject(this, &UPopupGacha::HandleGachaCompleted);
+}
+
+void UPopupGacha::HandleGachaCompleted()
+{
+	const auto UIMgr = GTUIGetMgrImpl(UIManager);
+	VALID_RETURN(UIMgr);
+
+	UIMgr->ShowUI(TEXT("PopupGachaResult"));
 }

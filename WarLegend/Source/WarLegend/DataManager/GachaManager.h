@@ -40,9 +40,11 @@ public:
 	void ApplyFilter();
 	void AddLog(const int32 ItemID);
 	void ClearLogs();
-	
+	void RecordResults(const TArray<int32>& InItemIDs); // 이번 뽑기 결과를 결과 팝업용으로 저장
+
 	int32 GetGachaItem() const;
 	const TArray<FGachaLogData>& GetLogList() const { return LogList; }
+	const TArray<FGachaLogData>& GetLastResults() const { return LastResultList; } // 가장 최근 뽑기 결과
 	TArray<int32> GetGachaItemMultiple(const int32 InCount) const;
 
 	FOnGachaLogAdded& GetOnLogAdded() { return OnLogAdded; }
@@ -52,6 +54,8 @@ private:
 	void BuildCache();
 	void SetFilter(const TArray<EItemGrade>& InAllowedGrades);
 
+	FGachaLogData MakeLogData(const int32 ItemID) const; // ItemID로 로그/결과 표시용 데이터 생성
+
 	EItemGrade GetSelectedGrade() const;
 	int32 GetSelectedItemByGrade(EItemGrade InGrade) const;
 	float GetTotalWeight() const;
@@ -60,6 +64,7 @@ private:
 	TArray<FGachaGradeWeight> GradeWeightTable;		// 등급별 가중치 테이블
 	TArray<EItemGrade> FilterGrades;				// 필터 처리된 등급
 	TArray<FGachaLogData> LogList;					// 뽑기 로그 리스트
+	TArray<FGachaLogData> LastResultList;			// 가장 최근 뽑기 결과 리스트
 	TMap<EItemGrade, TArray<int32>> GradeToItemIDs; // 등급별 아이템 ID 캐시
 	
 	FOnGachaLogAdded OnLogAdded;

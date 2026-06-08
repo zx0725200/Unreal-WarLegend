@@ -17,7 +17,6 @@ struct FMyItem
 	GENERATED_BODY()
 
 	void Init(const FItemTableData* InTableData, const FLinearColor& InGradeColor, const int32 InUniqueID);
-	void Init(const FItemTableData* InTableData, const int32 InUniqueID);
 	
 public:
 	UPROPERTY()
@@ -63,6 +62,7 @@ struct FGachaLogData
 	GENERATED_BODY()
 
 public:
+	FString ItemGradeName;
 	FString ItemName;
 	FLinearColor GradeColor;
 	FString Time;

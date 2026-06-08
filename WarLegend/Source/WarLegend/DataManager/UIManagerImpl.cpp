@@ -87,9 +87,25 @@ void UUIManagerImpl::HandleEscClick()
 	TopWidget->Hide();
 }
 
+void UUIManagerImpl::RemoveUIStack(const FName& UIName)
+{
+	if (const TObjectPtr<UWLUserWidgetBase>* FoundWidget = WidgetCache.Find(UIName))
+	{
+		if (UWLUserWidgetBase* FindWidget = FoundWidget->Get())
+		{
+			UIStack.Remove(FindWidget);
+		}
+	}
+}
+
 FLinearColor UUIManagerImpl::GetItemColor(const EItemGrade InItemGrade) const
 {
 	return *ConfigAsset->ItemColor.Find(InItemGrade);
+}
+
+bool UUIManagerImpl::IsEmptyStack() const
+{
+	return UIStack.IsEmpty();
 }
 
 void UUIManagerImpl::HideUIBase(const FName& InName, ESlateVisibility InVisibility)
@@ -98,8 +114,6 @@ void UUIManagerImpl::HideUIBase(const FName& InName, ESlateVisibility InVisibili
 	{
 		if (UWLUserWidgetBase* FindWidget = FoundWidget->Get())
 		{
-			UIStack.Remove(FindWidget);
-			
 			FindWidget->Hide(InVisibility);
 		}
 	}
@@ -161,6 +175,8 @@ UWLUserWidgetBase* UUIManagerImpl::CreateMyWidget(const FName& InName)
 	{
 		return nullptr;
 	}
+	
+	MyWidget->RegisteredName = InName;
 
 	if (bShouldCache)
 	{
