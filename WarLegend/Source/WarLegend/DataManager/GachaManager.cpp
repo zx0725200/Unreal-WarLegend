@@ -93,7 +93,7 @@ FGachaLogData UGachaManager::MakeLogData(const int32 ItemID) const
 	// 필터에 걸린 결과(-1)는 "분해"로 표시한다.
 	if (ItemID == -1)
 	{
-		Data.ItemGradeName = TEXT("분해");
+		Data.ItemGradeName = TEXT("");
 		Data.ItemName      = TEXT("분해");
 		Data.GradeColor    = FLinearColor::Gray;
 		Data.Time          = FDateTime::Now().ToString(TEXT("%H:%M:%S"));

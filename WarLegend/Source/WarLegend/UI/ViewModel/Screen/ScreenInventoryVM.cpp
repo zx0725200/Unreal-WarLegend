@@ -43,6 +43,17 @@ void UScreenInventoryVM::OnReset()
 {
 	const auto InvenMgr = GetInvenManager();
 	VALID_RETURN(InvenMgr);
-	
+
 	InvenMgr->ResetItem();
+}
+
+FEquipStatTotal UScreenInventoryVM::GetEquippedStatTotal() const
+{
+	const auto InvenMgr = GetInvenManager();
+	if (!InvenMgr)
+	{
+		return FEquipStatTotal();
+	}
+
+	return InvenMgr->GetEquippedStatTotal();
 }

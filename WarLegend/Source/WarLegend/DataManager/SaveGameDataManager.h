@@ -8,6 +8,7 @@
 
 struct FMyItem;
 enum class EItemGrade : uint8;
+enum class EItemType : uint8;
 class UWLSaveGame;
 /**
  * 
@@ -22,6 +23,7 @@ public:
 	
 	void SetGachaFilter(const EItemGrade InGrade, const bool bChecked);
 	void AddInvenData(const FMyItem& InData);
+	void SetEquippedData(const TMap<EItemType, int32>& InData);
 	void ClearInvenData();
 	
 	void SaveGame(const FString& InSaveName);

@@ -56,6 +56,23 @@ public:
 	int32 DEF = 0;
 };
 
+// 장착 중인 아이템들의 능력치 합산 값
+USTRUCT(Blueprintable)
+struct FEquipStatTotal
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+	int32 HP = 0;
+
+	UPROPERTY()
+	int32 ATK = 0;
+
+	UPROPERTY()
+	int32 DEF = 0;
+};
+
 USTRUCT(Blueprintable)
 struct FGachaLogData
 {

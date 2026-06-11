@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Core/ViewModelBase.h"
+#include "ETC/Struct.h"
 #include "ScreenInventoryVM.generated.h"
 
 struct FMyItem;
@@ -21,7 +22,10 @@ public:
 	virtual void Init() override;
 	
 	void OnReset();
-	
+
+	// 장착 중인 아이템들의 능력치 합산
+	FEquipStatTotal GetEquippedStatTotal() const;
+
 	const TArray<TObjectPtr<USlotInventoryVM>>& GetItems() { return ItemList; }
 	const TMap<EItemType, FString>& GetLeftItemTypes() { return LeftItemTypes; }
 	const TMap<EItemType, FString>& GetRightItemTypes() { return RightItemTypes; }

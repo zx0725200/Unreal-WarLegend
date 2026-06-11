@@ -1,5 +1,6 @@
 ﻿#include "ScreenInventory.h"
 
+#include "Components/TextBlock.h"
 #include "Components/TileView.h"
 #include "Components/VerticalBox.h"
 #include "ETC/Define.h"
@@ -51,9 +52,13 @@ void UScreenInventory::BindViewModel()
 	InventoryVM->Init();
 	
 	SetViewModel(InventoryVM);
-	
+
 	InitEquipSlots();
 	InitInventorySlots();
+	RefreshTotalStats();
+
+	// 팝업에서 장착이 바뀌면 합산 능력치 갱신
+	EVENT_LISTEN(TEXT("EquipChanged"), FMyItem, this, &ThisClass::HandleEquipChanged);
 }
 
 void UScreenInventory::InitEquipSlots()
@@ -87,10 +92,30 @@ void UScreenInventory::CreateEquipSlots(UVerticalBox* InParent, const TMap<EItem
 	}
 }
 
+void UScreenInventory::RefreshTotalStats() const
+{
+	VALID_RETURN(VM);
+
+	const FEquipStatTotal Total = VM->GetEquippedStatTotal();
+
+	Txt_TotalHP->SetText(FText::FromString(FString::Printf(TEXT("HP %d"), Total.HP)));
+	Txt_TotalATK->SetText(FText::FromString(FString::Printf(TEXT("ATK %d"), Total.ATK)));
+	Txt_TotalDEF->SetText(FText::FromString(FString::Printf(TEXT("DEF %d"), Total.DEF)));
+}
+
 void UScreenInventory::OnClickedReset()
 {
 	VALID_RETURN(VM);
-	
+
 	TileView_Inventory->ClearListItems();
 	VM->OnReset();
+
+	// 장착 슬롯과 합산 능력치도 초기화 상태로 갱신
+	InitEquipSlots();
+	RefreshTotalStats();
+}
+
+void UScreenInventory::HandleEquipChanged(FGameplayTag InTag, const FMyItem& InItem)
+{
+	RefreshTotalStats();
 }

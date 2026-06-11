@@ -8,9 +8,12 @@
 
 enum class EItemType : uint8;
 class USlotEquipItem;
+class UTextBlock;
 class UVerticalBox;
 class UScreenInventoryVM;
 class UTileView;
+struct FMyItem;
+struct FGameplayTag;
 /**
  * 
  */
@@ -34,10 +37,14 @@ private:
 	
 	void InitEquipSlots();
 	void InitInventorySlots();
-	
+	void RefreshTotalStats() const;
+
 	void CreateEquipSlots(UVerticalBox* InParent, const TMap<EItemType, FString>& InItemData) const;
-	
+
 	void OnClickedReset();
+
+	UFUNCTION()
+	void HandleEquipChanged(FGameplayTag InTag, const FMyItem& InItem);
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category="DungeonMenu")
@@ -51,7 +58,17 @@ private:
 	
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UVerticalBox> Vertical_Boss;
-	
+
+	// 장착 아이템 능력치 합산 표시
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UTextBlock> Txt_TotalHP;
+
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UTextBlock> Txt_TotalATK;
+
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UTextBlock> Txt_TotalDEF;
+
 	UPROPERTY()
 	TObjectPtr<UScreenInventoryVM> VM;
 };

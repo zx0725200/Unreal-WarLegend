@@ -30,11 +30,19 @@ void USaveGameDataManager::AddInvenData( const FMyItem& InData)
 	SaveGameData->InvenItemData.Add(InData);
 }
 
+void USaveGameDataManager::SetEquippedData(const TMap<EItemType, int32>& InData)
+{
+	VALID_RETURN(SaveGameData);
+
+	SaveGameData->EquippedItemData = InData;
+}
+
 void USaveGameDataManager::ClearInvenData()
 {
 	VALID_RETURN(SaveGameData);
 
 	SaveGameData->InvenItemData.Empty();
+	SaveGameData->EquippedItemData.Empty();
 }
 
 void USaveGameDataManager::SaveGame(const FString& InSaveName)

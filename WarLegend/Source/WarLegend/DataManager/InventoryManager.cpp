@@ -1,4 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "InventoryManager.h"
@@ -16,7 +16,7 @@
 void UInventoryManager::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	
+
 	LoadData();
 }
 
@@ -24,7 +24,7 @@ FMyItem UInventoryManager::GetSelectedItemData()
 {
 	const FMyItem* Found = InventoryItemData.FindByPredicate([this](const FMyItem& Item)
 	{
-	   return Item.ID == SelectedItemID;
+	   return Item.UniqueID == SelectedItemID;
 	});
 
 	return Found ? *Found : FMyItem();
@@ -43,25 +43,92 @@ void UInventoryManager::AddItems(const TArray<int32>& InItemList)
 	{
 		Internal_AddItem(ItemID);
 	}
-	
+
 	SaveData();
 }
 
 void UInventoryManager::ResetItem()
 {
 	InventoryItemData.Reset();
-	
+	EquippedItems.Reset();
+
 	USaveGameDataManager* SaveGameMgr = GetLocalPlayer()->GetGameInstance()->GetSubsystem<USaveGameDataManager>();
 	VALID_RETURN(SaveGameMgr);
 
 	SaveGameMgr->ClearInvenData();
+	SaveGameMgr->SaveGame(Constant::SaveData);
 }
 
-void UInventoryManager::SetSelectedItem(const int32 InItemID)
+void UInventoryManager::SetSelectedItem(const int32 InUniqueID)
 {
-	if (SelectedItemID == InItemID) return;
+	if (SelectedItemID == InUniqueID) return;
 
-	SelectedItemID = InItemID;
+	SelectedItemID = InUniqueID;
+}
+
+void UInventoryManager::EquipItem(const int32 InUniqueID)
+{
+	const FMyItem* Found = InventoryItemData.FindByPredicate([InUniqueID](const FMyItem& Item)
+	{
+		return Item.UniqueID == InUniqueID;
+	});
+	VALID_RETURN(Found);
+
+	// 같은 타입에 장착 중인 아이템이 있으면 교체된다.
+	EquippedItems.Add(Found->ItemType, InUniqueID);
+
+	USaveGameDataManager* SaveGameMgr = GetLocalPlayer()->GetGameInstance()->GetSubsystem<USaveGameDataManager>();
+	VALID_RETURN(SaveGameMgr);
+
+	SaveGameMgr->SetEquippedData(EquippedItems);
+	SaveGameMgr->SaveGame(Constant::SaveData);
+}
+
+const FMyItem* UInventoryManager::FindEquippedItemData(const EItemType InItemType) const
+{
+	const int32* EquippedUniqueID = EquippedItems.Find(InItemType);
+	if (!EquippedUniqueID)
+	{
+		return nullptr;
+	}
+
+	return InventoryItemData.FindByPredicate([EquippedUniqueID](const FMyItem& Item)
+	{
+		return Item.UniqueID == *EquippedUniqueID;
+	});
+}
+
+bool UInventoryManager::IsEquippedItem(const int32 InUniqueID) const
+{
+	for (const auto& Pair : EquippedItems)
+	{
+		if (Pair.Value == InUniqueID)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+FEquipStatTotal UInventoryManager::GetEquippedStatTotal() const
+{
+	FEquipStatTotal Total;
+
+	for (const auto& Pair : EquippedItems)
+	{
+		const FMyItem* Equipped = FindEquippedItemData(Pair.Key);
+		if (!Equipped)
+		{
+			continue;
+		}
+
+		Total.HP += Equipped->HP;
+		Total.ATK += Equipped->ATK;
+		Total.DEF += Equipped->DEF;
+	}
+
+	return Total;
 }
 
 void UInventoryManager::Internal_AddItem(const int32 InItemID)
@@ -74,16 +141,16 @@ void UInventoryManager::Internal_AddItem(const int32 InItemID)
 
 	UTableManager* TableMgr = GetLocalPlayer()->GetGameInstance()->GetSubsystem<UTableManager>();
 	VALID_RETURN(TableMgr);
-	
+
 	const auto ItemTableData = TableMgr->GetItemTableData(InItemID);
 	VALID_RETURN(ItemTableData);
-	
+
 	const auto ItemGradeColor = GTGetMgrImpl(UIManager)->GetItemColor(ItemTableData->ItemGrade);
-	
+
 	FMyItem ItemData;
 	ItemData.Init(ItemTableData, ItemGradeColor, UniqueInventoryItemID++);
 	InventoryItemData.Emplace(ItemData);
-	
+
 	USaveGameDataManager* SaveGameMgr = GetLocalPlayer()->GetGameInstance()->GetSubsystem<USaveGameDataManager>();
 	VALID_RETURN(SaveGameMgr);
 
@@ -107,10 +174,26 @@ void UInventoryManager::LoadData()
 	VALID_RETURN(SaveData);
 
 	InventoryItemData = SaveData->InvenItemData;
-	
+	EquippedItems = SaveData->EquippedItemData;
+
 	UniqueInventoryItemID = 0;
 	for (const auto& Item : InventoryItemData)
 	{
 		UniqueInventoryItemID = FMath::Max(UniqueInventoryItemID, Item.UniqueID + 1);
+	}
+
+	// 인벤토리에 없는 아이템이 장착돼 있으면 제거 (세이브 꼬임 방지)
+	for (auto It = EquippedItems.CreateIterator(); It; ++It)
+	{
+		const int32 EquippedUniqueID = It.Value();
+		const bool bExists = InventoryItemData.ContainsByPredicate([EquippedUniqueID](const FMyItem& Item)
+		{
+			return Item.UniqueID == EquippedUniqueID;
+		});
+
+		if (!bExists)
+		{
+			It.RemoveCurrent();
+		}
 	}
 }
