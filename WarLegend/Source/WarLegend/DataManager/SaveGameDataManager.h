@@ -22,7 +22,9 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	
 	void SetGachaFilter(const EItemGrade InGrade, const bool bChecked);
+	void SetDiscardFilter(const EItemGrade InGrade, const bool bChecked);
 	void AddInvenData(const FMyItem& InData);
+	void SetInvenData(const TArray<FMyItem>& InData);
 	void SetEquippedData(const TMap<EItemType, int32>& InData);
 	void ClearInvenData();
 	

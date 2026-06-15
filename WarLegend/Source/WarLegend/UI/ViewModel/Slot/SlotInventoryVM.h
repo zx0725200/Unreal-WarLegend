@@ -18,6 +18,9 @@ public:
 	
 	const FMyItem& GetMyItem() { return MyItem; }
 
+	// HP+ATK+DEF 합이 같은 타입 장착템보다 높으면 true (업그레이드 화살표 표시용)
+	bool IsUpgrade() const;
+
 private:
 	FMyItem MyItem;
 };

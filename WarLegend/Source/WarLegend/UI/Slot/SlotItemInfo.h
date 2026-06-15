@@ -7,6 +7,7 @@
 #include "SlotItemInfo.generated.h"
 
 class UTextBlock;
+class USlotItemInfoVM;
 struct FMyItem;
 /**
  * 아이템 정보(이름/타입/능력치) 한 칸을 표시하는 슬롯.
@@ -18,16 +19,26 @@ class WARLEGEND_API USlotItemInfo : public USlotWidgetBase
 	GENERATED_BODY()
 
 public:
-	void SetData(const FMyItem& InItem) const;
-
-	// 비교 대상과의 능력치 차이를 ▲/▼/- 로 표시한다.
-	void SetCompareData(const int32 InHPDiff, const int32 InATKDiff, const int32 InDEFDiff) const;
-	void HideCompare() const;
+	void SetViewModel(USlotItemInfoVM* InVM);
 
 private:
+	void RefreshUI() const;
+
+	void SetItemData(const FMyItem& InItem) const;
+
+	// 비교 대상과의 능력치 차이를 ▲/▼/- 로 표시한다.
+	void ShowCompare() const;
+	void HideCompare() const;
+
+	// "장착중" 표시를 켜고 끈다.
+	void SetEquipped(const bool bEquipped) const;
+
 	void SetCompareText(UTextBlock* InText, const int32 InDiff) const;
 
 private:
+	UPROPERTY()
+	TObjectPtr<USlotItemInfoVM> VM;
+
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UTextBlock> Txt_Name;
 
@@ -51,4 +62,7 @@ private:
 
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UTextBlock> Txt_DEFCompare;
+
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UTextBlock> Txt_State;
 };

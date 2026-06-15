@@ -22,6 +22,10 @@ public:
 	UPROPERTY()
 	TMap<EItemGrade, bool> GachaFilter;
 
+	// 인벤토리 "모두 버리기" 대상 등급 설정 (체크된 등급이 버려진다)
+	UPROPERTY()
+	TMap<EItemGrade, bool> DiscardFilter;
+
 	UPROPERTY()
 	TArray<FMyItem> InvenItemData;
 

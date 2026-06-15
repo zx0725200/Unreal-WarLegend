@@ -32,7 +32,7 @@ void UPopupWidgetBase::OnClickEvent(const FName& InChildName)
 {
 	Super::OnClickEvent(InChildName);
 	
-	if (InChildName == TEXT("Btn_Exit"))
+	if (InChildName == TEXT("Btn_Exit") || InChildName == TEXT("Btn_Cancel"))
 	{
 		Hide();
 	}

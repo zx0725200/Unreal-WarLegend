@@ -8,6 +8,7 @@
 #include "SlotEquipItem.generated.h"
 
 class UTextBlock;
+class USlotEquipItemVM;
 struct FMyItem;
 struct FGameplayTag;
 /**
@@ -29,11 +30,15 @@ public:
 private:
 	void RefreshEquipped() const;
 
+	// 장착 슬롯 클릭 시 해당 장착 아이템 정보 팝업을 연다.
+	void OnClickedSlot();
+
 	UFUNCTION()
 	void HandleEquipChanged(FGameplayTag InTag, const FMyItem& InItem);
 
 private:
-	EItemType MyItemType = EItemType::None;
+	UPROPERTY()
+	TObjectPtr<USlotEquipItemVM> VM;
 
 	// 슬롯 타입명 (무기/방어구 등)
 	UPROPERTY(meta=(BindWidget))

@@ -23,11 +23,26 @@ void USaveGameDataManager::SetGachaFilter(const EItemGrade Grade, const bool bCh
 	SaveGame(Constant::SaveData);
 }
 
+void USaveGameDataManager::SetDiscardFilter(const EItemGrade Grade, const bool bChecked)
+{
+	VALID_RETURN(SaveGameData);
+
+	SaveGameData->DiscardFilter.Add(Grade, bChecked);
+	SaveGame(Constant::SaveData);
+}
+
 void USaveGameDataManager::AddInvenData( const FMyItem& InData)
 {
 	VALID_RETURN(SaveGameData);
 
 	SaveGameData->InvenItemData.Add(InData);
+}
+
+void USaveGameDataManager::SetInvenData(const TArray<FMyItem>& InData)
+{
+	VALID_RETURN(SaveGameData);
+
+	SaveGameData->InvenItemData = InData;
 }
 
 void USaveGameDataManager::SetEquippedData(const TMap<EItemType, int32>& InData)

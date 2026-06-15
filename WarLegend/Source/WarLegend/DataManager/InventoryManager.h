@@ -30,9 +30,16 @@ public:
 
 	// 장착
 	void EquipItem(const int32 InUniqueID);
+	void UnequipItem(const EItemType InItemType);
 	const FMyItem* FindEquippedItemData(const EItemType InItemType) const;
 	bool IsEquippedItem(const int32 InUniqueID) const;
 	FEquipStatTotal GetEquippedStatTotal() const;
+
+	// 같은 타입 장착템보다 능력치 합이 높은 업그레이드인지 검사
+	bool IsUpgrade(const FMyItem& InItem) const;
+
+	// 세이브에 설정된 등급 필터에 해당하는 (장착하지 않은) 아이템을 모두 버린다.
+	void DiscardItemsByFilter();
 
 private:
 	void Internal_AddItem(const int32 InItemID);

@@ -42,6 +42,11 @@ private:
 	void CreateEquipSlots(UVerticalBox* InParent, const TMap<EItemType, FString>& InItemData) const;
 
 	void OnClickedReset();
+	void OnClickedDiscard();
+	void OnClickedDiscardSetting();
+	void OnClickedSort();
+
+	void RefreshSortLabel() const;
 
 	UFUNCTION()
 	void HandleEquipChanged(FGameplayTag InTag, const FMyItem& InItem);
@@ -68,6 +73,10 @@ private:
 
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UTextBlock> Txt_TotalDEF;
+
+	// 정렬 버튼 라벨 (오름차순/내림차순). WBP에 없어도 되도록 Optional 바인딩.
+	UPROPERTY(meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> Txt_Sort;
 
 	UPROPERTY()
 	TObjectPtr<UScreenInventoryVM> VM;

@@ -17,7 +17,10 @@ struct FMyItem
 	GENERATED_BODY()
 
 	void Init(const FItemTableData* InTableData, const FLinearColor& InGradeColor, const int32 InUniqueID);
-	
+
+	// 능력치 합계 (정렬 / 업그레이드 비교용)
+	int32 GetTotalStat() const { return HP + ATK + DEF; }
+
 public:
 	UPROPERTY()
 	FName EventName;

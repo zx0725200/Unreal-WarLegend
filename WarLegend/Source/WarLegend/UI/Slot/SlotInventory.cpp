@@ -46,6 +46,31 @@ void USlotInventory::SetData() const
 	
 	Txt_Name->SetText(ItemName);
 	Txt_Name->SetColorAndOpacity(ItemColor);
+
+	RefreshUpgradeMark();
+}
+
+void USlotInventory::RefreshUpgradeMark() const
+{
+	// 위젯이 없으면(BP에 미배치) 표시할 게 없다.
+	if (!Txt_Upgrade)
+	{
+		return;
+	}
+
+	VALID_RETURN(VM);
+
+	// 능력치 합이 장착템보다 높을 때만 화살표를 보여준다 (하락은 표시하지 않음).
+	if (VM->IsUpgrade())
+	{
+		Txt_Upgrade->SetText(FText::FromString(TEXT("▲")));
+		Txt_Upgrade->SetColorAndOpacity(FLinearColor(0.3f, 1.f, 0.3f));
+		Txt_Upgrade->SetVisibility(ESlateVisibility::HitTestInvisible);
+	}
+	else
+	{
+		Txt_Upgrade->SetVisibility(ESlateVisibility::Collapsed);
+	}
 }
 
 void USlotInventory::OnClickedSlot()

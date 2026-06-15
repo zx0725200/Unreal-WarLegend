@@ -32,6 +32,18 @@ void UScreenInventory::OnClickEvent(const FName& InChildName)
 	{
 		OnClickedReset();
 	}
+	else if (InChildName == TEXT("Btn_Discard"))
+	{
+		OnClickedDiscard();
+	}
+	else if (InChildName == TEXT("Btn_DiscardSetting"))
+	{
+		OnClickedDiscardSetting();
+	}
+	else if (InChildName == TEXT("Btn_Sort"))
+	{
+		OnClickedSort();
+	}
 }
 
 FReply UScreenInventory::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
@@ -56,6 +68,7 @@ void UScreenInventory::BindViewModel()
 	InitEquipSlots();
 	InitInventorySlots();
 	RefreshTotalStats();
+	RefreshSortLabel();
 
 	// 팝업에서 장착이 바뀌면 합산 능력치 갱신
 	EVENT_LISTEN(TEXT("EquipChanged"), FMyItem, this, &ThisClass::HandleEquipChanged);
@@ -115,7 +128,50 @@ void UScreenInventory::OnClickedReset()
 	RefreshTotalStats();
 }
 
+void UScreenInventory::OnClickedDiscard()
+{
+	VALID_RETURN(VM);
+
+	VM->DiscardByFilter();
+	InitInventorySlots();
+}
+
+void UScreenInventory::OnClickedDiscardSetting()
+{
+	VALID_RETURN(VM);
+
+	VM->OpenDiscardSetting();
+}
+
+void UScreenInventory::OnClickedSort()
+{
+	VALID_RETURN(VM);
+
+	VM->ToggleSort();
+	InitInventorySlots();
+	RefreshSortLabel();
+}
+
+void UScreenInventory::RefreshSortLabel() const
+{
+	if (!Txt_Sort)
+	{
+		return;
+	}
+
+	VALID_RETURN(VM);
+
+	const bool bAscending = (VM->GetSortOrder() == ESortOrder::Ascending);
+	Txt_Sort->SetText(FText::FromString(bAscending ? TEXT("오름차순") : TEXT("내림차순")));
+}
+
 void UScreenInventory::HandleEquipChanged(FGameplayTag InTag, const FMyItem& InItem)
 {
+	VALID_RETURN(VM);
+
+	// 장착된 아이템은 목록에서 사라지고, 교체로 풀린 아이템은 다시 나타난다.
+	VM->RefreshItems();
+	InitInventorySlots();
+
 	RefreshTotalStats();
 }

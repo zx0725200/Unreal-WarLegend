@@ -23,6 +23,22 @@ enum class EItemGrade : uint8
 	Epic		UMETA(DisplayName="Epic"),
 };
 
+// 등급 필터를 어디에 적용할지 구분 (가챠 결과 필터 / 인벤토리 버리기 필터)
+UENUM()
+enum class EFilterType : uint8
+{
+	Gacha,
+	Discard
+};
+
+// 인벤토리 정렬 방향
+UENUM()
+enum class ESortOrder : uint8
+{
+	Descending,	// 내림차순 (높은 등급/스탯 먼저)
+	Ascending	// 오름차순
+};
+
 UENUM(BlueprintType)
 enum class EItemEquipType : uint8
 {

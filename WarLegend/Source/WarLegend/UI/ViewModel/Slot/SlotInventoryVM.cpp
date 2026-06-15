@@ -26,3 +26,15 @@ void USlotInventoryVM::OnOpenItemInfo(const FMyItem& InData)
 
 	UIMgr->ShowUI(TEXT("PopupItemInfo"));
 }
+
+bool USlotInventoryVM::IsUpgrade() const
+{
+	// 업그레이드 판정은 매니저가 책임진다.
+	const UInventoryManager* InvenMgr = GetInvenManager();
+	if (!InvenMgr)
+	{
+		return false;
+	}
+
+	return InvenMgr->IsUpgrade(MyItem);
+}

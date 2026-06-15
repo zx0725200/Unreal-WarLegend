@@ -28,7 +28,8 @@ public:
 	
 private:
 	void SetData() const;
-	
+	void RefreshUpgradeMark() const;
+
 	void OnClickedSlot();
 	
 	void SetSelectedState();
@@ -52,4 +53,9 @@ private:
 	
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UTextBlock> Txt_Grade;
+
+	// 장착템보다 능력치 합이 높을 때만 표시되는 업그레이드 화살표(▲).
+	// WBP에 아직 없어도 되도록 Optional 바인딩.
+	UPROPERTY(meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> Txt_Upgrade;
 };

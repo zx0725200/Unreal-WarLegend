@@ -5,6 +5,7 @@
 
 #include "InventoryManager.h"
 #include "ETC/Define.h"
+#include "ViewModel/Slot/SlotItemInfoVM.h"
 
 void UPopupItemInfoVM::Init()
 {
@@ -16,6 +17,7 @@ void UPopupItemInfoVM::Init()
 	SelectedItemData = InvenMgr->GetSelectedItemData();
 
 	RefreshEquippedData();
+	BuildSlotVMs();
 }
 
 void UPopupItemInfoVM::OnEquip()
@@ -28,25 +30,34 @@ void UPopupItemInfoVM::OnEquip()
 	RefreshEquippedData();
 }
 
+void UPopupItemInfoVM::OnUnequip()
+{
+	UInventoryManager* InvenMgr = GetInvenManager();
+	VALID_RETURN(InvenMgr);
+
+	InvenMgr->UnequipItem(SelectedItemData.ItemType);
+
+	RefreshEquippedData();
+}
+
 int32 UPopupItemInfoVM::GetHPDiff() const
 {
-	return SelectedItemData.HP - (bHasEquippedItem ? EquippedItemData.HP : 0);
+	return SelectedItemData.HP - (HasEquippedItem() ? EquippedItemData.HP : 0);
 }
 
 int32 UPopupItemInfoVM::GetATKDiff() const
 {
-	return SelectedItemData.ATK - (bHasEquippedItem ? EquippedItemData.ATK : 0);
+	return SelectedItemData.ATK - (HasEquippedItem() ? EquippedItemData.ATK : 0);
 }
 
 int32 UPopupItemInfoVM::GetDEFDiff() const
 {
-	return SelectedItemData.DEF - (bHasEquippedItem ? EquippedItemData.DEF : 0);
+	return SelectedItemData.DEF - (HasEquippedItem() ? EquippedItemData.DEF : 0);
 }
 
 void UPopupItemInfoVM::RefreshEquippedData()
 {
-	bHasEquippedItem = false;
-	bSelectedEquipped = false;
+	EquipState = EEquipCompareState::NoEquipped;
 	EquippedItemData = FMyItem();
 
 	UInventoryManager* InvenMgr = GetInvenManager();
@@ -59,6 +70,28 @@ void UPopupItemInfoVM::RefreshEquippedData()
 	}
 
 	EquippedItemData = *Equipped;
-	bHasEquippedItem = true;
-	bSelectedEquipped = Equipped->UniqueID == SelectedItemData.UniqueID;
+	EquipState = (Equipped->UniqueID == SelectedItemData.UniqueID)
+		? EEquipCompareState::SelfEquipped
+		: EEquipCompareState::OtherEquipped;
+}
+
+void UPopupItemInfoVM::BuildSlotVMs()
+{
+	// 선택 슬롯: 장착 중이면 "장착중", 아니면 장착템과 비교
+	SelectedSlotVM = NewObject<USlotItemInfoVM>(this);
+	SelectedSlotVM->SetItem(SelectedItemData);
+
+	if (IsSelectedEquipped())
+	{
+		SelectedSlotVM->SetEquipped();
+	}
+	else
+	{
+		SelectedSlotVM->SetCompare(GetHPDiff(), GetATKDiff(), GetDEFDiff());
+	}
+
+	// 비교 대상(현재 장착) 슬롯: 항상 "장착중"
+	EquippedSlotVM = NewObject<USlotItemInfoVM>(this);
+	EquippedSlotVM->SetItem(EquippedItemData);
+	EquippedSlotVM->SetEquipped();
 }

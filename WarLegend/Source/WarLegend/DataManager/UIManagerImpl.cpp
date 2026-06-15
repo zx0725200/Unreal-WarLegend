@@ -100,7 +100,16 @@ void UUIManagerImpl::RemoveUIStack(const FName& UIName)
 
 FLinearColor UUIManagerImpl::GetItemColor(const EItemGrade InItemGrade) const
 {
-	return *ConfigAsset->ItemColor.Find(InItemGrade);
+	if (ConfigAsset)
+	{
+		if (const FLinearColor* Found = ConfigAsset->ItemColor.Find(InItemGrade))
+		{
+			return *Found;
+		}
+	}
+
+	// 색상이 등록되지 않은 등급(예: Epic)은 기본 흰색으로 폴백
+	return FLinearColor::White;
 }
 
 bool UUIManagerImpl::IsEmptyStack() const

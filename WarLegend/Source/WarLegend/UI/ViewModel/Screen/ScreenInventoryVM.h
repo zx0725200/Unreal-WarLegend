@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Core/ViewModelBase.h"
 #include "ETC/Struct.h"
+#include "ETC/Enum.h"
 #include "ScreenInventoryVM.generated.h"
 
 struct FMyItem;
@@ -20,8 +21,21 @@ class WARLEGEND_API UScreenInventoryVM : public UViewModelBase
 	
 public:
 	virtual void Init() override;
-	
+
 	void OnReset();
+
+	// 장착 상태가 바뀐 뒤 인벤토리 목록(장착템 제외)을 다시 만든다.
+	void RefreshItems();
+
+	// 설정된 등급 필터에 해당하는 아이템을 모두 버리고 목록을 갱신한다.
+	void DiscardByFilter();
+
+	// 버리기 등급 설정 팝업을 연다.
+	void OpenDiscardSetting();
+
+	// 등급/스탯 기준 정렬 방향을 토글한다.
+	void ToggleSort();
+	ESortOrder GetSortOrder() const { return SortOrder; }
 
 	// 장착 중인 아이템들의 능력치 합산
 	FEquipStatTotal GetEquippedStatTotal() const;
@@ -32,7 +46,8 @@ public:
 
 private:
 	void AddItemList();
-	
+	void SortItemList();
+
 private:
 	UPROPERTY()
 	TArray<TObjectPtr<USlotInventoryVM>> ItemList;
@@ -42,4 +57,6 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TMap<EItemType, FString> RightItemTypes;
+
+	ESortOrder SortOrder = ESortOrder::Descending;
 };

@@ -84,6 +84,21 @@ void UInventoryManager::EquipItem(const int32 InUniqueID)
 	SaveGameMgr->SaveGame(Constant::SaveData);
 }
 
+void UInventoryManager::UnequipItem(const EItemType InItemType)
+{
+	// 해당 타입에 장착된 게 없으면 할 일 없음
+	if (EquippedItems.Remove(InItemType) <= 0)
+	{
+		return;
+	}
+
+	USaveGameDataManager* SaveGameMgr = GetLocalPlayer()->GetGameInstance()->GetSubsystem<USaveGameDataManager>();
+	VALID_RETURN(SaveGameMgr);
+
+	SaveGameMgr->SetEquippedData(EquippedItems);
+	SaveGameMgr->SaveGame(Constant::SaveData);
+}
+
 const FMyItem* UInventoryManager::FindEquippedItemData(const EItemType InItemType) const
 {
 	const int32* EquippedUniqueID = EquippedItems.Find(InItemType);
@@ -129,6 +144,43 @@ FEquipStatTotal UInventoryManager::GetEquippedStatTotal() const
 	}
 
 	return Total;
+}
+
+bool UInventoryManager::IsUpgrade(const FMyItem& InItem) const
+{
+	int32 EquippedTotal = 0;
+	if (const FMyItem* Equipped = FindEquippedItemData(InItem.ItemType))
+	{
+		EquippedTotal = Equipped->GetTotalStat();
+	}
+
+	return InItem.GetTotalStat() > EquippedTotal;
+}
+
+void UInventoryManager::DiscardItemsByFilter()
+{
+	USaveGameDataManager* SaveGameMgr = GetLocalPlayer()->GetGameInstance()->GetSubsystem<USaveGameDataManager>();
+	VALID_RETURN(SaveGameMgr);
+
+	UWLSaveGame* SaveData = SaveGameMgr->GetSaveGame();
+	VALID_RETURN(SaveData);
+
+	const TMap<EItemGrade, bool>& DiscardFilter = SaveData->DiscardFilter;
+
+	InventoryItemData.RemoveAll([this, &DiscardFilter](const FMyItem& Item)
+	{
+		// 장착 중인 아이템은 보호 (선택한 등급이어도 버리지 않는다)
+		if (IsEquippedItem(Item.UniqueID))
+		{
+			return false;
+		}
+
+		const bool* bDiscard = DiscardFilter.Find(Item.ItemGrade);
+		return bDiscard && *bDiscard;
+	});
+
+	SaveGameMgr->SetInvenData(InventoryItemData);
+	SaveGameMgr->SaveGame(Constant::SaveData);
 }
 
 void UInventoryManager::Internal_AddItem(const int32 InItemID)

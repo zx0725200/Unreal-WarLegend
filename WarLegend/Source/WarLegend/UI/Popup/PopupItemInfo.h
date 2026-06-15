@@ -6,6 +6,7 @@
 #include "Core/PopupWidgetBase.h"
 #include "PopupItemInfo.generated.h"
 
+class UTextBlock;
 class USlotItemInfo;
 class UPopupItemInfoVM;
 /**
@@ -25,6 +26,9 @@ private:
 	void SetViewModel(UPopupItemInfoVM* InVM);
 
 	void RefreshUI() const;
+	void RefreshSelectedSlot() const;
+	void RefreshEquippedSlot() const;
+	void RefreshEquipButton() const;
 
 	void OnClickedEquip();
 
@@ -39,4 +43,8 @@ private:
 	// 현재 장착 중인 아이템 정보 (없으면 숨김)
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<USlotItemInfo> Slot_Equipped;
+
+	// 장착/해제 버튼 라벨 (WBP에 없어도 되도록 Optional 바인딩)
+	UPROPERTY(meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> Txt_Equip;
 };
