@@ -7,6 +7,7 @@
 #include "AbilitySystemComponent.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
+#include "ETC/GamePlayTag.h"
 
 UGA_BossAttack::UGA_BossAttack()
 {
@@ -91,6 +92,16 @@ void UGA_BossAttack::OnHitEventReceived(FGameplayEventData Payload)
 	if (Spec.IsValid())
 	{
 		SourceASC->ApplyGameplayEffectSpecToTarget(*Spec.Data.Get(), TargetASC);
+
+		// ? 피격 리액션: 타겟(플레이어)에게 PlayerHit 이벤트 전송 -> 플레이어의 GA_HitReact 트리거.
+		FGameplayEventData HitReactData;
+		HitReactData.EventTag = GamePlayTag::Shared_Event_PlayerHit;
+		HitReactData.Instigator = GetAvatarActorFromActorInfo();
+		HitReactData.Target = Target;
+		HitReactData.ContextHandle = Payload.ContextHandle;
+
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+			Target, GamePlayTag::Shared_Event_PlayerHit, HitReactData);
 	}
 }
 

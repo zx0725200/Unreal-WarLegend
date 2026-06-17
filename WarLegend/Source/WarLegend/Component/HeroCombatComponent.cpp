@@ -5,7 +5,6 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
-#include "Actor/HeroWeapon.h"
 #include "Actor/HeroWeaponBase.h"
 #include "ETC/Define.h"
 #include "ETC/GamePlayTag.h"
@@ -13,7 +12,7 @@
 
 UHeroCombatComponent::UHeroCombatComponent()
 {
-	UE_LOG(LogTemp,Warning,TEXT("Test Gener"));
+	
 }
 
 void UHeroCombatComponent::OnHitTargetActor(AActor* InHitActor, const FHitResult& InHitResult)
@@ -31,12 +30,13 @@ void UHeroCombatComponent::OnHitTargetActor(AActor* InHitActor, const FHitResult
 	UAbilitySystemComponent* AbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwningPawn);
 	VALID_RETURN(AbilitySystemComponent);
 	
-	FHitResult ModifiedHitResult = InHitResult;
-	ModifiedHitResult.ImpactPoint.Z += 100.f;
-	ModifiedHitResult.Location.Z += 100.f;
+	// ? 접점이 살짝 낮게 느껴져서 이펙트를 위로 올림.
+	FHitResult HitForCue = InHitResult;
+	HitForCue.ImpactPoint.Z += 50.f;
+	HitForCue.Location.Z += 50.f;
 	
 	FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
-	ContextHandle.AddHitResult(ModifiedHitResult);
+	ContextHandle.AddHitResult(HitForCue);
 	
 	FGameplayEventData Data;
 	Data.Instigator = OwningPawn;

@@ -34,6 +34,7 @@ AWarLegendCharacter::AWarLegendCharacter()
 	BattleCameraArm->bUsePawnControlRotation = true;	// ? 입력 따라 회전
 	BattleCameraArm->bEnableCameraLag = true;			// ? 카메라가 부드럽게 따라오도록.
 	BattleCameraArm->CameraLagMaxTimeStep = 0.005f;
+	BattleCameraArm->bDoCollisionTest = false;			// ? 보스 등과 겹쳐도 카메라가 당겨지지(줌) 않게
 	
 	BattleCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("BattleCamera"));
 	BattleCamera->SetupAttachment(BattleCameraArm, USpringArmComponent::SocketName);

@@ -30,16 +30,21 @@ AWarLegendPlayerController* UHeroAbility::GetHeroControllerFromActorInfo()
 	return HeroController.Get();
 }
 
-FGameplayEffectSpecHandle UHeroAbility::MakeHeroDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> InEffectClass, float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InCurrentComboCount)
+FGameplayEffectSpecHandle UHeroAbility::MakeHeroDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> InEffectClass, float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InCurrentComboCount, const FGameplayEventData& InEventData)
 {
-	// TODO : 이펙트 위치 여기서 바꿔줘야함.
-	
 	check(InEffectClass);
 
 	FGameplayEffectContextHandle ContextHandle = GetHeroAbilityComponentFromActorInfo()->MakeEffectContext();
 	ContextHandle.SetAbility(this);
 	ContextHandle.AddSourceObject(GetAvatarActorFromActorInfo());
 	ContextHandle.AddInstigator(GetAvatarActorFromActorInfo(),GetAvatarActorFromActorInfo());
+
+	// ? 무기 히트 이벤트(Payload)의 HitResult 를 컨텍스트에 넣어야
+	// ? GameplayCue 가 타격 위치에 뜬다. (없으면 Location 이 비어 엉뚱한 곳에 스폰됨)
+	if (const FHitResult* HitResult = InEventData.ContextHandle.GetHitResult())
+	{
+		ContextHandle.AddHitResult(*HitResult);
+	}
 
 	FGameplayEffectSpecHandle EffectSpecHandle = GetHeroAbilityComponentFromActorInfo()->MakeOutgoingSpec(
 		InEffectClass,

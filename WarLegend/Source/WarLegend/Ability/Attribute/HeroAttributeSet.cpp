@@ -45,8 +45,8 @@ void UHeroAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 
 UHeroAttributeSet::UHeroAttributeSet()
 {
-	InitCurrentHp(1.f);
-	InitMaxHp(1.f);
+	InitCurrentHp(10000.f);
+	InitMaxHp(10000.f);
 	InitAttackPower(1.f);
 	InitDefensePower(1.f);
 }
