@@ -34,13 +34,6 @@ void UHudLeftMenu::BindViewModel()
 {
 	Super::BindViewModel();
 	
-	auto* HudLeftVM = NewObject<UHudLeftVM>(this);
-	HudLeftVM->Init();
-	
-	SetViewModel(HudLeftVM);
-}
-
-void UHudLeftMenu::SetViewModel(UHudLeftVM* InVM)
-{
-	VM = InVM;
+	VM = NewObject<UHudLeftVM>(this);
+	VM->Init();
 }

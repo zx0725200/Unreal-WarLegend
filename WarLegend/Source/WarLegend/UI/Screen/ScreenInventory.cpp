@@ -51,20 +51,13 @@ FReply UScreenInventory::NativeOnKeyDown(const FGeometry& InGeometry, const FKey
 	return Super::NativeOnKeyDown(InGeometry, InKeyEvent);
 }
 
-void UScreenInventory::SetViewModel(UScreenInventoryVM* InData)
-{
-	VM = InData;
-}
-
 void UScreenInventory::BindViewModel()
 {
 	Super::BindViewModel();
 	
-	auto* InventoryVM = NewObject<UScreenInventoryVM>(this);
-	InventoryVM->Init();
+	VM = NewObject<UScreenInventoryVM>(this);
+	VM->Init();
 	
-	SetViewModel(InventoryVM);
-
 	InitEquipSlots();
 	InitInventorySlots();
 	RefreshTotalStats();

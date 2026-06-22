@@ -44,7 +44,7 @@ void UHudBossHpVM::ClearBinding()
 	CachedASC.Reset();
 }
 
-void UHudBossHpVM::SetCurrentHp(float InValue)
+void UHudBossHpVM::SetCurrentHp(const float InValue)
 {
 	if (FMath::IsNearlyEqual(CurrentHp, InValue)) return;
 	
@@ -52,7 +52,7 @@ void UHudBossHpVM::SetCurrentHp(float InValue)
 	SetHpRatio(MaxHp > 0.f ? CurrentHp / MaxHp : 0.f);
 }
 
-void UHudBossHpVM::SetMaxHp(float InValue)
+void UHudBossHpVM::SetMaxHp(const float InValue)
 {
 	if (FMath::IsNearlyEqual(MaxHp, InValue)) return;
 	
@@ -60,7 +60,7 @@ void UHudBossHpVM::SetMaxHp(float InValue)
 	SetHpRatio(MaxHp > 0.f ? CurrentHp / MaxHp : 0.f);
 }
 
-void UHudBossHpVM::SetHpRatio(float InValue)
+void UHudBossHpVM::SetHpRatio(const float InValue)
 {
 	if (FMath::IsNearlyEqual(HpRatio, InValue)) return;
 	

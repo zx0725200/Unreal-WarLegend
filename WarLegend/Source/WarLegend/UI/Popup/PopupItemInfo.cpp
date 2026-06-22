@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "PopupItemInfo.h"
 
 #include "Components/TextBlock.h"
@@ -8,7 +5,6 @@
 #include "ETC/Struct.h"
 #include "Popup/PopupItemInfoVM.h"
 #include "Slot/SlotItemInfo.h"
-#include "ViewModel/Slot/SlotItemInfoVM.h"
 
 void UPopupItemInfo::OnDisable()
 {
@@ -34,19 +30,11 @@ void UPopupItemInfo::OnClickEvent(const FName& InChildName)
 void UPopupItemInfo::BindViewModel()
 {
 	Super::BindViewModel();
-
-	// Outer를 지정해야 VM이 월드(매니저)를 찾을 수 있다.
-	const auto PopupItemInfoVM = NewObject<UPopupItemInfoVM>(this);
-	PopupItemInfoVM->Init();
-
-	SetViewModel(PopupItemInfoVM);
-
+	
+	VM = NewObject<UPopupItemInfoVM>(this);
+	VM->Init();
+	
 	RefreshUI();
-}
-
-void UPopupItemInfo::SetViewModel(UPopupItemInfoVM* InVM)
-{
-	VM = InVM;
 }
 
 void UPopupItemInfo::RefreshUI() const
@@ -81,12 +69,6 @@ void UPopupItemInfo::RefreshEquippedSlot() const
 
 void UPopupItemInfo::RefreshEquipButton() const
 {
-	// 라벨 위젯이 없으면(BP에 미배치) 표시할 게 없다.
-	if (!Txt_Equip)
-	{
-		return;
-	}
-
 	VALID_RETURN(VM);
 
 	// 장착 중인 아이템이면 버튼을 "해제"로, 아니면 "장착"으로 표시한다.
@@ -97,16 +79,8 @@ void UPopupItemInfo::OnClickedEquip()
 {
 	VALID_RETURN(VM);
 
-	// 장착 중인 아이템이면 해제, 아니면 장착으로 동작한다.
-	if (VM->IsSelectedEquipped())
-	{
-		VM->OnUnequip();
-	}
-	else
-	{
-		VM->OnEquip();
-	}
-
+	VM->IsSelectedEquipped() ? VM->OnUnequip() : VM->OnEquip();
+	
 	// 장착 슬롯 / 합산 능력치 / 인벤토리 목록 갱신용 이벤트
 	FMyItem ChangedItem = VM->GetSelectedItemData();
 	EVENT_BROADCAST(TEXT("EquipChanged"), FMyItem, this, ChangedItem);

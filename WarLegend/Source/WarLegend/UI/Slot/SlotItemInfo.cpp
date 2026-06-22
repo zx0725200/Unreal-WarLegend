@@ -77,8 +77,6 @@ void USlotItemInfo::HideCompare() const
 
 void USlotItemInfo::SetEquipped(const bool bEquipped) const
 {
-	VALID_RETURN(Txt_State);
-
 	if (bEquipped)
 	{
 		Txt_State->SetText(FText::FromString(TEXT("[장착중]")));

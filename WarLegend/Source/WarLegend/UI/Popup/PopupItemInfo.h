@@ -23,8 +23,6 @@ public:
 	virtual void BindViewModel() override;
 
 private:
-	void SetViewModel(UPopupItemInfoVM* InVM);
-
 	void RefreshUI() const;
 	void RefreshSelectedSlot() const;
 	void RefreshEquippedSlot() const;
@@ -44,7 +42,7 @@ private:
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<USlotItemInfo> Slot_Equipped;
 
-	// 장착/해제 버튼 라벨 (WBP에 없어도 되도록 Optional 바인딩)
-	UPROPERTY(meta=(BindWidgetOptional))
+	// 장착/해제 버튼 라벨
+	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UTextBlock> Txt_Equip;
 };

@@ -24,11 +24,6 @@ protected:
 	virtual void BindViewModel() override;
 
 private:
-	void SetViewModel(UScreenTitleVM* InViewModel);
-	
-	void OnClickedConfirm();
-	
-private:
 	UPROPERTY()
 	TObjectPtr<UScreenTitleVM> VM;
 };

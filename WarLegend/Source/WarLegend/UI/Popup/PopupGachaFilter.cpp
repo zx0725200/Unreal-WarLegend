@@ -36,13 +36,14 @@ void UPopupGachaFilter::BindViewModel()
 	VM->Init();
 
 	BindVM();
-	VM->NotifyAll();
 }
 
 void UPopupGachaFilter::BindVM()
 {
 	VALID_RETURN(VM);
 	VM->GetOnSlotListChanged().AddUObject(this, &UPopupGachaFilter::HandleSlotListChanged);
+	
+	VM->NotifyAll();
 }
 
 void UPopupGachaFilter::UnbindVM()
@@ -64,7 +65,7 @@ void UPopupGachaFilter::HandleSlotListChanged(const TArray<TObjectPtr<USlotFilte
 		if (!SlotVM) continue;
 
 		USlotFilter* SlotWidget = UIMgr->CreateSlot<USlotFilter>(TEXT("SlotFilter"), VBox_Filter);
-		SlotWidget->SetViewModel(SlotVM);
+		SlotWidget->SetData(SlotVM);
 	}
 }
 

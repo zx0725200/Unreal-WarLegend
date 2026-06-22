@@ -40,9 +40,8 @@ void UPopupGachaResult::BindViewModel()
 void UPopupGachaResult::BuildResultSlots()
 {
 	VALID_RETURN(VM);
-	VALID_RETURN(TileView_Result);
-
 	TileView_Result->ClearListItems();
+	
 	for (USlotGachaResultVM* SlotVM : VM->GetItems())
 	{
 		TileView_Result->AddItem(SlotVM); // 엔트리(USlotGachaResult)가 순서대로 등장 연출을 재생한다.

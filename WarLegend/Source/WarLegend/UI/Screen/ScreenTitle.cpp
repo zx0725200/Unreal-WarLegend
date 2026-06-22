@@ -13,11 +13,14 @@ void UScreenTitle::OnDisable()
 
 void UScreenTitle::OnClickEvent(const FName& InChildName)
 {
+	VALID_RETURN(VM);
+	
 	Super::OnClickEvent(InChildName);
 	
 	if (InChildName == TEXT("Btn_Confirm"))
 	{
-		OnClickedConfirm();
+		VM->OnConfirm();
+		Hide();
 	}
 }
 
@@ -25,21 +28,6 @@ void UScreenTitle::BindViewModel()
 {
 	Super::BindViewModel();
 	
-	auto* TitleVM = NewObject<UScreenTitleVM>(this);
-	TitleVM->Init();
-	
-	SetViewModel(TitleVM);
-}
-
-void UScreenTitle::SetViewModel(UScreenTitleVM* InViewModel)
-{
-	VM = InViewModel;
-}
-
-void UScreenTitle::OnClickedConfirm()
-{
-	Hide();
-	
-	VALID_RETURN(VM);
-	VM->OnConfirm();
+	VM = NewObject<UScreenTitleVM>(this);
+	VM->Init();
 }

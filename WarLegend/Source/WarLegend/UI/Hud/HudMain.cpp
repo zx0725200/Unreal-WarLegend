@@ -20,6 +20,6 @@ void UHudMain::BindViewModel()
 {
 	Super::BindViewModel();
 	
-	auto* HudMainVM = NewObject<UHudMainVM>(this);
-	HudMainVM->Init();
+	VM = NewObject<UHudMainVM>(this);
+	VM->Init();
 }

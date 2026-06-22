@@ -19,9 +19,6 @@ public:
 	virtual void BindViewModel() override;
 
 private:
-	void HandleGachaCompleted(); // 뽑기 완료 → 결과 팝업 오픈
-
-private:
 	UPROPERTY()
 	TObjectPtr<UPopupGachaVM> VM;
 };

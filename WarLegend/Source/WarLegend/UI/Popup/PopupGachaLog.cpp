@@ -43,7 +43,6 @@ void UPopupGachaLog::BindViewModel()
 	VM->Init();
 
 	BindVM();
-	VM->NotifyAll();
 }
 
 void UPopupGachaLog::BindVM()
@@ -51,6 +50,8 @@ void UPopupGachaLog::BindVM()
 	VALID_RETURN(VM);
 	VM->GetOnLogAdded().AddUObject(this, &UPopupGachaLog::HandleLogAdded);
 	VM->GetOnLogCleared().AddUObject(this, &UPopupGachaLog::HandleLogCleared);
+	
+	VM->NotifyAll();
 }
 
 void UPopupGachaLog::UnbindVM()

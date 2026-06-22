@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "SlotGachaResult.h"
 
 #include "Components/TextBlock.h"
@@ -12,7 +9,7 @@ void USlotGachaResult::NativeOnListItemObjectSet(UObject* ListItemObject)
 	IUserObjectListEntry::NativeOnListItemObjectSet(ListItemObject);
 	VM = Cast<USlotGachaResultVM>(ListItemObject);
 	VALID_RETURN(VM);
-
+	
 	SetData();
 	ScheduleReveal();
 }
@@ -27,24 +24,35 @@ void USlotGachaResult::NativeDestruct()
 	Super::NativeDestruct();
 }
 
-void USlotGachaResult::SetData() const
+void USlotGachaResult::SetData()
 {
-	VALID_RETURN(VM);
+	RefreshGrade();
+	RefreshItemName();
+}
 
-	const FGachaLogData& Data = VM->GetData();
+void USlotGachaResult::RefreshGrade()
+{
+	const FString ItemGradeName = VM->GetData().ItemGradeName;
+	const FLinearColor ItemGradeColor = VM->GetData().GradeColor;
+	
+	Txt_Grade->SetText(FText::FromString(ItemGradeName));
+	Txt_Grade->SetColorAndOpacity(ItemGradeColor);
+}
 
-	Txt_Grade->SetText(FText::FromString(Data.ItemGradeName));
-	Txt_Grade->SetColorAndOpacity(Data.GradeColor);
-
-	Txt_ItemName->SetText(FText::FromString(Data.ItemName));
-	Txt_ItemName->SetColorAndOpacity(Data.GradeColor);
+void USlotGachaResult::RefreshItemName()
+{
+	const FString ItemName = VM->GetData().ItemName;
+	const FLinearColor ItemGradeColor = VM->GetData().GradeColor;
+	
+	Txt_Grade->SetText(FText::FromString(ItemName));
+	Txt_Grade->SetColorAndOpacity(ItemGradeColor);
 }
 
 void USlotGachaResult::ScheduleReveal()
 {
 	VALID_RETURN(VM);
 
-	// 연출 전까지는 숨겨둔다. (연출 애니메이션이 알파/스케일을 0에서 살려주는 형태라고 가정)
+	// 연출 전까지는 숨겨둔다.
 	SetRenderOpacity(0.f);
 
 	UWorld* World = GetWorld();

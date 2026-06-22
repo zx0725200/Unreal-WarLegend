@@ -29,14 +29,15 @@ void USlotFilter::OnClickEvent(const FName& InChildName)
 	Super::OnClickEvent(InChildName);
 }
 
-void USlotFilter::SetViewModel(USlotFilterVM* InVM)
+void USlotFilter::SetData(USlotFilterVM* InVM)
 {
+	VALID_RETURN(InVM);
 	VM = InVM;
 	
-	SetData();
+	RefreshFilter();
 }
 
-void USlotFilter::SetData()
+void USlotFilter::RefreshFilter()
 {
 	VALID_RETURN(VM);
 	

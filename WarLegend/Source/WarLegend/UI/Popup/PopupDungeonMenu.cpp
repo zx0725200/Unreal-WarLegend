@@ -3,6 +3,7 @@
 #include "Components/VerticalBox.h"
 #include "DataManager/UIManager.h"
 #include "DataManager/UIManagerImpl.h"
+#include "ETC/Constant.h"
 #include "Popup/PopupDungeonMenuVM.h"
 #include "UI/Slot/SlotDungeonMenu.h"
 
@@ -14,6 +15,8 @@ void UPopupDungeonMenu::Awake()
 void UPopupDungeonMenu::OnEnable()
 {
 	Super::OnEnable();
+	
+	InitSlotPool();
 }
 
 void UPopupDungeonMenu::OnDisable()
@@ -45,15 +48,14 @@ void UPopupDungeonMenu::InitSlotPool()
 	}
 	
 	Vertical_DungeonMenu->ClearChildren();
-
-	constexpr int32 PageSize = 5;
+	
 	PooledSlots.Empty();
-	PooledSlots.Reserve(PageSize);
+	PooledSlots.Reserve(Constant::PageSize);
 
 	const auto UIMgr = GTUIGetMgrImpl(UIManager);
 	VALID_RETURN(UIMgr);
 	
-	for (int32 i = 0; i < PageSize; ++i)
+	for (int32 i = 0; i < Constant::PageSize; ++i)
 	{
 		USlotDungeonMenu* DungeonMenu = UIMgr->CreateSlot<USlotDungeonMenu>(TEXT("SlotDungeonMenu"),Vertical_DungeonMenu);
 		if (!DungeonMenu)
@@ -70,6 +72,8 @@ void UPopupDungeonMenu::BindVM()
 {
 	VALID_RETURN(VM);
 	VM->GetOnPageChanged().AddUObject(this, &UPopupDungeonMenu::OnPageChanged);
+	
+	VM->NotifyAll();   // 처음 호출
 }
 
 void UPopupDungeonMenu::UnbindVM()
@@ -110,8 +114,5 @@ void UPopupDungeonMenu::BindViewModel()
 	VM = NewObject<UPopupDungeonMenuVM>(this);
 	VM->Init();
 	
-	InitSlotPool();
-	
 	BindVM();
-	VM->NotifyAll();   // 처음 호출
 }

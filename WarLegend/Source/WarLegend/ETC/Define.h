@@ -6,6 +6,8 @@
 #define GTGetMgr(SubSystemClassName) (GetLocalPlayer() ? GetLocalPlayer()->GetSubsystem<SubSystemClassName>() : nullptr)
 #define GTUIGetMgr(SubSystemClassName) (GetOwningLocalPlayer() ? GetOwningLocalPlayer()->GetSubsystem<SubSystemClassName>() : nullptr)
 #define GTUIGetMgrImpl(SubSystemClassName) (GetOwningLocalPlayer() ? GetOwningLocalPlayer()->GetSubsystem<SubSystemClassName>()->MgrImpl : nullptr)
+#define BIND_VM(Getter, Func) VM->Getter().AddDynamic(this, &ThisClass::Func)
+#define UNBIND_VM(Getter, Func) VM->Getter().RemoveDynamic(this, &ThisClass::Func)
 
 #define EVENT_LISTEN(EventNameLiteral, MsgType, Obj, Func) \
 (Obj)->UIEventHandle.Listen<MsgType>(FName(EventNameLiteral), (Obj), (Func))

@@ -39,7 +39,7 @@ private:
 	UPROPERTY()
 	TWeakObjectPtr<UAbilitySystemComponent> CachedASC;
 	
-	UPROPERTY(BlueprintAssignable)
+	UPROPERTY()
 	FOnValueChanged OnHpRatioChanged;
 	
 	float CurrentHp = 0.f;

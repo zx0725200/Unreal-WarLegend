@@ -27,14 +27,12 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
-	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override; 
+	virtual void BindViewModel() override;
 
 protected:
-	virtual void BindViewModel() override;
+	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
 	
 private:
-	void SetViewModel(UScreenInventoryVM* InData);
-	
 	void InitEquipSlots();
 	void InitInventorySlots();
 	void RefreshTotalStats() const;

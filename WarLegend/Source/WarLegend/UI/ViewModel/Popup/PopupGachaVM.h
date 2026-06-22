@@ -17,9 +17,8 @@ public:
 	virtual void Init() override;
 	
 	void OnGacha(const int32 InItemCount);
-
-	FOnGachaCompleted& GetOnGachaCompleted() { return OnGachaCompleted; }
-
+	
 private:
-	FOnGachaCompleted OnGachaCompleted;
+	void ShowGachaResult() const;
+	
 };

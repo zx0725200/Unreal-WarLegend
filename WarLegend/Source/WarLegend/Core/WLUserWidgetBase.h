@@ -32,6 +32,7 @@ public:
 	virtual void OnEnable();
 	virtual void OnDisable();
 	virtual void OnDestroy();
+	virtual void BindViewModel() override;
 	virtual void Update(const float InDeltaTime);
 	
 	virtual void SetUIType(EUserWidgetType InType);
@@ -51,7 +52,6 @@ protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
-	virtual void BindViewModel() override;
 	
 private:
 	void InitChildWidget(TArray<UWidget*>& Children);

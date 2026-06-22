@@ -32,21 +32,23 @@ void USlotDungeonMenu::OnClickEvent(const FName& InChildName)
 void USlotDungeonMenu::SetData(USlotDungeonVM* InData)
 {
 	VALID_RETURN(InData);
-	
 	VM = InData;
 	
-	const FDungeonTableData& Data = VM->GetData();
-	RefreshName(Data.DungeonName);
-	RefreshLevel(Data.MinLevel, Data.MaxLevel);
+	RefreshName();
+	RefreshLevel();
 }
 
-void USlotDungeonMenu::RefreshName(const FString& InName) const
+void USlotDungeonMenu::RefreshName() const
 {
-	Txt_Name->SetText(FText::FromString(InName));
+	const FString DungeonName = VM->GetData().DungeonName;
+	Txt_Name->SetText(FText::FromString(DungeonName));
 }
 
-void USlotDungeonMenu::RefreshLevel(const int32 InMin, const int32 InMax) const
+void USlotDungeonMenu::RefreshLevel() const
 {
-	const FString LevelText = FString::Printf(TEXT("Lv.%d ~ %d"), InMin, InMax);
+	const int32 MinLevel = VM->GetData().MinLevel;
+	const int32 MaxLevel = VM->GetData().MaxLevel;
+	
+	const FString LevelText = FString::Printf(TEXT("Lv.%d ~ %d"), MinLevel, MaxLevel);
 	Txt_Level->SetText(FText::FromString(LevelText));
 }

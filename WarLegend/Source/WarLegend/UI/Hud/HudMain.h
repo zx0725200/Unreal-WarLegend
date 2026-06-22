@@ -4,6 +4,7 @@
 #include "Core/HudWidgetBase.h"
 #include "HudMain.generated.h"
 
+class UHudMainVM;
 /**
  * 
  */
@@ -17,4 +18,8 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 	virtual void BindViewModel() override;
+	
+private:
+	UPROPERTY()
+	TObjectPtr<UHudMainVM> VM;
 };

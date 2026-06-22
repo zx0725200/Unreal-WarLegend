@@ -2,6 +2,7 @@
 
 #include "GachaManager.h"
 #include "InventoryManager.h"
+#include "UIManagerImpl.h"
 #include "ETC/Define.h"
 
 void UPopupGachaVM::Init()
@@ -29,5 +30,13 @@ void UPopupGachaVM::OnGacha(const int32 InItemCount)
 
 	GachaMgr->RecordResults(ItemIDs); // 결과 팝업은 분해 포함 뽑은 개수 전부 표시
 
-	OnGachaCompleted.Broadcast();
+	ShowGachaResult();
+}
+
+void UPopupGachaVM::ShowGachaResult() const
+{
+	const auto UIMgr = GetUIManager();
+	VALID_RETURN(UIMgr);
+
+	UIMgr->ShowUI(TEXT("PopupGachaResult"));
 }

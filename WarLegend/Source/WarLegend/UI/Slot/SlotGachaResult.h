@@ -24,7 +24,10 @@ public:
 	virtual void NativeDestruct() override;
 
 private:
-	void SetData() const;
+	void SetData();
+	
+	void RefreshGrade();
+	void RefreshItemName();
 
 	void ScheduleReveal(); // 등장 순서에 맞춰 연출 예약
 	void PlayReveal();      // 실제 등장 연출 재생

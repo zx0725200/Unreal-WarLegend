@@ -23,8 +23,8 @@ public:
 	void SetData(USlotDungeonVM* InData);
 	
 private:
-	void RefreshName(const FString& InName) const;
-	void RefreshLevel(const int32 InMin, const int32 InMax) const;
+	void RefreshName() const;
+	void RefreshLevel() const;
 	
 private:
 	UPROPERTY()

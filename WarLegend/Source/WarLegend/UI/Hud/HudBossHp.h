@@ -19,12 +19,10 @@ class WARLEGEND_API UHudBossHp : public UHudWidgetBase
 public:
 	virtual void OnDisable() override;
 	virtual void BindViewModel() override;
-	
+
 private:
 	void BindVM();
 	void UnbindVM();
-	
-	void SetViewModel(UHudBossHpVM* InViewModel);
 	
 	UFUNCTION()
 	void OnHpRatioChanged(const float InNewRatio);

@@ -18,12 +18,7 @@ class WARLEGEND_API UHudLeftMenu : public UHudWidgetBase
 public:
 	virtual void OnDisable() override;
 	virtual void OnClickEvent(const FName& InChildName) override;
-	
-protected:
 	virtual void BindViewModel() override;
-
-private:
-	void SetViewModel(UHudLeftVM* InVM);
 
 private:
 	UPROPERTY()

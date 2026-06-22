@@ -35,29 +35,35 @@ void USlotInventory::OnClickEvent(const FName& InChildName)
 
 void USlotInventory::SetData() const
 {
+	RefreshGrade();
+	RefreshName();
+	RefreshUpgradeMark();
+}
+
+void USlotInventory::RefreshName() const
+{
 	const auto MyItem = VM->GetMyItem();
 	
 	const auto ItemColor = MyItem.ItemGradeColor;
 	const FText ItemName = FText::FromString(MyItem.ItemName);
+	
+	Txt_Name->SetText(ItemName);
+	Txt_Name->SetColorAndOpacity(ItemColor);
+}
+
+void USlotInventory::RefreshGrade() const
+{
+	const auto MyItem = VM->GetMyItem();
+	
+	const auto ItemColor = MyItem.ItemGradeColor;
 	const FText ItemTypeName = FText::FromString(MyItem.ItemTypeName);
 	
 	Txt_Grade->SetText(ItemTypeName);
 	Txt_Grade->SetColorAndOpacity(ItemColor);
-	
-	Txt_Name->SetText(ItemName);
-	Txt_Name->SetColorAndOpacity(ItemColor);
-
-	RefreshUpgradeMark();
 }
 
 void USlotInventory::RefreshUpgradeMark() const
 {
-	// 위젯이 없으면(BP에 미배치) 표시할 게 없다.
-	if (!Txt_Upgrade)
-	{
-		return;
-	}
-
 	VALID_RETURN(VM);
 
 	// 능력치 합이 장착템보다 높을 때만 화살표를 보여준다 (하락은 표시하지 않음).
@@ -101,13 +107,7 @@ void USlotInventory::SetNormalState()
 void USlotInventory::HandleClickedSlot(FGameplayTag InTag, const FMyItem& InItem)
 {
 	const auto MyItem = VM->GetMyItem();
+	const bool bSameID = MyItem.ItemName == InItem.ItemName;
 	
-	if (InItem.UniqueID == MyItem.UniqueID)
-	{
-		SetSelectedState();
-	}
-	else
-	{
-		SetNormalState();
-	}
+	bSameID ? SetSelectedState() : SetNormalState();
 }

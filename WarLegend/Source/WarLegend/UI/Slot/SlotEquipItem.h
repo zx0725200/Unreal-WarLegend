@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -28,11 +26,8 @@ public:
 	void SetData(const EItemType InItemType, const FString& InItemName);
 
 private:
-	void RefreshEquipped() const;
-
-	// 장착 슬롯 클릭 시 해당 장착 아이템 정보 팝업을 연다.
-	void OnClickedSlot();
-
+	void RefreshEquipItemName() const;
+	
 	UFUNCTION()
 	void HandleEquipChanged(FGameplayTag InTag, const FMyItem& InItem);
 

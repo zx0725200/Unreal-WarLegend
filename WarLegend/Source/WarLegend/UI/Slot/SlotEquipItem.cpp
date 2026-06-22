@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "SlotEquipItem.h"
 
 #include "Components/TextBlock.h"
@@ -25,19 +22,14 @@ void USlotEquipItem::OnDisable()
 
 void USlotEquipItem::OnClickEvent(const FName& InChildName)
 {
+	VALID_RETURN(VM);
+	
 	Super::OnClickEvent(InChildName);
 
 	if (InChildName == TEXT("Btn_Slot"))
 	{
-		OnClickedSlot();
+		VM->OnClickedSlot();
 	}
-}
-
-void USlotEquipItem::OnClickedSlot()
-{
-	VALID_RETURN(VM);
-
-	VM->OnClickedSlot();
 }
 
 void USlotEquipItem::SetData(const EItemType InItemType, const FString& InItemName)
@@ -47,25 +39,23 @@ void USlotEquipItem::SetData(const EItemType InItemType, const FString& InItemNa
 
 	Txt_Name->SetText(FText::FromString(InItemName));
 
-	RefreshEquipped();
+	RefreshEquipItemName();
 
 	EVENT_LISTEN(TEXT("EquipChanged"), FMyItem, this, &ThisClass::HandleEquipChanged);
 }
 
-void USlotEquipItem::RefreshEquipped() const
+void USlotEquipItem::RefreshEquipItemName() const
 {
 	VALID_RETURN(VM, Txt_ItemName);
 
-	if (VM->HasEquipped())
-	{
-		Txt_ItemName->SetText(FText::FromString(VM->GetEquippedName()));
-		Txt_ItemName->SetColorAndOpacity(VM->GetEquippedColor());
-	}
-	else
-	{
-		Txt_ItemName->SetText(FText::FromString(TEXT("비어있음")));
-		Txt_ItemName->SetColorAndOpacity(FLinearColor(0.6f, 0.6f, 0.6f));
-	}
+	const bool bEquipped = VM->HasEquipped();
+	const FString EquipItemName = VM->GetEquippedName();
+	const FString EmptyItemName = TEXT("비어있음");
+	const FLinearColor EquipColor = VM->GetEquippedColor();
+	const FLinearColor BaseColor = FLinearColor(0.6f, 0.6f, 0.6f);
+	
+	Txt_ItemName->SetText(FText::FromString(bEquipped ? EquipItemName : EmptyItemName));
+	Txt_ItemName->SetColorAndOpacity(bEquipped ? EquipColor : BaseColor);
 }
 
 void USlotEquipItem::HandleEquipChanged(FGameplayTag InTag, const FMyItem& InItem)
@@ -78,5 +68,5 @@ void USlotEquipItem::HandleEquipChanged(FGameplayTag InTag, const FMyItem& InIte
 		return;
 	}
 
-	RefreshEquipped();
+	RefreshEquipItemName();
 }

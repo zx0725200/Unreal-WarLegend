@@ -36,13 +36,14 @@ void UPopupItemDiscard::BindViewModel()
 	VM->Init();
 
 	BindVM();
-	VM->NotifyAll();
 }
 
 void UPopupItemDiscard::BindVM()
 {
 	VALID_RETURN(VM);
 	VM->GetOnSlotListChanged().AddUObject(this, &UPopupItemDiscard::HandleSlotListChanged);
+	
+	VM->NotifyAll();
 }
 
 void UPopupItemDiscard::UnbindVM()
@@ -64,6 +65,6 @@ void UPopupItemDiscard::HandleSlotListChanged(const TArray<TObjectPtr<USlotFilte
 		if (!SlotVM) continue;
 
 		USlotFilter* SlotWidget = UIMgr->CreateSlot<USlotFilter>(TEXT("SlotFilter"), VBox_Filter);
-		SlotWidget->SetViewModel(SlotVM);
+		SlotWidget->SetData(SlotVM);
 	}
 }
