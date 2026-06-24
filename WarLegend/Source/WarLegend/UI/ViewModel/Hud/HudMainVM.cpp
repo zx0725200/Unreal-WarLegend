@@ -13,4 +13,5 @@ void UHudMainVM::Init()
 	VALID_RETURN(UIMgr);
 	
 	UIMgr->ShowUI(TEXT("HudLeftMenu"));
+	UIMgr->ShowUI(TEXT("HudPlayerHp"));
 }

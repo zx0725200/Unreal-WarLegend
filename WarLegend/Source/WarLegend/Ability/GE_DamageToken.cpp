@@ -52,12 +52,19 @@ void UGE_DamageToken::Execute_Implementation(const FGameplayEffectCustomExecutio
 
 	for (const TPair<FGameplayTag, float>& TagMagnitude : EffectSpec.SetByCallerTagMagnitudes)
 	{
+		// [디버그] 실제로 들어온 SetByCaller 태그/값 확인.
+		UE_LOG(LogTemp, Warning, TEXT("[GE_DamageToken] SetByCaller: %s = %.2f"),
+			*TagMagnitude.Key.ToString(), TagMagnitude.Value);
+
 		if (TagMagnitude.Key.MatchesTagExact(GamePlayTag::Shared_Event_BaseDamage))
 		{
 			BaseDamage = TagMagnitude.Value;
 		}
 	}
-	
+
+	// [디버그] 최종 데미지. 0이면 SetByCaller 태그가 Shared.Event.BaseDamage 가 아님.
+	UE_LOG(LogTemp, Warning, TEXT("[GE_DamageToken] Resolved BaseDamage = %.2f"), BaseDamage);
+
 	float TargetDefensePower = 0.f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetHeroDamageCapture().DefensePowerDef,EvaluateParameters,TargetDefensePower);
 	

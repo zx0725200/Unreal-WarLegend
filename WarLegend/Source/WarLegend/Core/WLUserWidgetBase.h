@@ -54,7 +54,7 @@ protected:
 	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
 	
 private:
-	void InitChildWidget(TArray<UWidget*>& Children);
+	void InitChildWidget(const TArray<UWidget*>& InChildren);
 	
 	void LockPlayerInput();
 	void UnlockPlayerInput() const;

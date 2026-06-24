@@ -107,7 +107,7 @@ void USlotInventory::SetNormalState()
 void USlotInventory::HandleClickedSlot(FGameplayTag InTag, const FMyItem& InItem)
 {
 	const auto MyItem = VM->GetMyItem();
-	const bool bSameID = MyItem.ItemName == InItem.ItemName;
+	const bool bSameID = MyItem.UniqueID == InItem.UniqueID;
 	
 	bSameID ? SetSelectedState() : SetNormalState();
 }

@@ -137,9 +137,9 @@ void UWLUserWidgetBase::BindViewModel()
 {
 }
 
-void UWLUserWidgetBase::InitChildWidget(TArray<UWidget*>& Children)
+void UWLUserWidgetBase::InitChildWidget(const TArray<UWidget*>& InChildren)
 {
-	for (const auto Widget : Children)
+	for (const auto Widget : InChildren)
 	{
 		if (!Widget)
 		{

@@ -20,33 +20,29 @@ void UHeroAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 	
 	if (Data.EvaluatedData.Attribute == GetDamageTakenAttribute())
 	{
-		const float OldHealth = GetCurrentHp();
 		const float DamageTake = GetDamageTaken();
-		
+
+		// ? 메타 어트리뷰트는 사용 후 0으로 리셋(누적 방지).
+		SetDamageTaken(0.f);
+
+		const float OldHealth = GetCurrentHp();
 		const float NewCurrentHealth = FMath::Clamp(OldHealth - DamageTake, 0.f, GetMaxHp());
-		
+
 		SetCurrentHp(NewCurrentHealth);
-		
-		const FString DebugString = FString::Printf(TEXT("Old Health : %f, Damage Taken : %f, Hp : %f"),OldHealth, DamageTake, NewCurrentHealth);
-		
-		UE_LOG(LogTemp, Error, TEXT("%s"), *DebugString);
-		
-		// UI에 전달
-		
-		
-		
+
+		AActor* Owner = GetOwningActor();
 		// 죽음
-		if (NewCurrentHealth == 0.f)
+		if (GetCurrentHp() <= 0.f)
 		{
-			
+
 		}
 	}
 }
 
 UHeroAttributeSet::UHeroAttributeSet()
 {
-	InitCurrentHp(10000.f);
-	InitMaxHp(10000.f);
+	InitCurrentHp(100.f);
+	InitMaxHp(100.f);
 	InitAttackPower(1.f);
 	InitDefensePower(1.f);
 }
