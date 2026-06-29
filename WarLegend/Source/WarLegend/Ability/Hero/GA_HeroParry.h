@@ -23,16 +23,11 @@ public:
 	UGA_HeroParry();
 
 protected:
-	virtual void ActivateAbility(
-		const FGameplayAbilitySpecHandle Handle,
-		const FGameplayAbilityActorInfo* ActorInfo,
+	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, 
 		const FGameplayAbilityActivationInfo ActivationInfo,
 		const FGameplayEventData* TriggerEventData) override;
 
-	virtual void EndAbility(
-		const FGameplayAbilitySpecHandle Handle,
-		const FGameplayAbilityActorInfo* ActorInfo,
-		const FGameplayAbilityActivationInfo ActivationInfo,
+	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
 		bool bReplicateEndAbility,
 		bool bWasCancelled) override;
 
@@ -44,14 +39,14 @@ private:
 	void CloseParryWindow();
 
 public:
-	// 패링 모션(선택). 비워두면 모션 없이 윈도우만 열린다.
+	// 패링 모션
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Parry")
 	TObjectPtr<UAnimMontage> ParryMontage;
 
 	// 우클릭 후 패링이 유효한 시간(초). 보스 타격이 이 안에 들어오면 무피해.
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Parry")
-	float ParryWindowDuration = 0.5f;
+	float ParryDuration = 0.5f;
 
 private:
-	FTimerHandle ParryWindowTimer;
+	FTimerHandle ParryTimer;
 };
