@@ -81,6 +81,21 @@ void UGA_BossAttack::OnHitEventReceived(FGameplayEventData Payload)
 
 	if (!TargetASC || !SourceASC || !DamageEffectClass) return;
 
+	// ? 패링 판정: 타격 순간 타겟이 패링 윈도우 중이면 데미지/피격 리액션을 무효화한다.
+	if (TargetASC->HasMatchingGameplayTag(GamePlayTag::Player_State_Parrying))
+	{
+		// 패링 성공 이벤트를 타겟(플레이어)에게 전송 -> BP 에서 이펙트/사운드/보스 경직 등을 후킹.
+		FGameplayEventData ParryData;
+		ParryData.EventTag = GamePlayTag::Shared_Event_ParrySuccess;
+		ParryData.Instigator = GetAvatarActorFromActorInfo(); // 보스
+		ParryData.Target = Target;                            // 플레이어
+		ParryData.ContextHandle = Payload.ContextHandle;
+
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+			Target, GamePlayTag::Shared_Event_ParrySuccess, ParryData);
+		return;
+	}
+
 	// Payload에 HitResult 있으면 그대로 사용 (GameplayCue VFX 위치용)
 	FHitResult Hit;
 	if (const FHitResult* P = Payload.ContextHandle.GetHitResult())

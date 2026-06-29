@@ -44,8 +44,8 @@ void USlotGachaResult::RefreshItemName()
 	const FString ItemName = VM->GetData().ItemName;
 	const FLinearColor ItemGradeColor = VM->GetData().GradeColor;
 	
-	Txt_Grade->SetText(FText::FromString(ItemName));
-	Txt_Grade->SetColorAndOpacity(ItemGradeColor);
+	Txt_ItemName->SetText(FText::FromString(ItemName));
+	Txt_ItemName->SetColorAndOpacity(ItemGradeColor);
 }
 
 void USlotGachaResult::ScheduleReveal()

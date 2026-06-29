@@ -19,6 +19,10 @@ namespace GamePlayTag
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Equip_Axe,"Player.Ability.Equip.Axe");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Unequip_Axe,"Player.Ability.Unequip.Axe");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Attack_Light_Axe,"Player.Ability.Attack.Light.Axe");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Parry,"Player.Ability.Parry");
+
+	UE_DEFINE_GAMEPLAY_TAG(Battle_Parry,"Battle.Parry");
+	UE_DEFINE_GAMEPLAY_TAG(Player_State_Parrying,"Player.State.Parrying");
 	
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_Ability_Attack_NormalA, "Enemy.Ability.Attack.NormalA");
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_Ability_Attack_NormalB, "Enemy.Ability.Attack.NormalB");
@@ -34,4 +38,5 @@ namespace GamePlayTag
 	UE_DEFINE_GAMEPLAY_TAG(Shared_Event_PlayerHit,"Shared.Event.PlayerHit");
 	UE_DEFINE_GAMEPLAY_TAG(Shared_Event_MeleeHit,"Shared.Event.MeleeHit");
 	UE_DEFINE_GAMEPLAY_TAG(Shared_Event_BaseDamage,"Shared.Event.BaseDamage");
+	UE_DEFINE_GAMEPLAY_TAG(Shared_Event_ParrySuccess,"Shared.Event.ParrySuccess");
 }

@@ -9,6 +9,7 @@
 class UEnemyAbilityConfig;
 class UEnemyCombatComponent;
 class UPawnCombatComponentBase;
+class UHitFlashComponent;
 
 UCLASS()
 class WARLEGEND_API AEnemyCharacter : public AWarLegendBaseCharacter
@@ -33,5 +34,9 @@ private:
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	UEnemyCombatComponent* EnemyCombatComponent;
-	
+
+	// 피격 시 메시 번쩍(데미지 피드백). FlashMaterial 은 적 BP 에서 지정.
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	TObjectPtr<UHitFlashComponent> HitFlashComponent;
+
 };

@@ -10,10 +10,15 @@ namespace GamePlayTag
 	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Battle_UnEquipWeapon);
 	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Battle_LightAttack_Axe);
 	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Battle_HeavyAttack_Axe);
-	
+	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Battle_Parry);
+
 	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equip_Axe);
 	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Unequip_Axe);
 	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_Light_Axe);
+	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Parry);
+
+	// 패링 윈도우가 열려있는 동안 부착되는 상태 태그. 보스 타격이 이 태그를 보면 데미지를 무효화한다.
+	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_State_Parrying);
 	
 	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Attack_NormalA);
 	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Attack_NormalB);
@@ -36,4 +41,7 @@ namespace GamePlayTag
 	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_PlayerHit);
 	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_MeleeHit);
 	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_BaseDamage);
+
+	// 패링이 성공했을 때 타겟(플레이어)에게 전송. 이펙트/사운드/보스 경직 등을 BP에서 후킹할 수 있다.
+	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_ParrySuccess);
 }

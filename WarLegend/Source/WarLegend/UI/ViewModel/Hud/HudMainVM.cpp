@@ -12,6 +12,6 @@ void UHudMainVM::Init()
 	UUIManagerImpl* UIMgr = GetUIManager();
 	VALID_RETURN(UIMgr);
 	
+	UIMgr->ShowUI(TEXT("HudPlayerHp"), ESlateVisibility::SelfHitTestInvisible);
 	UIMgr->ShowUI(TEXT("HudLeftMenu"));
-	UIMgr->ShowUI(TEXT("HudPlayerHp"));
 }
