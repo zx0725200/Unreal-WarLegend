@@ -55,13 +55,10 @@ void UHitFlashComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	}
 	HpChangedHandle.Reset();
 
-	// 번쩍 도중 종료되면 원본 머티리얼이 남도록 복원.
-	if (CachedMesh && OriginalMaterials.Num() > 0)
+	// 번쩍 도중 종료되면 오버레이가 남지 않도록 벗긴다.
+	if (CachedMesh)
 	{
-		for (int32 i = 0; i < OriginalMaterials.Num(); ++i)
-		{
-			CachedMesh->SetMaterial(i, OriginalMaterials[i]);
-		}
+		CachedMesh->SetOverlayMaterial(nullptr);
 	}
 
 	Super::EndPlay(EndPlayReason);
@@ -80,22 +77,8 @@ void UHitFlashComponent::StartFlash()
 {
 	if (!FlashMaterial || !CachedMesh) return;
 
-	// 원본 머티리얼을 최초 1회만 캐시(번쩍 중 또 맞아도 덮어쓰지 않게).
-	if (OriginalMaterials.Num() == 0)
-	{
-		const int32 Num = CachedMesh->GetNumMaterials();
-		OriginalMaterials.Reserve(Num);
-		for (int32 i = 0; i < Num; ++i)
-		{
-			OriginalMaterials.Add(CachedMesh->GetMaterial(i));
-		}
-	}
-
-	// 모든 슬롯을 플래시 머티리얼로 교체 → 메시 전체가 그 색으로 번쩍.
-	for (int32 i = 0; i < OriginalMaterials.Num(); ++i)
-	{
-		CachedMesh->SetMaterial(i, FlashMaterial);
-	}
+	// 원본은 그대로 두고 위에 오버레이만 덧씌운다 → 텍스처 유지한 채 빨간 톤만 번쩍.
+	CachedMesh->SetOverlayMaterial(FlashMaterial);
 
 	UWorld* World = GetWorld();
 	if (!World) return;
@@ -109,11 +92,8 @@ void UHitFlashComponent::EndFlash()
 {
 	if (!CachedMesh) return;
 
-	// 원본 머티리얼 복원.
-	for (int32 i = 0; i < OriginalMaterials.Num(); ++i)
-	{
-		CachedMesh->SetMaterial(i, OriginalMaterials[i]);
-	}
+	// 오버레이 제거 → 원본 그대로 복귀.
+	CachedMesh->SetOverlayMaterial(nullptr);
 }
 
 UMeshComponent* UHitFlashComponent::ResolveMesh() const

@@ -13,6 +13,10 @@ UGA_BossAttack::UGA_BossAttack()
 {
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 	NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::ServerOnly;
+
+	// 그로기(경직) 중에는 어떤 공격도 활성화하지 못하게 막는다. 패링당한 직후 다음 공격/콤보로
+	// 바로 넘어가지 않고 GA_BossStagger 가 그로기를 풀 때까지 뜸을 들이게 된다.
+	ActivationBlockedTags.AddTag(GamePlayTag::Enemy_State_Groggy);
 }
 
 void UGA_BossAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
@@ -50,10 +54,7 @@ void UGA_BossAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	{
 		UAbilityTask_WaitGameplayEvent* WaitTask =
 			UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(
-				this, HitEventTag,
-				/*OptionalExternalTarget*/ nullptr,
-				/*OnlyTriggerOnce*/ false,
-				/*OnlyMatchExact*/ false);
+				this, HitEventTag,nullptr,false,false);
 
 		WaitTask->EventReceived.AddDynamic(this, &UGA_BossAttack::OnHitEventReceived);
 		WaitTask->ReadyForActivation();
@@ -84,15 +85,27 @@ void UGA_BossAttack::OnHitEventReceived(FGameplayEventData Payload)
 	// ? 패링 판정: 타격 순간 타겟이 패링 윈도우 중이면 데미지/피격 리액션을 무효화한다.
 	if (TargetASC->HasMatchingGameplayTag(GamePlayTag::Player_State_Parrying))
 	{
-		// 패링 성공 이벤트를 타겟(플레이어)에게 전송 -> BP 에서 이펙트/사운드/보스 경직 등을 후킹.
+		AActor* Boss = GetAvatarActorFromActorInfo();
+
+		// 패링 성공 이벤트를 타겟(플레이어)에게 전송 -> BP 에서 플레이어 측 연출 등을 후킹.
 		FGameplayEventData ParryData;
 		ParryData.EventTag = GamePlayTag::Shared_Event_ParrySuccess;
-		ParryData.Instigator = GetAvatarActorFromActorInfo(); // 보스
-		ParryData.Target = Target;                            // 플레이어
+		ParryData.Instigator = Boss;   // 보스
+		ParryData.Target = Target;     // 플레이어
 		ParryData.ContextHandle = Payload.ContextHandle;
 
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
 			Target, GamePlayTag::Shared_Event_ParrySuccess, ParryData);
+
+		// 보스 경직 이벤트를 보스 자신에게 전송 -> GA_BossStagger 가 공격을 끊고 그로기 모션/이펙트/사운드 재생.
+		FGameplayEventData StaggerData;
+		StaggerData.EventTag = GamePlayTag::Shared_Event_BossStagger;
+		StaggerData.Instigator = Target;   // 패링한 플레이어
+		StaggerData.Target = Boss;         // 보스
+		StaggerData.ContextHandle = Payload.ContextHandle;
+
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+			Boss, GamePlayTag::Shared_Event_BossStagger, StaggerData);
 		return;
 	}
 

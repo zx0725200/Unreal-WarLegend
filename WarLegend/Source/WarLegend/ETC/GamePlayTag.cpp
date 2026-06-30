@@ -32,11 +32,14 @@ namespace GamePlayTag
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_State_Attacking, "Enemy.State.Attacking");
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_State_Moving, "Enemy.State.Moving");
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_State_Dead, "Enemy.State.Attacking");
+	UE_DEFINE_GAMEPLAY_TAG(Enemy_State_Groggy, "Enemy.State.Groggy");
 	
 	UE_DEFINE_GAMEPLAY_TAG(GamePlayCue_Melee_Hit,"GameplayCue.Melee.Hit");
+	UE_DEFINE_GAMEPLAY_TAG(GamePlayCue_Parry,"GameplayCue.Parry");
 	
 	UE_DEFINE_GAMEPLAY_TAG(Shared_Event_PlayerHit,"Shared.Event.PlayerHit");
 	UE_DEFINE_GAMEPLAY_TAG(Shared_Event_MeleeHit,"Shared.Event.MeleeHit");
 	UE_DEFINE_GAMEPLAY_TAG(Shared_Event_BaseDamage,"Shared.Event.BaseDamage");
 	UE_DEFINE_GAMEPLAY_TAG(Shared_Event_ParrySuccess,"Shared.Event.ParrySuccess");
+	UE_DEFINE_GAMEPLAY_TAG(Shared_Event_BossStagger,"Shared.Event.BossStagger");
 }
