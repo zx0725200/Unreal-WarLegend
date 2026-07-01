@@ -56,6 +56,7 @@ void AWarLegendPlayerController::SetupInputComponent()
 	// Battle용 바인딩
 	BattleInput->BindNativeInputAction(InputBattleDataAsset, GamePlayTag::Battle_Move, ETriggerEvent::Triggered, this, &AWarLegendPlayerController::OnBattleMove);
 	BattleInput->BindNativeInputAction(InputBattleDataAsset, GamePlayTag::Battle_Look, ETriggerEvent::Triggered, this, &AWarLegendPlayerController::OnBattleLook);
+	BattleInput->BindNativeInputAction(InputBattleDataAsset, GamePlayTag::Battle_LockOn, ETriggerEvent::Started, this, &AWarLegendPlayerController::OnLockOnToggle);
 	
 	BattleInput->BindAbilityInputAction(InputBattleDataAsset, this, &ThisClass::OnAbilityInputPressed, &ThisClass::OnAbilityInputReleased);
 
@@ -128,11 +129,25 @@ void AWarLegendPlayerController::OnBattleLook(const FInputActionValue& InActionV
 	AWarLegendCharacter* MyCharacter = Cast<AWarLegendCharacter>(GetPawn());
 	VALID_RETURN(MyCharacter);
 	
+	// 락온 중엔 카메라가 타겟을 고정해서 봐야 하므로 마우스 프리룩을 무시한다.
+	if (MyCharacter->IsLockedOn())
+	{
+		return;
+	}
+
 	const FVector2D MoveVector = InActionValue.Get<FVector2D>();
 	if (MoveVector.X != 0.f)
 	{
 		MyCharacter->AddControllerYawInput(MoveVector.X);
 	}
+}
+
+void AWarLegendPlayerController::OnLockOnToggle()
+{
+	AWarLegendCharacter* MyCharacter = Cast<AWarLegendCharacter>(GetPawn());
+	VALID_RETURN(MyCharacter);
+
+	MyCharacter->ToggleLockOn();
 }
 
 void AWarLegendPlayerController::OnAbilityInputPressed(const FGameplayTag InTag)

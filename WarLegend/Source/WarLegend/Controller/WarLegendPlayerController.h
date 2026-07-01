@@ -38,6 +38,7 @@ protected:
 #pragma region Battle
 	void OnBattleMove(const FInputActionValue& InActionValue);
 	void OnBattleLook(const FInputActionValue& InActionValue);
+	void OnLockOnToggle();
 	void OnAbilityInputPressed(FGameplayTag InTag);
 	void OnAbilityInputReleased(FGameplayTag InTag);
 #pragma endregion

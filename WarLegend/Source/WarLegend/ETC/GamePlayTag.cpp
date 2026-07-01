@@ -22,6 +22,7 @@ namespace GamePlayTag
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Parry,"Player.Ability.Parry");
 
 	UE_DEFINE_GAMEPLAY_TAG(Battle_Parry,"Battle.Parry");
+	UE_DEFINE_GAMEPLAY_TAG(Battle_LockOn,"Battle.LockOn");
 	UE_DEFINE_GAMEPLAY_TAG(Player_State_Parrying,"Player.State.Parrying");
 	
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_Ability_Attack_NormalA, "Enemy.Ability.Attack.NormalA");

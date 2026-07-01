@@ -7,6 +7,7 @@
 #include "Component/HitFlashComponent.h"
 #include "DataAsset/CommonAbilityConfigBase.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 
@@ -32,11 +33,27 @@ AEnemyCharacter::AEnemyCharacter()
 	
 	EnemyCombatComponent = CreateDefaultSubobject<UEnemyCombatComponent>("EnemyCombatComponent");
 	HitFlashComponent = CreateDefaultSubobject<UHitFlashComponent>("HitFlashComponent");
+
+	// 락온 마커. 스크린 스페이스라 항상 카메라를 향하고 화면상 고정 크기로 뜬다.
+	// 위젯(이미지) 클래스는 적 BP 에서 지정하고, 처음엔 숨겨둔다(락온 시에만 표시).
+	LockOnWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("LockOnWidget"));
+	LockOnWidget->SetupAttachment(RootComponent);
+	LockOnWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	LockOnWidget->SetDrawAtDesiredSize(true);
+	LockOnWidget->SetVisibility(false);
 }
 
 UAbilitySystemComponent* AEnemyCharacter::GetAbilitySystemComponent() const
 {
 	return Super::GetAbilitySystemComponent();
+}
+
+void AEnemyCharacter::SetLockOnMarkerVisible(bool bVisible)
+{
+	if (LockOnWidget)
+	{
+		LockOnWidget->SetVisibility(bVisible);
+	}
 }
 
 // AI 컨트롤러가 빙의할 때 엔진이 호출 - Super에서 ASC 초기화 후 Init으로 어빌리티 세팅 시작

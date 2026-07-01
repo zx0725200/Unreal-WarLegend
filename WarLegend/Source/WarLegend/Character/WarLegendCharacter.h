@@ -8,6 +8,7 @@
 
 class UAIPerceptionStimuliSourceComponent;
 class UHeroCombatComponent;
+class ULockOnComponent;
 struct FStreamableHandle;
 class UCommonAbilityConfigBase;
 class UHeroBattleInputConfig;
@@ -26,8 +27,13 @@ public:
 	AWarLegendCharacter();
 
 	void ChangeCamera(EPlayerLocType InMode);
-	
+
 	UHeroCombatComponent* GetHeroCombatComponent();
+
+	// 락온 토글(컨트롤러 입력에서 호출).
+	void ToggleLockOn();
+	// 락온 중이면 true(락온 중엔 마우스 프리룩을 무시하기 위해 컨트롤러가 조회).
+	bool IsLockedOn() const;
 
 protected:
 	virtual void PossessedBy(AController* NewController) override;
@@ -59,6 +65,9 @@ private:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UHeroCombatComponent> HeroCombatComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "LockOn", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<ULockOnComponent> LockOnComponent;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AIPerception", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAIPerceptionStimuliSourceComponent> StimuliSource;

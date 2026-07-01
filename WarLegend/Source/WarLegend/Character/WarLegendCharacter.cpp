@@ -4,6 +4,7 @@
 #include "Camera/CameraComponent.h"
 #include "Ability/HeroAbilitySystemComponent.h"
 #include "Component/HeroCombatComponent.h"
+#include "Component/LockOnComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "DataAsset/CommonAbilityConfigBase.h"
 #include "Engine/AssetManager.h"
@@ -52,6 +53,8 @@ AWarLegendCharacter::AWarLegendCharacter()
 	TopDownCamera->bUsePawnControlRotation = false;
 	
 	HeroCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("HeroCombatComponent"));
+
+	LockOnComponent = CreateDefaultSubobject<ULockOnComponent>(TEXT("LockOnComponent"));
 	
 	// ? AI가 이 액터를 감지 할 수 있게 만들어주는 Component
 	StimuliSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>("StimuliSource");
@@ -77,6 +80,19 @@ void AWarLegendCharacter::ChangeCamera(const EPlayerLocType InMode)
 UHeroCombatComponent* AWarLegendCharacter::GetHeroCombatComponent()
 {
 	return HeroCombatComponent;
+}
+
+void AWarLegendCharacter::ToggleLockOn()
+{
+	if (LockOnComponent)
+	{
+		LockOnComponent->ToggleLockOn();
+	}
+}
+
+bool AWarLegendCharacter::IsLockedOn() const
+{
+	return LockOnComponent && LockOnComponent->IsLockedOn();
 }
 
 void AWarLegendCharacter::PossessedBy(AController* NewController)
