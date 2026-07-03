@@ -20,6 +20,9 @@ namespace GamePlayTag
 
 	// 패링 윈도우가 열려있는 동안 부착되는 상태 태그. 보스 타격이 이 태그를 보면 데미지를 무효화한다.
 	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_State_Parrying);
+
+	// 피격 리액션 중 부착. 공격/구르기 어빌리티가 이 태그를 ActivationBlockedTags 로 막아 행동 불가 시간을 만든다.
+	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_State_HitReacting);
 	
 	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Attack_NormalA);
 	WARLEGEND_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Attack_NormalB);
