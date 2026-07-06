@@ -22,12 +22,15 @@ class WARLEGEND_API UHeroAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 	
 public:
-	// ? cpp에 설명 
-	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
-	
-	// GamePlayEffect 테이블 속성용.
 	UHeroAttributeSet();
 	
+	// ? cpp에 설명 
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+	
+private:
+	void ChangeHp(int32 InHp);
+	
+public:
 	UPROPERTY(BlueprintReadOnly, Category = "HP")
 	FGameplayAttributeData CurrentHp;
 	ATTRIBUTE_ACCESSORS(UHeroAttributeSet, CurrentHp)

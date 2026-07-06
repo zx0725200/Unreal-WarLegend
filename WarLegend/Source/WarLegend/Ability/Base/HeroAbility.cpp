@@ -33,7 +33,7 @@ AWarLegendPlayerController* UHeroAbility::GetHeroControllerFromActorInfo()
 FGameplayEffectSpecHandle UHeroAbility::MakeHeroDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> InEffectClass, float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InCurrentComboCount, const FGameplayEventData& InEventData)
 {
 	check(InEffectClass);
-
+	
 	FGameplayEffectContextHandle ContextHandle = GetHeroAbilityComponentFromActorInfo()->MakeEffectContext();
 	ContextHandle.SetAbility(this);
 	ContextHandle.AddSourceObject(GetAvatarActorFromActorInfo());
@@ -52,14 +52,11 @@ FGameplayEffectSpecHandle UHeroAbility::MakeHeroDamageEffectSpecHandle(TSubclass
 		ContextHandle
 	);
 
-	EffectSpecHandle.Data->SetSetByCallerMagnitude(
-		GamePlayTag::Shared_Event_BaseDamage,
-		InWeaponBaseDamage
-	);
+	EffectSpecHandle.Data->SetSetByCallerMagnitude(GamePlayTag::Shared_Event_BaseDamage, InWeaponBaseDamage);
 
 	if (InCurrentAttackTypeTag.IsValid())
 	{
-		EffectSpecHandle.Data->SetSetByCallerMagnitude(InCurrentAttackTypeTag,InCurrentComboCount);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(InCurrentAttackTypeTag, InCurrentComboCount);
 	}
 
 	return EffectSpecHandle;
