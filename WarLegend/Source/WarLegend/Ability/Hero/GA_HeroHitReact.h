@@ -38,6 +38,9 @@ private:
 	// HitStunDuration 이 지나면 호출 → 종료(행동 재개).
 	void OnStunFinished();
 
+	// 스턴 동안 이동/회전 입력을 잠그거나(true) 해제(false). 어빌리티는 HitReacting 태그로 별도 차단됨.
+	void SetHeroInputLocked(bool bLocked);
+
 public:
 	// 피격 애니. 비우면 애니 없이 HitStunDuration 동안 행동만 막는다.
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HitReact")
@@ -49,4 +52,7 @@ public:
 
 private:
 	FTimerHandle StunTimer;
+
+	// 입력 잠금 상태. 잠금/해제를 인스턴스당 정확히 한 번씩만 적용해 IgnoreInput 카운터가 어긋나지 않게 한다.
+	bool bInputLocked = false;
 };

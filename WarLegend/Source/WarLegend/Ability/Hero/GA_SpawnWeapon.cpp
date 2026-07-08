@@ -41,7 +41,7 @@ void UGA_SpawnWeapon::AttachToHero(USkeletalMeshComponent* InHero, AHeroWeaponBa
 			EAttachmentRule::SnapToTarget,    // Location
 			EAttachmentRule::KeepRelative,    // Rotation
 			EAttachmentRule::KeepWorld,       // Scale
-			/*bWeldSimulatedBodies=*/ true);
+			true);
 	
 	InWeapon->AttachToComponent(InHero, AttachRules, SocketNameToAttach);
 }
