@@ -62,21 +62,16 @@ FGameplayEffectSpecHandle UHeroAbility::MakeHeroDamageEffectSpecHandle(TSubclass
 	return EffectSpecHandle;
 }
 
-FActiveGameplayEffectHandle UHeroAbility::NativeApplyEffectSpecHandleToTarget(AActor* TargetActor,
-	const FGameplayEffectSpecHandle& InSpecHandle)
+FActiveGameplayEffectHandle UHeroAbility::NativeApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle)
 {
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
 
 	check(TargetASC && InSpecHandle.IsValid());
 
-	return GetHeroAbilityComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(
-		*InSpecHandle.Data,
-		TargetASC
-	);
+	return GetHeroAbilityComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(*InSpecHandle.Data, TargetASC);
 }
 
-FActiveGameplayEffectHandle UHeroAbility::BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor,
-	const FGameplayEffectSpecHandle& InSpecHandle, EConfirmType& OutSuccessType)
+FActiveGameplayEffectHandle UHeroAbility::BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle, EConfirmType& OutSuccessType)
 {
 	FActiveGameplayEffectHandle ActiveGameplayEffectHandle = NativeApplyEffectSpecHandleToTarget(TargetActor,InSpecHandle);
 
