@@ -37,6 +37,18 @@ void UPopupGachaResult::BindViewModel()
 	BuildResultSlots();
 }
 
+void UPopupGachaResult::OnClickEvent(const FName& InChildName)
+{
+	Super::OnClickEvent(InChildName);
+	
+	if (InChildName == TEXT("Btn_Retry"))
+	{
+		VALID_RETURN(VM);
+		VM->OnRetry();
+		BuildResultSlots(); // 재시도 결과로 TileView 다시 채운다.
+	}
+}
+
 void UPopupGachaResult::BuildResultSlots()
 {
 	VALID_RETURN(VM);

@@ -63,6 +63,8 @@ void UPopupDungeonMenuVM::OnChangePage(int32 NewPage)
 
 const TArray<USlotDungeonVM*>& UPopupDungeonMenuVM::GetCurrentSlotList()
 {
+	SlotList.Reset(); // 이전 페이지 항목이 남아 있으면 페이지를 넘겨도 앞칸이 갱신되지 않는다.
+
 	const int32 Start = (CurrentPageIndex - 1) * Constant::PageSize;
 	for (int32 i = 0; i < Constant::PageSize; ++i)
 	{

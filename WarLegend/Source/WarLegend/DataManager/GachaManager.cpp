@@ -3,6 +3,7 @@
 
 #include "GachaManager.h"
 
+#include "InventoryManager.h"
 #include "SaveGameDataManager.h"
 #include "TableManager.h"
 #include "UIManager.h"
@@ -52,6 +53,34 @@ void UGachaManager::ClearLogs()
 {
 	LogList.Empty();
 	OnLogCleared.Broadcast();
+}
+
+bool UGachaManager::PullGacha(const int32 InCount)
+{
+	const TArray<int32> ItemIDs = GetGachaItemMultiple(InCount);
+	if (ItemIDs.IsEmpty()) return false;
+
+	if (UInventoryManager* InvenMgr = GetInventoryManager())
+	{
+		InvenMgr->AddItems(ItemIDs); // 분해(-1)는 내부에서 스킵된다.
+	}
+
+	for (const int32 ID : ItemIDs)
+	{
+		if (ID == -1) continue; // 분해된 결과는 로그/인벤에 남기지 않는다.
+		AddLog(ID);
+	}
+
+	RecordResults(ItemIDs); // 결과 팝업은 분해 포함 뽑은 개수 전부 표시
+	return true;
+}
+
+UInventoryManager* UGachaManager::GetInventoryManager() const
+{
+	ULocalPlayer* LocalPlayer = GetGameInstance()->GetFirstGamePlayer();
+	if (!LocalPlayer) return nullptr;
+
+	return LocalPlayer->GetSubsystem<UInventoryManager>();
 }
 
 void UGachaManager::ApplyFilter()

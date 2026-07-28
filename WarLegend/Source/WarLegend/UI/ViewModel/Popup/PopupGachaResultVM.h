@@ -18,6 +18,8 @@ class WARLEGEND_API UPopupGachaResultVM : public UViewModelBase
 
 public:
 	virtual void Init() override;
+	
+	void OnRetry();
 
 	const TArray<TObjectPtr<USlotGachaResultVM>>& GetItems() const { return ItemList; }
 

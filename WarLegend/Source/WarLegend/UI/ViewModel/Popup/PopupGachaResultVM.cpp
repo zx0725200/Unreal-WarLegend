@@ -14,6 +14,20 @@ void UPopupGachaResultVM::Init()
 	BuildResultSlots();
 }
 
+void UPopupGachaResultVM::OnRetry()
+{
+	UGachaManager* GachaMgr = GetGachaManager();
+	VALID_RETURN(GachaMgr);
+
+	// 직전 뽑기와 같은 개수로 다시 뽑는다(결과 개수 = 직전 뽑기 개수). PullGacha 이후 LastResults가 갱신되므로 먼저 캐싱.
+	const int32 RetryCount = GachaMgr->GetLastResults().Num();
+	if (RetryCount <= 0) return;
+
+	if (!GachaMgr->PullGacha(RetryCount)) return;
+
+	BuildResultSlots(); // 새 결과로 슬롯 VM 리스트 재구성
+}
+
 void UPopupGachaResultVM::BuildResultSlots()
 {
 	ItemList.Empty();

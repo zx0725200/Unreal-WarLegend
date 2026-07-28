@@ -42,6 +42,9 @@ public:
 	void ClearLogs();
 	void RecordResults(const TArray<int32>& InItemIDs); // 이번 뽑기 결과를 결과 팝업용으로 저장
 
+	// InCount만큼 뽑아 인벤 추가 + 로그 기록 + 결과 저장까지 한 번에 처리한다(첫 뽑기/재시도 공용). 뽑았으면 true.
+	bool PullGacha(const int32 InCount);
+
 	int32 GetGachaItem() const;
 	const TArray<FGachaLogData>& GetLogList() const { return LogList; }
 	const TArray<FGachaLogData>& GetLastResults() const { return LastResultList; } // 가장 최근 뽑기 결과
@@ -53,6 +56,8 @@ public:
 private:
 	void BuildCache();
 	void SetFilter(const TArray<EItemGrade>& InAllowedGrades);
+
+	class UInventoryManager* GetInventoryManager() const;
 
 	FGachaLogData MakeLogData(const int32 ItemID) const; // ItemID로 로그/결과 표시용 데이터 생성
 
