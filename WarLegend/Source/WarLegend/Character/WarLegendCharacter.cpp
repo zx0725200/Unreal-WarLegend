@@ -2,6 +2,10 @@
 
 #include "UObject/ConstructorHelpers.h"
 #include "Camera/CameraComponent.h"
+#include "Camera/CameraShakeBase.h"
+#include "DataManager/DungeonManager.h"
+#include "Engine/GameInstance.h"
+#include "NiagaraFunctionLibrary.h"
 #include "Ability/HeroAbilitySystemComponent.h"
 #include "Component/HeroCombatComponent.h"
 #include "Component/LockOnComponent.h"
@@ -98,6 +102,56 @@ bool AWarLegendCharacter::IsLockedOn() const
 void AWarLegendCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
+}
+
+void AWarLegendCharacter::BeginDungeonEntry()
+{
+	bDungeonEntrySequence = true;
+
+	// 상공에 텔레포트된 직후이므로 즉시 낙하 상태로 전환.
+	if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
+	{
+		MoveComp->SetMovementMode(MOVE_Falling);
+	}
+}
+
+void AWarLegendCharacter::Landed(const FHitResult& Hit)
+{
+	Super::Landed(Hit);
+
+	// 일반 점프 착지에는 반응하지 않고, 던전 입장 낙하의 첫 착지에만 연출을 재생한다.
+	if (!bDungeonEntrySequence)
+	{
+		return;
+	}
+	bDungeonEntrySequence = false;
+
+	// 착지 이펙트(발밑).
+	if (LandingEffect)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, LandingEffect, GetActorLocation(), FRotator::ZeroRotator);
+	}
+
+	// 착지 카메라 쉐이크.
+	if (LandingCameraShake)
+	{
+		if (APlayerController* PC = Cast<APlayerController>(GetController()))
+		{
+			PC->ClientStartCameraShake(LandingCameraShake);
+		}
+	}
+
+	// 던전 매니저에 착지 알림 → 입력 복구 + 보스전 시작.
+	if (const UWorld* World = GetWorld())
+	{
+		if (UGameInstance* GI = World->GetGameInstance())
+		{
+			if (UDungeonManager* DungeonMgr = GI->GetSubsystem<UDungeonManager>())
+			{
+				DungeonMgr->OnPlayerEntryLanded();
+			}
+		}
+	}
 }
 
 void AWarLegendCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)

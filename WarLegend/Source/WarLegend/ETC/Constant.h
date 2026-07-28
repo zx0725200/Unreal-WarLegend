@@ -25,6 +25,13 @@ namespace Constant
 #pragma endregion
 	
 	constexpr float DungeonExitTime = 0.5f;
+
+#pragma region DungeonEntrySequence
+	constexpr float DungeonEntryDropHeight = 900.f; // 아레나 상공에서 낙하를 시작할 높이
+	constexpr float DungeonFadeOutTime = 0.3f;		// 검정으로 어두워지는 시간
+	constexpr float DungeonFadeInTime = 0.6f;		// 밝아지며 낙하하는 시간
+#pragma endregion
+
 	constexpr float MapSize = 1800.0f;
 	constexpr int32 PageSize = 5;
 	constexpr int32 One = 1;
